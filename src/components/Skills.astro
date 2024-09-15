@@ -1,0 +1,32 @@
+---
+import CardSkill from "./CardSkills";
+import CardTerminal from "../layouts/CardTerminal.astro";
+---
+
+<section class="skills" id="skills">
+  <h2 data-aos="fade-up" class="titulo titulo__dark">Algorithms Done ✔️</h2>
+  <div class="skills__container max__width">
+    <CardTerminal animation="fade-right">
+      <p class="terminal__content terminal__content--p">
+        ≥ Strong foundation in
+        <span class="terminal__content terminal__content--span"
+          >I have a <b
+            >strong foundation in data structures and algorithms (DSA)</b
+          > with expertise in problem-solving techniques. I specialize in analyzing
+          time and space complexity to optimize solutions. I also enjoy helping others
+          by explaining DSA concepts and guiding them through challenges.
+        </span>
+      </p>
+      <p class="terminal__content terminal__content--color">
+        ≥ I'm skilled in implementing arrays, linked lists, trees, graphs,
+        stacks, queues, and hash maps. I assist peers with DSA problems,
+        offering insights into dynamic programming and other approaches. My
+        focus is on delivering efficient, maintainable, and easy-to-understand
+        solutions.
+      </p>
+    </CardTerminal>
+    <div class="skills__cards-container">
+      <CardSkill />
+    </div>
+  </div>
+</section>

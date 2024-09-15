@@ -1,0 +1,106 @@
+---
+import "../styles/about-section.css";
+import "../styles/about-section.css";
+import YoutubeLastvid from "../components/YoutubeLastvid.astro";
+import BaseHead from "../components/BaseHead.astro";
+import ToogleDarkBtn from "../ToggleDarkBtn.astro";
+import BtnToTop from "../components/BtnToTop.astro";
+import Footer from "../components/Footer.astro";
+import DarkBg from "../components/DarkBg.astro";
+import NavLinks from "../components/NavLinks.astro";
+import CardTerminal from "../layouts/CardTerminal.astro";
+import Divider4 from "../components/atoms/Dividers/Divider4.astro";
+import { about } from "../data/MenuData";
+import Button from "../components/Button.astro";
+const { title, description } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <BaseHead title={title} description={description} />
+  </head>
+  <body>
+    <NavLinks origin={about} />
+    <ToogleDarkBtn />
+    <BtnToTop />
+    <main>
+      <section class="about__intro" id="about">
+        <div class="about__imageIcons" ata-aos="fade-up">
+          <img class="about__profile" src="../img/hero.png" alt="DSA" />
+          <div class="icons__container">
+            <!-- <ContactSocialIcons /> -->
+          </div>
+        </div>
+        <CardTerminal>
+          <h2 class="about__titulo--post post__titulo">
+            🌼 <span class="span__dark" id="span-titulo2"> Making reason</span> Answer
+          </h2>
+          <p class="terminal__content terminal__content--p">
+            ≥ If I were asked to highlight a single quality in myself, it would
+            be
+            <span class="terminal__content terminal__content--span"
+              >the love for what I do.</span
+            > Programming, in particular, is something I engage in for the sheer
+            pleasure of creating.
+          </p>
+          <p class="terminal__content terminal__content--color">
+            I have a strong foundation in data structures and algorithms (DSA),
+            with a focus on problem-solving and optimizing solutions through
+            time and space complexity analysis.
+          </p>
+          <p class="terminal__content terminal__content--p">
+            I have a <span class="terminal__content terminal__content--span">
+              strong foundation in data structures and algorithms (DSA), with a
+              focus on problem-solving and optimizing solutions through time and
+              space complexity analysis.
+            </span>
+            I enjoy <span class="terminal__content terminal__content--span">
+              helping others by explaining DSA concepts and guiding them through
+              problem-solving techniques, including dynamic programming and
+              greedy algorithms.
+            </span>
+            My experience covers implementing various <span
+              class="terminal__content terminal__content--span"
+            >
+              data structures such as arrays, linked lists, trees, graphs,
+              stacks, and queues, and I often assist peers with challenging DSA
+              problems.
+            </span>
+          </p>
+          <center><Button animation="zoom-in" href="/blog" text="See all Solutions"/> </center>
+        </CardTerminal>
+        <Divider4 />
+        
+        <!-- <VsCodeTheme/> -->
+        <!-- <DividerTop colorLight="fill__black" colorDark="dark__black" dividerBg="black" dividerBgDark="" /> -->
+        <section class="about__page" id="ytChannel">
+          <YoutubeLastvid />
+          <center><Button animation="zoom-in" href="/blog" text="Click here for Solutions 🪨 "/> </center>
+        </section>
+        <section class="about__text"></section>
+      </section>
+      <DarkBg />
+      <Footer />
+      <style>
+        .about__page {
+          width: 100%;
+          padding: 1rem 0.4rem 0 0.4rem;
+          height: auto;
+        }
+        .post__titulo {
+          color: white;
+        }
+        .text_content {
+          color: white;
+        }
+        @media screen and (min-width: 768px) {
+          .about__page {
+            width: 100%;
+            padding: 1rem 2rem 0 2rem;
+            height: auto;
+          }
+        }
+      </style>
+    </main>
+  </body>
+</html>

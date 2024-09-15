@@ -1,0 +1,32 @@
+---
+import "../styles/components/about-home.css";
+import Button from "./Button.astro";
+import CardTerminal from "../layouts/CardTerminal.astro";
+import CardAbout from "./CardAbout.astro";
+import TitleSpan from "./atoms/TitleSpan.astro";
+---
+
+<section class="about" id="about">
+	<TitleSpan  text1="Making reason " span=" Why" text2="?" />
+	<div class="about__container">
+		<CardAbout />
+		<div class="terminal__container">
+			<CardTerminal animation="fade-left">
+				<h3 class="terminal__content terminal__content--h3">≥ DSA Solutions</h3>
+				<p class="terminal__content terminal__content--p">≥ DSA Fan 😍. I started post solutions for help people.</p>
+
+				<h3 class="terminal__content terminal__content--h3">
+					≥ What <span class="terminal__content terminal__content--span span__dark">sets me apart?</span>
+				</h3>
+				<p class="terminal__content terminal__content--p">
+					≥ I genuinely <span class="terminal__content--span span__dark">love what I do! 💙</span> I
+					believe that any problem of solutions I have. <span class="terminal__content--span span__dark">
+				</p>
+				<div class="about__contactar">
+					<Button href="/about" text="See more" />
+				</div>
+			</CardTerminal>
+		</div>
+
+	</div>
+</section>
