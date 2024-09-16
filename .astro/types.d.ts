@@ -136,65 +136,163 @@ declare module 'astro:content' {
 
 	type ContentEntryMap = {
 		"blog": {
-"Introduccion-js.md": {
-	id: "Introduccion-js.md";
-  slug: "introduccion-js";
+"1D_DP.md": {
+	id: "1D_DP.md";
+  slug: "1d_dp";
   body: string;
   collection: "blog";
   data: InferEntrySchema<"blog">
 } & { render(): Render[".md"] };
-"TopInterview150.md": {
-	id: "TopInterview150.md";
-  slug: "topinterview150";
+"Array&String.md": {
+	id: "Array&String.md";
+  slug: "arraystring";
   body: string;
   collection: "blog";
   data: InferEntrySchema<"blog">
 } & { render(): Render[".md"] };
-"arrays-objetos.md": {
-	id: "arrays-objetos.md";
-  slug: "arrays-objetos";
+"Backtracking.md": {
+	id: "Backtracking.md";
+  slug: "backtracking";
   body: string;
   collection: "blog";
   data: InferEntrySchema<"blog">
 } & { render(): Render[".md"] };
-"ciclos.md": {
-	id: "ciclos.md";
-  slug: "ciclos";
+"BinarySearch.md": {
+	id: "BinarySearch.md";
+  slug: "binarysearch";
   body: string;
   collection: "blog";
   data: InferEntrySchema<"blog">
 } & { render(): Render[".md"] };
-"condiciones-js.md": {
-	id: "condiciones-js.md";
-  slug: "condiciones-js";
+"BinarySearchTree.md": {
+	id: "BinarySearchTree.md";
+  slug: "binarysearchtree";
   body: string;
   collection: "blog";
   data: InferEntrySchema<"blog">
 } & { render(): Render[".md"] };
-"funciones-js.md": {
-	id: "funciones-js.md";
-  slug: "funciones-js";
+"BinaryTreeBFS.md": {
+	id: "BinaryTreeBFS.md";
+  slug: "binarytreebfs";
   body: string;
   collection: "blog";
   data: InferEntrySchema<"blog">
 } & { render(): Render[".md"] };
-"heroe-roto.md": {
-	id: "heroe-roto.md";
-  slug: "heroe-roto";
+"BinaryTreeGeneral.md": {
+	id: "BinaryTreeGeneral.md";
+  slug: "binarytreegeneral";
   body: string;
   collection: "blog";
   data: InferEntrySchema<"blog">
 } & { render(): Render[".md"] };
-"manipulacion-dom.md": {
-	id: "manipulacion-dom.md";
-  slug: "manipulacion-dom";
+"BitManipulation.md": {
+	id: "BitManipulation.md";
+  slug: "bitmanipulation";
   body: string;
   collection: "blog";
   data: InferEntrySchema<"blog">
 } & { render(): Render[".md"] };
-"markdown-guia-estilos.md": {
-	id: "markdown-guia-estilos.md";
-  slug: "markdown-guia-estilos";
+"Divide&Conquer.md": {
+	id: "Divide&Conquer.md";
+  slug: "divideconquer";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".md"] };
+"GraphBFS.md": {
+	id: "GraphBFS.md";
+  slug: "graphbfs";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".md"] };
+"GraphGeneral.md": {
+	id: "GraphGeneral.md";
+  slug: "graphgeneral";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".md"] };
+"Hashmap.md": {
+	id: "Hashmap.md";
+  slug: "hashmap";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".md"] };
+"Heap.md": {
+	id: "Heap.md";
+  slug: "heap";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".md"] };
+"Intervals.md": {
+	id: "Intervals.md";
+  slug: "intervals";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".md"] };
+"Kadane'sAlgorithm.md": {
+	id: "Kadane'sAlgorithm.md";
+  slug: "kadanesalgorithm";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".md"] };
+"LinkedList.md": {
+	id: "LinkedList.md";
+  slug: "linkedlist";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".md"] };
+"Math.md": {
+	id: "Math.md";
+  slug: "math";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".md"] };
+"Matrix.md": {
+	id: "Matrix.md";
+  slug: "matrix";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".md"] };
+"MultidimensionalDP.md": {
+	id: "MultidimensionalDP.md";
+  slug: "multidimensionaldp";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".md"] };
+"Sliding Window.md": {
+	id: "Sliding Window.md";
+  slug: "sliding-window";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".md"] };
+"Stack.md": {
+	id: "Stack.md";
+  slug: "stack";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".md"] };
+"Trie.md": {
+	id: "Trie.md";
+  slug: "trie";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".md"] };
+"TwoPointers.md": {
+	id: "TwoPointers.md";
+  slug: "twopointers";
   body: string;
   collection: "blog";
   data: InferEntrySchema<"blog">
@@ -206,13 +304,6 @@ declare module 'astro:content' {
   collection: "blog";
   data: InferEntrySchema<"blog">
 } & { render(): Render[".mdx"] };
-"wsl.md": {
-	id: "wsl.md";
-  slug: "wsl";
-  body: string;
-  collection: "blog";
-  data: InferEntrySchema<"blog">
-} & { render(): Render[".md"] };
 };
 
 	};

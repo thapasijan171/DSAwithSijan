@@ -13,7 +13,7 @@ export const about = [
 ];
 export const portfolio = [
   // { href: "/", text: "Home", target: "_self" },
-  { href: "/blog", text: "Blog", target: "_self" },
+  { href: "/blog", text: "Leetcode", target: "_self" },
   { href: "/about", text: "About Me", target: "_self" },
   { href: "#", text: "My GitHub", target: "_blank" },
 ];
@@ -23,7 +23,7 @@ export const blog = [
   // { href: "/portfolio", text: "Portfolio", target: "_self" },
   {
     href: "#",
-    text: "Medium blog",
+    text: "Solutions ",
     target: "_blank",
   },
 ];
