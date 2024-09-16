@@ -5,7 +5,7 @@ pubDate: "Mar 06 2024"
 heroImage: "../img/post.jpeg"
 
 ---
-![Top Interview 150](./public/img/img_blog/Top_Interview.png)
+![Top Interview 150](https://raw.githubusercontent.com/thapasijan171/assets/main/download.png)
 
 <!-- makrdown form here -->
 
