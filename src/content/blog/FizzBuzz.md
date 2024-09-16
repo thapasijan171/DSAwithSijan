@@ -1,148 +1,300 @@
 ---
-title: "Learn how to solve the FizzBuzz challenge"
-description: "Solving technical tests: FizzBuzz"
+title: "Top Interview 150"
+description: "All solutions leetcode Top Interview 150"
 pubDate: "Mar 06 2024"
-heroImage: "../img/floette2.jpg"
+heroImage: "../img/post.jpeg"
 
 ---
-### Step-by-Step Guide to Solving the FizzBuzz Challenge
+![Top Interview 150](./public/img/img_blog/Top_Interview.png)
 
-The FizzBuzz challenge is one of the most common problems in coding interviews. Its purpose is to test a candidate's ability to write basic code and understand fundamental concepts such as loops, conditionals, and arithmetic operations. In this guide, we will break down the problem step-by-step and explain how to solve it.
+<!-- makrdown form here -->
 
-### Introduction to Multiples in Mathematics
-
-Before we dive into solving FizzBuzz, it’s important to understand what multiples are in mathematics, as this is central to the problem.
-
-Understanding how to solve the problem is of no use if you don’t grasp what you’re writing. If you already know what multiples are and how they are obtained, you can skip this part.
-
-A multiple of a number is simply another number that results from multiplying that number by an integer. For example, the first multiples of 3 are 3, 6, 9, 12, etc., as they are obtained by multiplying 3 by 1, 2, 3, 4, etc., respectively.
-
-```javascript
-To find the multiples of 3:
-- Multiply the base number (3) by successive integers:
-
-   3 * 1 = 3
-   3 * 2 = 6
-   3 * 3 = 9
-   3 * 4 = 12
-To find the multiples of 3:
-```
-
-#### Common Multiple
-
-When we talk about common multiples, we refer to numbers that are multiples of two or more numbers simultaneously. For example, common multiples of 3 and 5 are numbers that are divisible by both 3 and 5. In mathematics, we can find the least common multiple (LCM) of two numbers using the concept of the least common multiple (LCM).
-
-```javascript
-To find the common multiple of two numbers (a and b):
-- Identify the multiples of each number separately.
-- Look for the first number that appears in both sets of multiples.
-
-For example, to find the common multiple of 3 and 5:
-- Multiply each base number (3 and 5) by successive integers:
-  - Multiples of 3: 3, 6, 9, 12, 13, 14, 15, ...
-  - Multiples of 5: 5, 10, 15, 20, ...
-- Notice that the first number appearing in both sets of multiples is 15.
-- Therefore, 15 is the least common multiple of 3 and 5.
+# [1. Two Sum](https://leetcode.com/problems/two-sum)
 
 
-```
+## Description
 
-### Understanding the Logic of Finding Multiples
+<!-- description:start -->
 
-To determine which numbers are not multiples of a given number **(e.g., 3)**, you can use the modulus operator ``(%)``.
+<p>Given an array of integers <code>nums</code>&nbsp;and an integer <code>target</code>, return <em>indices of the two numbers such that they add up to <code>target</code></em>.</p>
 
-#### Is It a Multiple?
+<p>You may assume that each input would have <strong><em>exactly</em> one solution</strong>, and you may not use the <em>same</em> element twice.</p>
 
-If a number is not divisible by 3 (i.e., the remainder of the division by 3 is not zero), then that number is not a multiple of 3.
+<p>You can return the answer in any order.</p>
 
-`For each integer from 1 to n: If the number % 3 is equal to 0: That number is a multiple of 3.`
+<p>&nbsp;</p>
+<p><strong class="example">Example 1:</strong></p>
 
-In this code, ` % ` is the modulus operator, which returns the remainder of the division between two numbers. **If the remainder of the division between a number and 3 is zero**, it means that number is a multiple of 3.
+<pre>
+<strong>Input:</strong> nums = [2,7,11,15], target = 9
+<strong>Output:</strong> [0,1]
+<strong>Explanation:</strong> Because nums[0] + nums[1] == 9, we return [0, 1].
+</pre>
 
-For example, if we apply this code to the numbers from 1 to 10, we will find that `the numbers that are not multiples of 3 are: 1, 2, 4, 5, 7, 8, 10.` This is because when we divide these numbers by 3, we do not get a remainder of zero.
+<p><strong class="example">Example 2:</strong></p>
 
-```javascript
-//ejemplo Si es multiplo
+<pre>
+<strong>Input:</strong> nums = [3,2,4], target = 6
+<strong>Output:</strong> [1,2]
+</pre>
 
-let residuo = 3 %3;
+<p><strong class="example">Example 3:</strong></p>
 
-console.log(residuo);
+<pre>
+<strong>Input:</strong> nums = [3,3], target = 6
+<strong>Output:</strong> [0,1]
+</pre>
 
-//ejemplo NO es multiplo
+<p>&nbsp;</p>
+<p><strong>Constraints:</strong></p>
 
-let residuo = 5 %3;
+<ul>
+	<li><code>2 &lt;= nums.length &lt;= 10<sup>4</sup></code></li>
+	<li><code>-10<sup>9</sup> &lt;= nums[i] &lt;= 10<sup>9</sup></code></li>
+	<li><code>-10<sup>9</sup> &lt;= target &lt;= 10<sup>9</sup></code></li>
+	<li><strong>Only one valid answer exists.</strong></li>
+</ul>
 
-console.log(residuo);
-```
+<p>&nbsp;</p>
+<strong>Follow-up:&nbsp;</strong>Can you come up with an algorithm that is less than <code>O(n<sup>2</sup>)</code><font face="monospace">&nbsp;</font>time complexity?
 
-Ahora que hemos repasado estos conceptos básicos, podemos abordar el desafío de FizzBuzz.
+<!-- description:end -->
 
-## The challenge
+## Solutions
 
-```javascript
-// Write a program that shows by console the 
-// numbers from 1 to 100 (both included and with a line break between 
-// each print), replacing the following: 
-// - Multiples of 3 by the word "fizz". 
-// - Multiples of 5 by the word "buzz". 
-// - Multiples of 3 and 5 at a time by the word "fizzbuzz".
+<!-- solution:start -->
+
+### Solution 1: Hash Table
+
+We can use a hash table $\textit{d}$ to store each element and its corresponding index.
+
+Traverse the array $\textit{nums}$, for the current element $\textit{nums}[i]$, we first check if $\textit{target} - \textit{nums}[i]$ is in the hash table $\textit{d}$. If it is in $\textit{d}$, it means the $\textit{target}$ value has been found, and we return the indices of $\textit{target} - \textit{nums}[i]$ and $i$.
+
+Time complexity is `O(n)`, and space complexity is `O(n)`, where $n$ is the length of the array $\textit{nums}$.
+
+<!-- tabs:start -->
 
 
-```
 
-#### Step 1: Initialize the loop
+#### Java
 
-Let's start by writing a loop that goes through the numbers from 1 to 100. This can be accomplished with a `for` loop in many programming languages.
-
-```javascript
-for (let i = 1; i <= 100; i++) {
-    // Cuerpo del bucle
-}
-```
-
-This loop will execute the code inside your body 100 times, with `i` taking values from 1 to 100 in each iteration.
-
-#### Step 2: Check the multiples of 3 and 5
-
-Within the loop, we are going to check if the current number (`i`) is a multiple of 3, 5, or both. If it is a multiple of 3, we will print "fizz". If it is a multiple of 5, we will print "buzz". And if it is a multiple of both, we will print "fizzBuzz".
-
-```javascript
-if (i % 3 === 0 && i % 5 === 0) {
-    console.log("fizzBuzz");
-} else if (i % 3 === 0) {
-    console.log("fizz");
-} else if (i % 5 === 0) {
-    console.log("buzz");
-} else {
-    console.log(i);
-}
-```
-
-The expression `i% 3 === 0` verifies if `i` is divisible by 3 without leaving a residue, and the same applies to 5. If `i` is divisible by both, then it is a common multiple of 3 and 5.
-
-#### Step 3: Run and test the solution
-
-With the complete code, we can run it and see the results. This will allow us to verify if our solution works correctly and produces the expected sequence of numbers and words according to the FizzBuzz rules.
-
-```javascript
-function fizzBuzz() {
-    for (let i = 1; i <= 100; i++) {
-        if (i % 3 === 0 && i % 5 === 0) {
-            console.log("fizzBuzz");
-        } else if (i % 3 === 0) {
-            console.log("fizz");
-        } else if (i % 5 === 0) {
-            console.log("buzz");
-        } else {
-            console.log(i);
+```java
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        Map<Integer, Integer> d = new HashMap<>();
+        for (int i = 0;; i++) {
+            int x = nums[i];
+            int y = target - x;
+            if (d.containsKey(y)) {
+                return new int[] {d.get(y), i};
+            }
+            d.put(x, i);
         }
     }
 }
-
-fizzBuzz(); // We call the function to run it
-
 ```
 
-When executing this code, we should see the expected sequence of numbers and words according to the FizzBuzz rules.
 
-This concludes our step-by-step guide to solving the FizzBuzz challenge. We hope this explanation has been clear and useful in understanding how to address this common programming problem. Good luck in your future coding challenges!
+#### TypeScript
+
+```ts
+function twoSum(nums: number[], target: number): number[] {
+    const d = new Map<number, number>();
+    for (let i = 0; ; i++) {
+        const x = nums[i];
+        const y = target - x;
+        if (d.has(y)) {
+            return [d.get(y)!, i];
+        }
+        d.set(x, i);
+    }
+}
+```
+
+
+#### JavaScript
+
+```js
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+var twoSum = function (nums, target) {
+    const d = new Map();
+    for (let i = 0; ; i++) {
+        const x = nums[i];
+        const y = target - x;
+        if (d.has(y)) {
+            return [d.get(y), i];
+        }
+        d.set(x, i);
+    }
+};
+```
+<br>
+<br>
+
+# [2. Add Two Numbers](https://leetcode.com/problems/add-two-numbers)
+
+
+## Description
+
+<!-- description:start -->
+
+<p>You are given two <strong>non-empty</strong> linked lists representing two non-negative integers. The digits are stored in <strong>reverse order</strong>, and each of their nodes contains a single digit. Add the two numbers and return the sum&nbsp;as a linked list.</p>
+
+<p>You may assume the two numbers do not contain any leading zero, except the number 0 itself.</p>
+
+<p>&nbsp;</p>
+<p><strong class="example">Example 1:</strong></p>
+<img alt="" src="https://assets.leetcode.com/uploads/2020/10/02/addtwonumber1.jpg" style="width: 483px; height: 342px;" />
+<pre>
+<strong>Input:</strong> l1 = [2,4,3], l2 = [5,6,4]
+<strong>Output:</strong> [7,0,8]
+<strong>Explanation:</strong> 342 + 465 = 807.
+</pre>
+
+<p><strong class="example">Example 2:</strong></p>
+
+<pre>
+<strong>Input:</strong> l1 = [0], l2 = [0]
+<strong>Output:</strong> [0]
+</pre>
+
+<p><strong class="example">Example 3:</strong></p>
+
+<pre>
+<strong>Input:</strong> l1 = [9,9,9,9,9,9,9], l2 = [9,9,9,9]
+<strong>Output:</strong> [8,9,9,9,0,0,0,1]
+</pre>
+
+<p>&nbsp;</p>
+<p><strong>Constraints:</strong></p>
+
+<ul>
+	<li>The number of nodes in each linked list is in the range <code>[1, 100]</code>.</li>
+	<li><code>0 &lt;= Node.val &lt;= 9</code></li>
+	<li>It is guaranteed that the list represents a number that does not have leading zeros.</li>
+</ul>
+
+<!-- description:end -->
+
+## Solutions
+
+<!-- solution:start -->
+
+### Solution 1: Simulation
+
+We traverse two linked lists $l_1$ and $l_2$ at the same time, and use the variable $carry$ to indicate whether there is a carry.
+
+Each time we traverse, we take out the current bit of the corresponding linked list, calculate the sum with the carry $carry$, and then update the value of the carry. Then we add the current bit to the answer linked list. If both linked lists are traversed, and the carry is $0$, the traversal ends.
+
+Finally, we return the head node of the answer linked list.
+
+The time complexity is `O(\max (m, n))`, where `m` and `n` are the lengths of the two linked lists. We need to traverse the entire position of the two linked lists, and each position only needs `O(1)` time. Ignoring the space consumption of the answer, the space complexity is `O(1)`.
+
+
+<!-- tabs:start -->
+
+
+#### Java
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode dummy = new ListNode(0);
+        int carry = 0;
+        ListNode cur = dummy;
+        while (l1 != null || l2 != null || carry != 0) {
+            int s = (l1 == null ? 0 : l1.val) + (l2 == null ? 0 : l2.val) + carry;
+            carry = s / 10;
+            cur.next = new ListNode(s % 10);
+            cur = cur.next;
+            l1 = l1 == null ? null : l1.next;
+            l2 = l2 == null ? null : l2.next;
+        }
+        return dummy.next;
+    }
+}
+```
+
+
+
+
+#### TypeScript
+
+```ts
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     val: number
+ *     next: ListNode | null
+ *     constructor(val?: number, next?: ListNode | null) {
+ *         this.val = (val===undefined ? 0 : val)
+ *         this.next = (next===undefined ? null : next)
+ *     }
+ * }
+ */
+
+function addTwoNumbers(l1: ListNode | null, l2: ListNode | null): ListNode | null {
+    const dummy = new ListNode();
+    let cur = dummy;
+    let sum = 0;
+    while (l1 != null || l2 != null || sum !== 0) {
+        if (l1 != null) {
+            sum += l1.val;
+            l1 = l1.next;
+        }
+        if (l2 != null) {
+            sum += l2.val;
+            l2 = l2.next;
+        }
+        cur.next = new ListNode(sum % 10);
+        cur = cur.next;
+        sum = Math.floor(sum / 10);
+    }
+    return dummy.next;
+}
+```
+
+#### JavaScript
+
+```js
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} l1
+ * @param {ListNode} l2
+ * @return {ListNode}
+ */
+var addTwoNumbers = function (l1, l2) {
+    const dummy = new ListNode();
+    let carry = 0;
+    let cur = dummy;
+    while (l1 || l2 || carry) {
+        const s = (l1?.val || 0) + (l2?.val || 0) + carry;
+        carry = Math.floor(s / 10);
+        cur.next = new ListNode(s % 10);
+        cur = cur.next;
+        l1 = l1?.next;
+        l2 = l2?.next;
+    }
+    return dummy.next;
+};
+```
