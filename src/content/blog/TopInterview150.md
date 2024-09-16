@@ -16,9 +16,7 @@ heroImage: "../img/post.jpeg"
 <!-- description:start -->
 
 <p>Given an array of integers <code>nums</code>&nbsp;and an integer <code>target</code>, return <em>indices of the two numbers such that they add up to <code>target</code></em>.</p>
-
 <p>You may assume that each input would have <strong><em>exactly</em> one solution</strong>, and you may not use the <em>same</em> element twice.</p>
-
 <p>You can return the answer in any order.</p>
 
 <p>&nbsp;</p>
@@ -67,9 +65,9 @@ heroImage: "../img/post.jpeg"
 
 We can use a hash table $\textit{d}$ to store each element and its corresponding index.
 
-Traverse the array $\textit{nums}$, for the current element $\textit{nums}[i]$, we first check if $\textit{target} - \textit{nums}[i]$ is in the hash table $\textit{d}$. If it is in $\textit{d}$, it means the $\textit{target}$ value has been found, and we return the indices of $\textit{target} - \textit{nums}[i]$ and $i$.
+Traverse the array `nums`, for the current element `nums[i]`, we first check if `target - nums}[i]` is in the hash table `d`. If it is in `d`, it means the `target` value has been found, and we return the indices of `target - nums[i]` and `i`.
 
-Time complexity is `O(n)`, and space complexity is `O(n)`, where $n$ is the length of the array $\textit{nums}$.
+Time complexity is `O(n)`, and space complexity is `O(n)`, where `n` is the length of the array `nums}`.
 
 <!-- tabs:start -->
 
@@ -89,43 +87,6 @@ class Solution {
         }
     }
 }
-```
-
-#### TypeScript
-
-```ts
-function twoSum(nums: number[], target: number): number[] {
-    const d = new Map<number, number>();
-    for (let i = 0; ; i++) {
-        const x = nums[i];
-        const y = target - x;
-        if (d.has(y)) {
-            return [d.get(y)!, i];
-        }
-        d.set(x, i);
-    }
-}
-```
-
-#### JavaScript
-
-```js
-/**
- * @param {number[]} nums
- * @param {number} target
- * @return {number[]}
- */
-var twoSum = function (nums, target) {
-    const d = new Map();
-    for (let i = 0; ; i++) {
-        const x = nums[i];
-        const y = target - x;
-        if (d.has(y)) {
-            return [d.get(y), i];
-        }
-        d.set(x, i);
-    }
-};
 ```
 
 <br>
@@ -222,73 +183,6 @@ class Solution {
 }
 ```
 
-#### TypeScript
-
-```ts
-/**
- * Definition for singly-linked list.
- * class ListNode {
- *     val: number
- *     next: ListNode | null
- *     constructor(val?: number, next?: ListNode | null) {
- *         this.val = (val===undefined ? 0 : val)
- *         this.next = (next===undefined ? null : next)
- *     }
- * }
- */
-
-function addTwoNumbers(l1: ListNode | null, l2: ListNode | null): ListNode | null {
-    const dummy = new ListNode();
-    let cur = dummy;
-    let sum = 0;
-    while (l1 != null || l2 != null || sum !== 0) {
-        if (l1 != null) {
-            sum += l1.val;
-            l1 = l1.next;
-        }
-        if (l2 != null) {
-            sum += l2.val;
-            l2 = l2.next;
-        }
-        cur.next = new ListNode(sum % 10);
-        cur = cur.next;
-        sum = Math.floor(sum / 10);
-    }
-    return dummy.next;
-}
-```
-
-#### JavaScript
-
-```js
-/**
- * Definition for singly-linked list.
- * function ListNode(val, next) {
- *     this.val = (val===undefined ? 0 : val)
- *     this.next = (next===undefined ? null : next)
- * }
- */
-/**
- * @param {ListNode} l1
- * @param {ListNode} l2
- * @return {ListNode}
- */
-var addTwoNumbers = function (l1, l2) {
-    const dummy = new ListNode();
-    let carry = 0;
-    let cur = dummy;
-    while (l1 || l2 || carry) {
-        const s = (l1?.val || 0) + (l2?.val || 0) + carry;
-        carry = Math.floor(s / 10);
-        cur.next = new ListNode(s % 10);
-        cur = cur.next;
-        l1 = l1?.next;
-        l2 = l2?.next;
-    }
-    return dummy.next;
-};
-```
-
 <br>
 <br>
 
@@ -348,7 +242,7 @@ For each character $s[j]$ in the string `s`, we call it $c$. If $c$ exists in th
 
 Finally, return `ans`.
 
-The time complexity is $O(n)$, where $n$ represents the length of the string `s`.
+The time complexity is `O(n)`, where $n$ represents the length of the string `s`.
 
 Two pointers algorithm template:
 
@@ -383,49 +277,10 @@ class Solution {
 }
 ```
 
-#### TypeScript
-
-```ts
-function lengthOfLongestSubstring(s: string): number {
-    let ans = 0;
-    const ss: Set<string> = new Set();
-    for (let i = 0, j = 0; j < s.length; j++) {
-        while (ss.has(s[j])) {
-            ss.delete(s[i++]);
-        }
-        ss.add(s[j]);
-        ans = Math.max(ans, j - i + 1);
-    }
-    return ans;
-}
-```
-
-#### JavaScript
-
-```js
-/**
- * @param {string} s
- * @return {number}
- */
-var lengthOfLongestSubstring = function (s) {
-    let ans = 0;
-    const ss = new Set();
-    for (let i = 0, j = 0; j < s.length; j++) {
-        while (ss.has(s[j])) {
-            ss.delete(s[i++]);
-        }
-        ss.add(s[j]);
-        ans = Math.max(ans, j - i + 1);
-    }
-    return ans;
-};
-```
-
 <br>
 <br>
 
 # [4. Median of Two Sorted Arrays](https://leetcode.com/problems/median-of-two-sorted-arrays)
-
 
 ## Description
 
@@ -456,41 +311,47 @@ var lengthOfLongestSubstring = function (s) {
 <p><strong>Constraints:</strong></p>
 
 <ul>
-	<li><code>nums1.length == m</code></li>
-	<li><code>nums2.length == n</code></li>
-	<li><code>0 &lt;= m &lt;= 1000</code></li>
-	<li><code>0 &lt;= n &lt;= 1000</code></li>
-	<li><code>1 &lt;= m + n &lt;= 2000</code></li>
-	<li><code>-10<sup>6</sup> &lt;= nums1[i], nums2[i] &lt;= 10<sup>6</sup></code></li>
+ <li><code>nums1.length == m</code></li>
+ <li><code>nums2.length == n</code></li>
+ <li><code>0 &lt;= m &lt;= 1000</code></li>
+ <li><code>0 &lt;= n &lt;= 1000</code></li>
+ <li><code>1 &lt;= m + n &lt;= 2000</code></li>
+ <li><code>-10<sup>6</sup> &lt;= nums1[i], nums2[i] &lt;= 10<sup>6</sup></code></li>
 </ul>
 
 <!-- description:end -->
 
-## Solutions
+# Solutions
 
 <!-- solution:start -->
 
 ### Solution 1: Divide and Conquer
 
-The problem requires the time complexity of the algorithm to be $O(\log (m + n))$, so we cannot directly traverse the two arrays, but need to use the binary search method.
+This method finds the median of two sorted arrays, `nums1` and `nums2`, without merging them.
 
-If $m + n$ is odd, then the median is the $\left\lfloor\frac{m + n + 1}{2}\right\rfloor$-th number; if $m + n$ is even, then the median is the average of the $\left\lfloor\frac{m + n + 1}{2}\right\rfloor$-th and the $\left\lfloor\frac{m + n + 2}{2}\right\rfloor$-th numbers. In fact, we can unify it as the average of the $\left\lfloor\frac{m + n + 1}{2}\right\rfloor$-th and the $\left\lfloor\frac{m + n + 2}{2}\right\rfloor$-th numbers.
+## Key Method: `findMedianSortedArrays`
 
-Therefore, we can design a function $f(i, j, k)$, which represents the $k$-th smallest number in the interval $[i, m)$ of array $nums1$ and the interval $[j, n)$ of array $nums2$. The median is the average of $f(0, 0, \left\lfloor\frac{m + n + 1}{2}\right\rfloor)$ and $f(0, 0, \left\lfloor\frac{m + n + 2}{2}\right\rfloor)$.
+- **Input**: Two arrays, `nums1` and `nums2`.
+- **Output**: Median of the combined arrays.
+- **Process**:
+  1. Calculate the positions needed for the median (one or two middle elements).
+  2. Use the helper method `f` to find the k-th smallest element in the combined arrays.
 
-The implementation idea of the function $f(i, j, k)$ is as follows:
+## Helper Method: `f`
 
--   If $i \geq m$, it means that the interval $[i, m)$ of array $nums1$ is empty, so directly return $nums2[j + k - 1]$;
--   If $j \geq n$, it means that the interval $[j, n)$ of array $nums2$ is empty, so directly return $nums1[i + k - 1]$;
--   If $k = 1$, it means to find the first number, so just return the minimum of $nums1[i]$ and $nums2[j]$;
--   Otherwise, we find the $\left\lfloor\frac{k}{2}\right\rfloor$-th number in the two arrays, denoted as $x$ and $y$. (Note, if a certain array does not have the $\left\lfloor\frac{k}{2}\right\rfloor$-th number, then we regard the $\left\lfloor\frac{k}{2}\right\rfloor$-th number as $+\infty$.) Compare the size of $x$ and $y$:
-    -   If $x \leq y$, it means that the $\left\lfloor\frac{k}{2}\right\rfloor$-th number of array $nums1$ cannot be the $k$-th smallest number, so we can exclude the interval $[i, i + \left\lfloor\frac{k}{2}\right\rfloor)$ of array $nums1$, and recursively call $f(i + \left\lfloor\frac{k}{2}\right\rfloor, j, k - \left\lfloor\frac{k}{2}\right\rfloor)$.
-    -   If $x > y$, it means that the $\left\lfloor\frac{k}{2}\right\rfloor$-th number of array $nums2$ cannot be the $k$-th smallest number, so we can exclude the interval $[j, j + \left\lfloor\frac{k}{2}\right\rfloor)$ of array $nums2$, and recursively call $f(i, j + \left\lfloor\frac{k}{2}\right\rfloor, k - \left\lfloor\frac{k}{2}\right\rfloor)$.
+- **Purpose**: Recursively finds the k-th smallest element between `nums1` and `nums2`.
+- **Base Cases**:
+  - If `nums1` is exhausted, return the k-th element of `nums2` (and vice versa).
+  - If `k == 1`, return the smaller of the two current elements.
+- **Recursive Step**:
+  - Compare the k-th elements of both arrays and discard half of the elements from one array.
+  - Repeat until the k-th smallest element is found.
 
-The time complexity is $O(\log(m + n))$, and the space complexity is $O(\log(m + n))$. Here, $m$ and $n$ are the lengths of arrays $nums1$ and $nums2$ respectively.
+### Efficiency
+
+- This approach uses binary search and recursion, with a time complexity of `O(log(min(m, n)))`.
 
 <!-- tabs:start -->
-
 
 #### Java
 
@@ -527,63 +388,4 @@ class Solution {
         return x < y ? f(i + p, j, k - p) : f(i, j + p, k - p);
     }
 }
-```
-
-#### TypeScript
-
-```ts
-function findMedianSortedArrays(nums1: number[], nums2: number[]): number {
-    const m = nums1.length;
-    const n = nums2.length;
-    const f = (i: number, j: number, k: number): number => {
-        if (i >= m) {
-            return nums2[j + k - 1];
-        }
-        if (j >= n) {
-            return nums1[i + k - 1];
-        }
-        if (k == 1) {
-            return Math.min(nums1[i], nums2[j]);
-        }
-        const p = Math.floor(k / 2);
-        const x = i + p - 1 < m ? nums1[i + p - 1] : 1 << 30;
-        const y = j + p - 1 < n ? nums2[j + p - 1] : 1 << 30;
-        return x < y ? f(i + p, j, k - p) : f(i, j + p, k - p);
-    };
-    const a = f(0, 0, Math.floor((m + n + 1) / 2));
-    const b = f(0, 0, Math.floor((m + n + 2) / 2));
-    return (a + b) / 2;
-}
-```
-
-#### JavaScript
-
-```js
-/**
- * @param {number[]} nums1
- * @param {number[]} nums2
- * @return {number}
- */
-var findMedianSortedArrays = function (nums1, nums2) {
-    const m = nums1.length;
-    const n = nums2.length;
-    const f = (i, j, k) => {
-        if (i >= m) {
-            return nums2[j + k - 1];
-        }
-        if (j >= n) {
-            return nums1[i + k - 1];
-        }
-        if (k == 1) {
-            return Math.min(nums1[i], nums2[j]);
-        }
-        const p = Math.floor(k / 2);
-        const x = i + p - 1 < m ? nums1[i + p - 1] : 1 << 30;
-        const y = j + p - 1 < n ? nums2[j + p - 1] : 1 << 30;
-        return x < y ? f(i + p, j, k - p) : f(i, j + p, k - p);
-    };
-    const a = f(0, 0, Math.floor((m + n + 1) / 2));
-    const b = f(0, 0, Math.floor((m + n + 2) / 2));
-    return (a + b) / 2;
-};
 ```
