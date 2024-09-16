@@ -58,3 +58,15 @@
 };
 
 export  {portafolioData,skillIcons}
+
+
+// export const blog = [
+//   { href: "/", text: "Home", target: "_self" },
+//   { href: "/about", text: "About", target: "_self" },
+//   { href: "/portfolio", text: "Portfolio", target: "_self" },
+//   {
+//     href: "#",
+//     text: "Medium blog",
+//     target: "_blank",
+//   },
+// ];
