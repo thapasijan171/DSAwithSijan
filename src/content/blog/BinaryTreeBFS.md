@@ -79,7 +79,7 @@ class Solution {
         q.offer(root);
         while (!q.isEmpty()) {
             ans.add(q.peekLast().val);
-            for (int n = q.size(); n > 0; --n) {
+            for (int n = q.size(); n > 0; n--) {
                 TreeNode node = q.poll();
                 if (node.left != null) {
                     q.offer(node.left);
@@ -212,7 +212,7 @@ class Solution {
         while (!q.isEmpty()) {
             int n = q.size();
             long s = 0;
-            for (int i = 0; i < n; ++i) {
+            for (int i = 0; i < n; i++) {
                 root = q.pollFirst();
                 s += root.val;
                 if (root.left != null) {
@@ -263,7 +263,7 @@ class Solution {
     public List<Double> averageOfLevels(TreeNode root) {
         dfs(root, 0);
         List<Double> ans = new ArrayList<>();
-        for (int i = 0; i < s.size(); ++i) {
+        for (int i = 0; i < s.size(); i++) {
             ans.add(s.get(i) * 1.0 / cnt.get(i));
         }
         return ans;
@@ -470,7 +470,7 @@ class Solution {
         boolean left = true;
         while (!q.isEmpty()) {
             List<Integer> t = new ArrayList<>();
-            for (int n = q.size(); n > 0; --n) {
+            for (int n = q.size(); n > 0; n--) {
                 TreeNode node = q.poll();
                 t.add(node.val);
                 if (node.left != null) {
