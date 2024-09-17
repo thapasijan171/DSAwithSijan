@@ -1,7 +1,7 @@
 ---
 title: "Binary Tree BFS"
-description: "The Document Object Model (DOM) is a programming interface for HTML and XML documents."
-pubDate: "Feb 18 2024"
+description: "All solutions leetcode Top Interview 150 Binary Tree BFS"
+pubDate: "2024"
 heroImage: "../img/img_blog/1dp.jpg"
 ---
 

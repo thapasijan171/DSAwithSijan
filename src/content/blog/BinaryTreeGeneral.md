@@ -1,7 +1,7 @@
 ---
-title: 'Binary Tree General'
-description: 'Learn the basics of writing at Markdown'
-pubDate: 'Nov 11 2023'
-# heroImage: '../img/IA_coca.webp'
+title: "Binary Tree General"
+description: "All solutions leetcode Top Interview 150 Binary Tree General"
+pubDate: "2024"
+heroImage: "../img/img_blog/floette.jpeg"
 ---
 
