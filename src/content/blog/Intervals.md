@@ -354,7 +354,7 @@ class Solution {
 	<li><code>-2<sup>31</sup> &lt;= x<sub>start</sub> &lt; x<sub>end</sub> &lt;= 2<sup>31</sup> - 1</code></li>
 </ul>
 
-## Solutions
+# Solutions
 
 # Intuition
 The problem can be viewed as finding the minimum number of non-overlapping intervals that cover all the balloon intervals. To minimize the number of arrows, we should aim to pop as many overlapping balloons as possible with a single arrow.

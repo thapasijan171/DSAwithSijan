@@ -43,7 +43,7 @@ heroImage: "https://creatorspace.imgix.net/users/clzmwqjs107miod018j7gwvu9/osALv
 </ul>
 
 
-## Solutions
+# Solutions
 
 # Matrix Exponentiation to Solve Climbing Stairs Problem
 
@@ -146,7 +146,7 @@ Total amount you can rob = 2 + 9 + 1 = 12.
 </ul>
 
 
-## Solutions
+# Solutions
 
 # House Robber Problem Using Dynamic Programming
 
@@ -239,7 +239,7 @@ Note that you are allowed to reuse a dictionary word.
 	<li>All the strings of <code>wordDict</code> are <strong>unique</strong>.</li>
 </ul>
 
-## Solutions
+# Solutions
 
 # Word Break Problem Using Trie and Dynamic Programming
 
@@ -364,7 +364,7 @@ class Trie {
 </ul>
 
 
-## Solutions
+# Solutions
 
 # Coin Change Problem Using Dynamic Programming
 
@@ -470,7 +470,7 @@ class Solution {
 <p>&nbsp;</p>
 <p><b>Follow up:</b>&nbsp;Can you come up with an algorithm that runs in&nbsp;<code>O(n log(n))</code> time complexity?</p>
 
-## Solutions
+# Solutions
 
 # Longest Increasing Subsequence Using Binary Indexed Tree (BIT)
 

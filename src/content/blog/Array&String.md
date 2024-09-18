@@ -64,7 +64,7 @@ Note that because m = 0, there are no elements in nums1. The 0 is only there to 
 <p>&nbsp;</p>
 <p><strong>Follow up: </strong>Can you come up with an algorithm that runs in <code>O(m + n)</code> time?</p>
 
-## Solutions
+# Solutions
 
 # Merge Sorted Arrays
 
@@ -162,7 +162,7 @@ It does not matter what you leave beyond the returned k (hence they are undersco
  <li><code>0 &lt;= val &lt;= 100</code></li>
 </ul>
 
-## Solutions
+# Solutions
 
 # Remove Element
 
@@ -251,7 +251,7 @@ It does not matter what you leave beyond the returned k (hence they are undersco
  <li><code>nums</code> is sorted in <strong>non-decreasing</strong> order.</li>
 </ul>
 
-## Solutions
+# Solutions
 
 # Remove Duplicates from Sorted Array
 
@@ -345,7 +345,7 @@ It does not matter what you leave beyond the returned k (hence they are undersco
  <li><code>nums</code> is sorted in <strong>non-decreasing</strong> order.</li>
 </ul>
 
-## Solutions
+# Solutions
 
 # Remove Duplicates from Sorted Array II
 
@@ -414,7 +414,7 @@ class Solution {
 <p>&nbsp;</p>
 <strong>Follow-up:</strong> Could you solve the problem in linear time and in <code>O(1)</code> space?
 
-## Solutions
+# Solutions
 
 # Majority Element
 
@@ -499,7 +499,7 @@ rotate 2 steps to the right: [3,99,-1,-100]
  <li>Could you do it in-place with <code>O(1)</code> extra space?</li>
 </ul>
 
-## Solutions
+# Solutions
 
 # Rotate Array
 
@@ -584,7 +584,7 @@ Note that buying on day 2 and selling on day 1 is not allowed because you must b
  <li><code>0 &lt;= prices[i] &lt;= 10<sup>4</sup></code></li>
 </ul>
 
-## Solutions
+# Solutions
 
 # Maximum Profit
 
@@ -671,7 +671,7 @@ Total profit is 4.
  <li><code>0 &lt;= prices[i] &lt;= 10<sup>4</sup></code></li>
 </ul>
 
-## Solutions
+# Solutions
 
 # Maximum Profit
 
@@ -736,7 +736,7 @@ class Solution {
  <li><code>-100 &lt;= matrix[i][j] &lt;= 100</code></li>
 </ul>
 
-## Solutions
+# Solutions
 
 # Spiral Order Matrix
 
@@ -826,7 +826,7 @@ class Solution {
  <li>It&#39;s guaranteed that you can reach <code>nums[n - 1]</code>.</li>
 </ul>
 
-## Solutions
+# Solutions
 
 # Jump Game II
 
@@ -903,7 +903,7 @@ Since the researcher has 3 papers with at least 3 citations each and the remaini
  <li><code>0 &lt;= citations[i] &lt;= 1000</code></li>
 </ul>
 
-## Solutions
+# Solutions
 
 # H-Index
 
@@ -1001,7 +1001,7 @@ randomizedSet.getRandom(); // Since 2 is the only number in the set, getRandom()
  <li>There will be <strong>at least one</strong> element in the data structure when <code>getRandom</code> is called.</li>
 </ul>
 
-## Solutions
+# Solutions
 
 # Randomized Set
 
@@ -1110,7 +1110,7 @@ class RandomizedSet {
 <p>&nbsp;</p>
 <p><strong>Follow up:</strong>&nbsp;Can you solve the problem in <code>O(1)</code>&nbsp;extra&nbsp;space complexity? (The output array <strong>does not</strong> count as extra space for space complexity analysis.)</p>
 
-## Solutions
+# Solutions
 
 # Product of Array Except Self
 
@@ -1211,9 +1211,7 @@ Therefore, you can&#39;t travel around the circuit once no matter where you star
  <li><code>0 &lt;= gas[i], cost[i] &lt;= 10<sup>4</sup></code></li>
 </ul>
 
-## Solutions
-
-### Solution
+# Solutions
 
 Given two arrays `gas` and `cost`, where:
 
@@ -1308,7 +1306,7 @@ The third child gets 1 candy because it satisfies the above two conditions.
  <li><code>0 &lt;= ratings[i] &lt;= 2 * 10<sup>4</sup></code></li>
 </ul>
 
-## Solutions
+# Solutions
 
 # Candy Distribution
 
@@ -1398,7 +1396,7 @@ class Solution {
  <li><code>0 &lt;= height[i] &lt;= 10<sup>5</sup></code></li>
 </ul>
 
-## Solutions
+# Solutions
 
 # Trapping Rain Water
 
@@ -1517,7 +1515,7 @@ M             1000</pre>
  <li>It is <strong>guaranteed</strong>&nbsp;that <code>s</code> is a valid roman numeral in the range <code>[1, 3999]</code>.</li>
 </ul>
 
-## Solutions
+# Solutions
 
 # Roman to Integer
 
@@ -1679,7 +1677,7 @@ Note: 49 is not 1 (I) less of 50 (L) because the conversion is based on decimal 
  <li><code>1 &lt;= num &lt;= 3999</code></li>
 </ul>
 
-## Solutions
+# Solutions
 
 # Integer to Roman
 
@@ -1840,7 +1838,7 @@ Note: 49 is not 1 (I) less of 50 (L) because the conversion is based on decimal 
  <li><code>1 &lt;= num &lt;= 3999</code></li>
 </ul>
 
-## Solutions
+# Solutions
 
 # Integer to Roman
 
@@ -1919,7 +1917,7 @@ class Solution {
  <li><code>strs[i]</code> consists of only lowercase English letters.</li>
 </ul>
 
-## Solutions
+# Solutions
 
 # Longest Common Prefix
 
@@ -2012,7 +2010,7 @@ class Solution {
 <p>&nbsp;</p>
 <p><b data-stringify-type="bold">Follow-up:&nbsp;</b>If the string data type is mutable in your language, can&nbsp;you solve it&nbsp;<b data-stringify-type="bold">in-place</b>&nbsp;with&nbsp;<code data-stringify-type="code">O(1)</code>&nbsp;extra space?</p>
 
-## Solutions
+# Solutions
 
 # Reverse Words in a String
 
@@ -2120,7 +2118,7 @@ P     I
  <li><code>1 &lt;= numRows &lt;= 1000</code></li>
 </ul>
 
-## Solutions
+# Solutions
 
 # Zigzag Conversion
 
@@ -2202,7 +2200,7 @@ The first occurrence is at index 0, so we return 0.
  <li><code>haystack</code> and <code>needle</code> consist of only lowercase English characters.</li>
 </ul>
 
-## Solutions
+# Solutions
 
 # Implement strStr()
 
@@ -2336,7 +2334,7 @@ Note that the second line is also left-justified because it contains only one wo
  <li><code>words[i].length &lt;= maxWidth</code></li>
 </ul>
 
-## Solutions
+# Solutions
 
 # Full Justify
 
