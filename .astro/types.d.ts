@@ -269,9 +269,9 @@ declare module 'astro:content' {
   collection: "blog";
   data: InferEntrySchema<"blog">
 } & { render(): Render[".md"] };
-"Sliding Window.md": {
-	id: "Sliding Window.md";
-  slug: "sliding-window";
+"SlidingWindow.md": {
+	id: "SlidingWindow.md";
+  slug: "slidingwindow";
   body: string;
   collection: "blog";
   data: InferEntrySchema<"blog">
