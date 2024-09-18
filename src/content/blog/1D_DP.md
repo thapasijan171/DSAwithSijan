@@ -9,8 +9,6 @@ heroImage: "https://creatorspace.imgix.net/users/clzmwqjs107miod018j7gwvu9/osALv
 
 ## Description
 
-<!-- description:start -->
-
 <p>You are climbing a staircase. It takes <code>n</code> steps to reach the top.</p>
 
 <p>Each time you can either climb <code>1</code> or <code>2</code> steps. In how many distinct ways can you climb to the top?</p>
@@ -47,39 +45,29 @@ heroImage: "https://creatorspace.imgix.net/users/clzmwqjs107miod018j7gwvu9/osALv
 
 ## Solutions
 
-### Solution 1: Recursion
+# Matrix Exponentiation to Solve Climbing Stairs Problem
 
-We define `f[i]` to represent the number of ways to climb to the `i`-th step, then `f[i]` can be transferred from `f[i - 1]` and `f[i - 2]`, that is:
+# Intuition
+This problem is a variation of the Fibonacci sequence, where each step is a combination of the previous two steps. Instead of using recursion or dynamic programming, we can optimize the solution by using matrix exponentiation.
 
-`
-f[i] = f[i - 1] + f[i - 2]
-`
+# Approach
+1. **Matrix Representation:**  
+   We represent the Fibonacci relation using matrix multiplication. The matrix `[[1, 1], [1, 0]]` can be used to represent the transition between states in the Fibonacci sequence.
+   
+2. **Matrix Exponentiation:**  
+   To efficiently calculate the Fibonacci number, we raise the transition matrix to the power of `n-1`. This allows us to compute the result in logarithmic time using a divide-and-conquer approach.
 
-The initial conditions are `f[0] = 1` and `f[1] = 1`, that is, the number of ways to climb to the 0th step is 1, and the number of ways to climb to the 1st step is also 1.
+3. **Matrix Multiplication:**  
+   The matrix multiplication is implemented to multiply two 2x2 matrices, which is a key part of the exponentiation process.
 
-The answer is `f[n]`.
+# Complexity
 
-Since `f[i]` is only related to `f[i - 1]` and `f[i - 2]`, we can use two variables `a` and `b` to maintain the current number of ways, reducing the space complexity to `O(1)`.
+- Time complexity:  
+  Since the matrix exponentiation is performed in logarithmic steps, the time complexity is $$O(\log n)$$.
 
-The time complexity is `O(n)`, and the space complexity is `O(1)`.
+- Space complexity:  
+  The space complexity is $$O(1)$$ because we only use a few extra variables to store intermediate matrices.
 
-#### Java
-
-```java
-class Solution {
-    public int climbStairs(int n) {
-        int a = 0, b = 1;
-        for (int i = 0; i < n; i++) {
-            int c = a + b;
-            a = b;
-            b = c;
-        }
-        return b;
-    }
-}
-```
-
-### Solution 2: Matrix Quick Power to Accelerate Recursion
 
 #### Java
 
@@ -160,68 +148,32 @@ Total amount you can rob = 2 + 9 + 1 = 12.
 
 ## Solutions
 
-### Solution 1: Memoization Search
+# House Robber Problem Using Dynamic Programming
 
-#### Java
+# Intuition
+The problem is essentially about choosing non-adjacent elements from an array such that the sum of the chosen elements is maximized. We can think of this as a dynamic programming problem where, at each house, we decide whether to rob it or skip it.
 
-```java
-class Solution {
-    private Integer[] f;
-    private int[] nums;
+# Approach
+1. **State Representation:**  
+   We maintain two variables `f` and `g`:
+   - `f` represents the maximum profit if we skip the current house.
+   - `g` represents the maximum profit if we rob the current house.
 
-    public int rob(int[] nums) {
-        this.nums = nums;
-        f = new Integer[nums.length];
-        return dfs(0);
-    }
+2. **Transition:**  
+   For each house:
+   - We calculate the new maximum profit by either skipping the house (`f = Math.max(f, g)`) or robbing the house (`g = f + x`), where `x` is the amount of money in the current house.
 
-    private int dfs(int i) {
-        if (i >= nums.length) {
-            return 0;
-        }
-        if (f[i] == null) {
-            f[i] = Math.max(nums[i] + dfs(i + 2), dfs(i + 1));
-        }
-        return f[i];
-    }
-}
-```
+3. **Result:**  
+   The final result is the maximum of `f` and `g`, which gives the maximum possible amount we can rob.
 
-### Solution 2: Dynamic Programming
+# Complexity
 
-We define `f[i]` as the maximum total amount that can be robbed from the first `i` houses, initially `f[0]=0`, `f[1]=nums[0]`.
+- Time complexity:  
+  Since we only traverse the array once, the time complexity is $$O(n)$$ where `n` is the length of the array.
 
-Consider the case where `i \gt 1`, the `i`th house has two options:
+- Space complexity:  
+  We use constant extra space, so the space complexity is $$O(1)$$.
 
--   Do not rob the `i`th house, the total amount of robbery is `f[i-1]`;
--   Rob the `i`th house, the total amount of robbery is `f[i-2]+nums[i-1]`;
-
-Therefore, we can get the state transition equation:
-
-The final answer is `f[n]`, where `n` is the length of the array.
-
-The time complexity is `O(n)`, and the space complexity is `O(n)`. Where `n` is the length of the array.
-
-
-#### Java
-
-```java
-class Solution {
-    public int rob(int[] nums) {
-        int n = nums.length;
-        int[] f = new int[n + 1];
-        f[1] = nums[0];
-        for (int i = 2; i <= n; i++) {
-            f[i] = Math.max(f[i - 1], f[i - 2] + nums[i - 1]);
-        }
-        return f[n];
-    }
-}
-```
-
-### Solution 3: Dynamic Programming (Space Optimization)
-
-We notice that when `i \gt 2`, `f[i]` is only related to `f[i-1]` and `f[i-2]`. Therefore, we can use two variables instead of an array to reduce the space complexity to `O(1)`.
 
 #### Java
 
@@ -289,33 +241,33 @@ Note that you are allowed to reuse a dictionary word.
 
 ## Solutions
 
-### Solution 1
+# Word Break Problem Using Trie and Dynamic Programming
 
-#### Python3
+# Intuition
+The problem requires checking if a given string can be segmented into space-separated words from a given dictionary. A trie structure is well-suited to efficiently store and search words from the dictionary, while dynamic programming (DP) can help track valid segmentations of the string.
 
-#### Java
+# Approach
+1. **Trie Structure:**
+   - We first insert all the words from the dictionary into a trie for fast word lookup.
 
-```java
-class Solution {
-    public boolean wordBreak(String s, List<String> wordDict) {
-        Set<String> words = new HashSet<>(wordDict);
-        int n = s.length();
-        boolean[] f = new boolean[n + 1];
-        f[0] = true;
-        for (int i = 1; i <= n; i++) {
-            for (int j = 0; j < i; j++) {
-                if (f[j] && words.contains(s.substring(j, i))) {
-                    f[i] = true;
-                    break;
-                }
-            }
-        }
-        return f[n];
-    }
-}
-```
+2. **Dynamic Programming Table:**
+   - We maintain a boolean array `f` where `f[i]` represents whether the substring from index `i` to the end of the string can be segmented into words in the dictionary.
 
-### Solution 2
+3. **Filling the DP Table:**
+   - We iterate backward over the string and use the trie to check every possible word starting from the current index.
+   - If a valid word is found and the substring starting after that word can also be segmented (i.e., `f[j + 1]` is true), then we set `f[i] = true`.
+
+4. **Result:**
+   - The result is stored in `f[0]`, which tells whether the entire string can be segmented into dictionary words.
+
+# Complexity
+
+- Time complexity:  
+  Inserting words into the trie takes $$O(L \times k)$$ where `L` is the total length of all words and `k` is the number of words. For each index in the string, we are traversing part of the trie, making the total time complexity $$O(n \times m)$$ where `n` is the length of the string and `m` is the length of the longest word in the dictionary.
+
+- Space complexity:  
+  The space complexity is $$O(L)$$ for the trie and $$O(n)$$ for the DP array.
+
 
 #### Java
 
@@ -414,33 +366,37 @@ class Trie {
 
 ## Solutions
 
-### Solution 1: Dynamic Programming (Complete Knapsack)
+# Coin Change Problem Using Dynamic Programming
 
-We define `f[i][j]` as the minimum number of coins needed to make up the amount `j` using the first `i` types of coins. Initially, `f[0][0] = 0`, and the values of other positions are all positive infinity.
+# Intuition
+The problem asks to find the minimum number of coins required to make a given amount using the provided denominations. This can be effectively solved using dynamic programming where we iteratively build up the solution for each possible amount.
 
-We can enumerate the quantity `k` of the last coin used, then we have:
+# Approach
+1. **Define a DP Table:**
+   - We define a 2D array `f` where `f[i][j]` represents the minimum number of coins required to make an amount `j` using the first `i` types of coins.
+   - Initialize the table with a large value (infinity), representing an invalid solution.
 
-`
-f[i][j] = \min(f[i - 1][j], f[i - 1][j - x] + 1, \cdots, f[i - 1][j - k \times x] + k)
-`
+2. **Base Case:**
+   - `f[0][0] = 0`: No coins are needed to make the amount `0`.
 
-where `x` represents the face value of the `i`-th type of coin.
+3. **Filling the DP Table:**
+   - For each coin type, we iterate over all possible amounts.
+   - For each amount, we either:
+     - Exclude the current coin type (take the previous row's value).
+     - Include the current coin type, and see if including it results in a smaller number of coins.
 
-Let `j = j - x`, then we have:
+4. **Result:**
+   - The answer is stored in `f[m][n]`, where `m` is the number of coin types and `n` is the target amount. If it's still the infinity value, it means it's impossible to form the amount with the given coins.
 
-`
-f[i][j - x] = \min(f[i - 1][j - x], f[i - 1][j - 2 \times x] + 1, \cdots, f[i - 1][j - k \times x] + k - 1)
-`
+# Complexity
 
-Substituting the second equation into the first one, we can get the following state transition equation:
+- Time complexity:  
+  The time complexity is $$O(m \times n)$$, where `m` is the number of coins and `n` is the target amount. This is because we process each coin for each amount.
 
-`
-f[i][j] = \min(f[i - 1][j], f[i][j - x] + 1)
-`
+- Space complexity:  
+  The space complexity is $$O(m \times n)$$ because we store the DP table of size `m` by `n`.
 
-The final answer is `f[m][n]`.
 
-The time complexity is `O(m \times n)`, and the space complexity is `O(m \times n)`. Where `m` and `n` are the number of types of coins and the total amount, respectively.
 
 #### Java
 
@@ -464,29 +420,6 @@ class Solution {
             }
         }
         return f[m][n] >= inf ? -1 : f[m][n];
-    }
-}
-```
-
-We notice that `f[i][j]` is only related to `f[i - 1][j]` and `f[i][j - x]`. Therefore, we can optimize the two-dimensional array into a one-dimensional array, reducing the space complexity to `O(n)`.
-
-
-#### Java
-
-```java
-class Solution {
-    public int coinChange(int[] coins, int amount) {
-        final int inf = 1 << 30;
-        int n = amount;
-        int[] f = new int[n + 1];
-        Arrays.fill(f, inf);
-        f[0] = 0;
-        for (int x : coins) {
-            for (int j = x; j <= n; j++) {
-                f[j] = Math.min(f[j], f[j - x] + 1);
-            }
-        }
-        return f[n] >= inf ? -1 : f[n];
     }
 }
 ```
@@ -539,31 +472,35 @@ class Solution {
 
 ## Solutions
 
-### Solution 1
+# Longest Increasing Subsequence Using Binary Indexed Tree (BIT)
 
-#### Java
+# Intuition
+To find the length of the Longest Increasing Subsequence (LIS), we can utilize a sorted version of the input array to compress the values into a smaller range. This allows us to apply efficient range queries and updates using a Binary Indexed Tree (BIT). The key idea is that for each element in the input, we compute the LIS ending at that element by querying the maximum LIS length of all smaller elements.
 
-```java
-class Solution {
-    public int lengthOfLIS(int[] nums) {
-        int n = nums.length;
-        int[] f = new int[n];
-        Arrays.fill(f, 1);
-        int ans = 1;
-        for (int i = 1; i < n; i++) {
-            for (int j = 0; j < i; j++) {
-                if (nums[j] < nums[i]) {
-                    f[i] = Math.max(f[i], f[j] + 1);
-                }
-            }
-            ans = Math.max(ans, f[i]);
-        }
-        return ans;
-    }
-}
-```
+# Approach
+1. **Sorting and Compression:**
+   - First, sort the input array and remove duplicates to map the values to a smaller range for efficient use of the BIT.
 
-### Solution 2
+2. **Binary Indexed Tree (BIT):**
+   - We use a BIT to keep track of the maximum LIS length ending at each position.
+   - For each element in the original array, we find the corresponding index in the compressed array and use the BIT to find the maximum LIS length for elements smaller than the current one. 
+   - We then update the BIT with the new LIS length for the current element.
+
+3. **Binary Search:**
+   - To map the values from the original array to the compressed array, we perform binary search on the sorted array.
+
+4. **Result:**
+   - The result is stored in the BIT, where we query the maximum value representing the longest subsequence found.
+
+# Complexity
+
+- Time complexity:  
+  The time complexity is O(n \log n) due to sorting the input array and performing range queries and updates in the BIT for each element.
+
+- Space complexity:  
+  The space complexity is O(n), as we store the compressed values and the BIT.
+
+
 
 #### Java
 
