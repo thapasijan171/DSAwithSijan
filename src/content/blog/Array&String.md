@@ -66,13 +66,21 @@ Note that because m = 0, there are no elements in nums1. The 0 is only there to 
 
 ## Solutions
 
-### Solution 1: Two Pointers
+# Merge Sorted Arrays
 
-We use two pointers `i` and `j` pointing to the end of two arrays, and a pointer `k` pointing to the end of the merged array.
+# Intuition
+We need to merge two sorted arrays, `nums1` and `nums2`, into a single sorted array. The challenge is to do this efficiently in-place, meaning we should avoid using extra space.
 
-Every time we compare the two elements at the end of the two arrays, and move the larger one to the end of the merged array. Then we move the pointer one step forward, and repeat this process until the two pointers reach the start of the arrays.
+# Approach
+1. **Initialize Pointers:**
+   - Use three pointers: `i` to track the end of the valid elements in `nums1`, `j` to track the end of `nums2`, and `k` to track the end of the merged array.
 
-The time complexity is `O(m + n)`, where `m` and `n` are the lengths of two arrays. The space complexity is `O(1)`.
+2. **Merge from the End:**
+   - Compare elements from the end of `nums1` and `nums2`. Place the larger element at the end of `nums1` and move the respective pointer.
+   - Continue this process until all elements from `nums2` are merged into `nums1`.
+
+3. **Handle Remaining Elements:**
+ 
 
 #### Java
 
@@ -156,15 +164,13 @@ It does not matter what you leave beyond the returned k (hence they are undersco
 
 ## Solutions
 
-### Solution 1: One Pass
+# Remove Element
 
-We use the variable `k` to record the number of elements that are not equal to `val`.
+## Problem Statement
+Given an array `nums` and a value `val`, remove all occurrences of `val` in `nums` in-place. The relative order of the elements may be changed. You should also return the new length of the array after removing the element.
 
-Traverse the array `nums`, if the current element `x` is not equal to `val`, then assign `x` to `nums[k]`, and increment `k` by `1`.
-
-Finally, return `k`.
-
-The time complexity is `O(n)` and the space complexity is `O(1)`, where `n` is the length of the array `nums`.
+## Approach
+The approach is to use a two-pointer technique to overwrite elements in-place. We maintain a pointer `k` that tracks the position to insert the next element that is not equal to `val`. As we iterate through the array, whenever an element is not equal to `val`, we place it at the position indicated by `k` and then increment `k`.
 
 #### Java
 
@@ -247,22 +253,17 @@ It does not matter what you leave beyond the returned k (hence they are undersco
 
 ## Solutions
 
-### Solution 1: Single Pass
+# Remove Duplicates from Sorted Array
 
-We use a variable `k` to record the current length of the processed array. Initially, `k=0` represents an empty array.
+## Problem Description
+Given a sorted array `nums`, remove the duplicates in-place such that each element appears only once and returns the new length of the array.
 
-Then we traverse the array from left to right. For each element `x` we encounter, if `k=0` or `x \neq nums[k-1]`, we place `x` in the position of `nums[k]`, and then increment `k` by `1`. Otherwise, `x` is the same as `nums[k-1]`, so we skip this element. Continue to traverse until the entire array is traversed.
+## Approach
+1. Initialize a variable `k` to keep track of the position to insert non-duplicate elements.
+2. Iterate through each element of the array:
+   - If `k` is `0` or the current element is not equal to the previous element, update the position `k` with the current element and increment `k`.
+3. Return the value of `k`, which represents the length of the array with unique elements.
 
-In this way, when the traversal ends, the first `k` elements in `nums` are the answer we are looking for, and `k` is the length of the answer.
-
-The time complexity is `O(n)`, and the space complexity is `O(1)`. Here, `n` is the length of the array.
-
-Supplement:
-
-The original problem requires that the same number appear at most once. We can extend it to keep at most `k` identical numbers.
-
-- Since the same number can be kept at most `k` times, we can directly keep the first `k` elements of the original array;
-- For the following numbers, the premise of being able to keep them is: the current number `x` is compared with the last `k`th element of the previously retained numbers. If they are different, keep them, otherwise skip them.
 
 #### Java
 
@@ -346,22 +347,24 @@ It does not matter what you leave beyond the returned k (hence they are undersco
 
 ## Solutions
 
-### Solution 1: Single Pass
+# Remove Duplicates from Sorted Array II
 
-We use a variable `k` to record the current length of the array that has been processed. Initially, `k=0`, representing an empty array.
+## Intuition
+The objective is to modify a sorted array such that each element appears at most twice. This problem is a variation of the "Remove Duplicates from Sorted Array" where duplicates are allowed up to two times.
 
-Then we traverse the array from left to right. For each element `x` we traverse, if `k < 2` or `x \neq nums[k-2]`, we put `x` in the position of `nums[k]`, and then increment `k` by `1`. Otherwise, `x` is the same as `nums[k-2]`, we directly skip this element. Continue to traverse until the entire array is traversed.
+## Approach
+We will use a single pass approach with an index to manage where the next unique element (up to twice) should be placed in the array.
 
-In this way, when the traversal ends, the first `k` elements in `nums` are the answer we want, and `k` is the length of the answer.
+1. **Initialization**: Start with an index `k` set to 0 to track the position in the result array.
+2. **Traversal**: Loop through each element of the array:
+   - Add the current element to the result if it can appear up to two times. This is determined by checking if the index `k` is less than 2 or if the current element is different from the element at `nums[k - 2]`.
+3. **Update**: Set `nums[k]` to the current element and increment `k`.
+4. **Result**: Return `k`, which represents the new length of the array after removing the excess duplicates.
 
-The time complexity is `O(n)`, and the space complexity is `O(1)`. Here, `n` is the length of the array.
+## Example
+Given a sorted array `nums = [1, 1, 1, 2, 2, 3]`:
+- After processing, the array will be modified to `[1, 1, 2, 2, 3]` with a length of 5, where each element appears at most twice.
 
-Supplement:
-
-The original problem requires that the same number appears at most `2` times. We can extend it to keep at most `k` identical numbers.
-
-- Since the same number can be kept at most `k` times, we can directly keep the first `k` elements of the original array;
-- For the later numbers, the premise of being able to keep them is: the current number `x` compares with the `k`th element from the end of the previously kept numbers. If they are different, keep it, otherwise skip it.
 
 #### Java
 
@@ -413,18 +416,20 @@ class Solution {
 
 ## Solutions
 
-### Solution 1: Moore Voting Algorithm
+# Majority Element
 
-The basic steps of the Moore voting algorithm are as follows:
+## Intuition
+The goal is to find the majority element in an array, which is defined as an element that appears more than ⌊n / 2⌋ times in the array.
 
-Initialize the element `m` and initialize the counter `cnt = 0`. Then, for each element `x` in the input list:
+## Approach
+We use the **Boyer-Moore Voting Algorithm** to solve this problem efficiently. The idea is to maintain a candidate element and a counter to keep track of the current majority candidate.
 
-1. If `cnt = 0`, then `m = x` and `cnt = 1`;
-1. Otherwise, if `m = x`, then `cnt = cnt + 1`, otherwise `cnt = cnt - 1`.
+1. **Initialization**: Start with a candidate element `m` and a counter `cnt` set to 0.
+2. **Traversal**: Loop through each element of the array:
+   - If the counter `cnt` is 0, set the current element as the new candidate and initialize `cnt` to 1.
+   - If the counter is not 0, increase or decrease `cnt` based on whether the current element matches the candidate.
+3. **Result**: After completing the traversal, the candidate `m` will be the majority element.
 
-In general, the Moore voting algorithm requires **two passes** over the input list. In the first pass, we generate the candidate value `m`, and if there is a majority, the candidate value is the majority value. In the second pass, we simply compute the frequency of the candidate value to confirm whether it is the majority value. Since this problem has clearly stated that there is a majority value, we can directly return `m` after the first pass, without the need for a second pass to confirm whether it is the majority value.
-
-The time complexity is `O(n)`, where `n` is the length of the array `nums`. The space complexity is `O(1)`.
 
 #### Java
 
@@ -496,23 +501,23 @@ rotate 2 steps to the right: [3,99,-1,-100]
 
 ## Solutions
 
-### Solution 1: Reverse three times
+# Rotate Array
 
-We can assume the length of the array is `n` and calculate the actual number of steps needed by taking the module of `k` and `n`, which is `k \bmod n`.
+## Intuition
+The problem is to rotate an array to the right by `k` steps. A rotation involves shifting elements, and the last elements wrap around to the beginning.
 
-Next, let us reverse three times to get the final result:
+## Approach
+To solve this problem efficiently, we use the **Reverse Algorithm**. This approach involves three main steps:
 
-1. Reverse the entire array.
-2. Reverse the first `k` elements.
-3. Reverse the last `n - k` elements.
+1. **Reverse the Entire Array**: Reverse the entire array to bring the elements that need to be rotated to the front.
+2. **Reverse the First Part**: Reverse the first `k` elements (which were originally at the end of the array).
+3. **Reverse the Remaining Part**: Reverse the remaining `n - k` elements to restore their original order.
 
-For example, for the array `[1, 2, 3, 4, 5, 6, 7]`, `k = 3`, `n = 7`, `k \bmod n = 3`.
+### Steps
+1. **Reverse the Array**: Reverse all elements in the array.
+2. **Reverse the First k Elements**: Reverse the first `k` elements to place them in their final position.
+3. **Reverse the Remaining Elements**: Reverse the remaining elements to place them in their final position.
 
-1. In the first reverse, reverse the entire array. We get `[7, 6, 5, 4, 3, 2, 1]`.
-2. In the second reverse, reverse the first `k` elements. We get `[5, 6, 7, 4, 3, 2, 1]`.
-3. In the third reverse, reverse the last `n - k` elements. We get `[5, 6, 7, 1, 2, 3, 4]`, which is the final result.
-
-The time complexity is `O(n)`, where `n` is the length of the array. The space complexity is `O(1)`.
 
 #### Java
 
@@ -581,15 +586,25 @@ Note that buying on day 2 and selling on day 1 is not allowed because you must b
 
 ## Solutions
 
-### Solution 1: Enumerate + Maintain the Minimum Value of the Prefix
+# Maximum Profit
 
-We can enumerate each element of the array `nums` as the selling price. Then we need to find a minimum value in front of it as the purchase price to maximize the profit.
+## Intuition
+The problem is to find the maximum profit you can achieve from buying and selling a stock, given an array of prices where the `i`-th element represents the price of a stock on the `i`-th day. You are allowed to buy and sell the stock only once.
 
-Therefore, we use a variable `mi` to maintain the prefix minimum value of the array `nums`. Then we traverse the array `nums` and for each element `v`, calculate the difference between it and the minimum value `mi` in front of it, and update the answer to the maximum of the difference. Then update `mi = min(mi, v)`. Continue to traverse the array `nums` until the traversal ends.
+## Approach
+To solve this problem, we use a single pass through the array while keeping track of the minimum price seen so far and the maximum profit achievable.
 
-Finally, return the answer.
+### Steps
+1. **Initialize Variables**:
+   - `ans`: to keep track of the maximum profit found so far.
+   - `mi`: to store the minimum price encountered so far.
 
-The time complexity is `O(n)`, where `n` is the length of the array `nums`. The space complexity is `O(1)`.
+2. **Iterate Through Prices**:
+   - For each price in the array, update the maximum profit by comparing the current price minus the minimum price.
+   - Update the minimum price if the current price is lower than the previously recorded minimum price.
+
+3. **Return Maximum Profit**: After iterating through all prices, the value in `ans` will be the maximum profit that can be achieved.
+
 
 #### Java
 
@@ -658,11 +673,23 @@ Total profit is 4.
 
 ## Solutions
 
-### Solution 1: Greedy Algorithm
+# Maximum Profit
 
-Starting from the second day, if the stock price is higher than the previous day, buy on the previous day and sell on the current day to make a profit. If the stock price is lower than the previous day, do not buy or sell. In other words, buy and sell on all rising trading days, and do not trade on all falling trading days. The final profit will be the maximum.
+## Intuition
+The problem requires us to calculate the maximum profit from multiple transactions where we can buy and sell the stock multiple times. The key insight is to capture all profitable segments where the price is rising.
 
-The time complexity is `O(n)`, where `n` is the length of the `prices` array. The space complexity is `O(1)`.
+## Approach
+To solve this problem, we iterate through the array of prices and accumulate profit whenever there's a price increase from the previous day.
+
+### Steps
+1. **Initialize Variables**:
+   - `ans`: to keep track of the total profit accumulated.
+
+2. **Iterate Through Prices**:
+   - For each price, if it's higher than the previous day's price, add the difference to `ans` (i.e., profit from the transaction).
+
+3. **Return Total Profit**: After iterating through all prices, `ans` will contain the total maximum profit.
+
 
 #### Java
 
@@ -677,72 +704,6 @@ class Solution {
     }
 }
 ```
-
-### Solution 2: Dynamic Programming
-
-We define `f[i][j]` as the maximum profit after trading on the `i`th day, where `j` indicates whether we currently hold the stock. When holding the stock, `j=0`, and when not holding the stock, `j=1`. The initial state is `f[0][0]=-prices[0]`, and all other states are `0`.
-
-If we currently hold the stock, it may be that we held the stock the day before and do nothing today, i.e., `f[i][0]=f[i-1][0]`. Or it may be that we did not hold the stock the day before and bought the stock today, i.e., `f[i][0]=f[i-1][1]-prices[i]`.
-
-If we currently do not hold the stock, it may be that we did not hold the stock the day before and do nothing today, i.e., `f[i][1]=f[i-1][1]`. Or it may be that we held the stock the day before and sold the stock today, i.e., `f[i][1]=f[i-1][0]+prices[i]`.
-
-Therefore, we can write the state transition equation as:
-
-`
-\begin{cases}
-f[i][0]=\max(f[i-1][0],f[i-1][1]-prices[i])\\
-f[i][1]=\max(f[i-1][1],f[i-1][0]+prices[i])
-\end{cases}
-`
-
-The final answer is `f[n-1][1]`, where `n` is the length of the `prices` array.
-
-The time complexity is `O(n)`, and the space complexity is `O(n)`. Here, `n` is the length of the `prices` array.
-
-#### Java
-
-```java
-class Solution {
-    public int maxProfit(int[] prices) {
-        int n = prices.length;
-        int[][] f = new int[n][2];
-        f[0][0] = -prices[0];
-        for (int i = 1; i < n; i++) {
-            f[i][0] = Math.max(f[i - 1][0], f[i - 1][1] - prices[i]);
-            f[i][1] = Math.max(f[i - 1][1], f[i - 1][0] + prices[i]);
-        }
-        return f[n - 1][1];
-    }
-}
-```
-
-### Solution 3: Dynamic Programming (Space Optimization)
-
-We can find that in Solution 2, the state of the `i`th day is only related to the state of the `i-1`th day. Therefore, we can use only two variables to maintain the state of the `i-1`th day, thereby optimizing the space complexity to `O(1)`.
-
-The time complexity is `O(n)`, where `n` is the length of the `prices` array. The space complexity is `O(1)`.
-
-#### Java
-
-```java
-class Solution {
-    public int maxProfit(int[] prices) {
-        int n = prices.length;
-        int[] f = new int[] {-prices[0], 0};
-        for (int i = 1; i < n; i++) {
-            int[] g = new int[2];
-            g[0] = Math.max(f[0], f[1] - prices[i]);
-            g[1] = Math.max(f[1], f[0] + prices[i]);
-            f = g;
-        }
-        return f[1];
-    }
-}
-```
-
-<br>
-<br>
-<br>
 
 # [54. Spiral Matrix](https://leetcode.com/problems/spiral-matrix)
 
@@ -777,11 +738,28 @@ class Solution {
 
 ## Solutions
 
-### Solution 1: Simulation
+# Spiral Order Matrix
 
-We use `i` and `j` to represent the row and column of the current element, use `k` to represent the current direction, and use an array or hash table `vis` to record whether each element has been visited. Each time we visit an element, we mark it as visited, then move forward in the current direction. If we find that it is out of bounds or has been visited after moving forward, we change the direction and continue to move forward until the entire matrix is traversed.
+## Intuition
+The goal is to traverse a matrix in a spiral order and collect all elements. We need to handle direction changes when we encounter the boundaries or already visited cells.
 
-For visited elements, we can also add a constant `300` to their values, so we don't need an extra `vis` array or hash table to record whether they have been visited, thereby reducing the space complexity to `O(1)`.
+## Approach
+### Steps
+1. **Initialization**:
+   - Define the directions for movement: right, down, left, and up.
+   - Initialize indices for current position and direction.
+   - Use a boolean matrix to keep track of visited cells.
+   
+2. **Traversal**:
+   - Iterate over all cells in the matrix.
+   - Add the current cell's value to the result list.
+   - Check if the next cell in the current direction is valid and not visited.
+   - If invalid or visited, change direction and continue.
+   - Update the current position based on the new direction.
+
+3. **Return**:
+   - Return the list of elements collected in spiral order.
+
 
 #### Java
 
@@ -807,79 +785,6 @@ class Solution {
     }
 }
 ```
-
-### Solution 2: Layer-by-layer Simulation
-
-We can also traverse and store the matrix elements from the outside to the inside, layer by layer.
-
-The time complexity is `O(m \times n)`, and the space complexity is `O(1)`. Here, `m` and `n` are the number of rows and columns of the matrix, respectively.
-
-#### Java
-
-```java
-class Solution {
-    public List<Integer> spiralOrder(int[][] matrix) {
-        int m = matrix.length, n = matrix[0].length;
-        int[] dirs = {0, 1, 0, -1, 0};
-        List<Integer> ans = new ArrayList<>();
-        for (int h = m * n, i = 0, j = 0, k = 0; h > 0; h--) {
-            ans.add(matrix[i][j]);
-            matrix[i][j] += 300;
-            int x = i + dirs[k], y = j + dirs[k + 1];
-            if (x < 0 || x >= m || y < 0 || y >= n || matrix[x][y] > 100) {
-                k = (k + 1) % 4;
-            }
-            i += dirs[k];
-            j += dirs[k + 1];
-        }
-        // for (int i = 0; i < m; ++i) {
-        //     for (int j = 0; j < n; ++j) {
-        //         matrix[i][j] -= 300;
-        //     }
-        // }
-        return ans;
-    }
-}
-```
-
-### Solution 3
-
-#### Java
-
-```java
-class Solution {
-    public List<Integer> spiralOrder(int[][] matrix) {
-        int m = matrix.length, n = matrix[0].length;
-        int x1 = 0, y1 = 0, x2 = m - 1, y2 = n - 1;
-        List<Integer> ans = new ArrayList<>();
-        while (x1 <= x2 && y1 <= y2) {
-            for (int j = y1; j <= y2; j++) {
-                ans.add(matrix[x1][j]);
-            }
-            for (int i = x1 + 1; i <= x2; i++) {
-                ans.add(matrix[i][y2]);
-            }
-            if (x1 < x2 && y1 < y2) {
-                for (int j = y2 - 1; j >= y1; j--) {
-                    ans.add(matrix[x2][j]);
-                }
-                for (int i = x2 - 1; i > x1; i++) {
-                    ans.add(matrix[i][y1]);
-                }
-            }
-            ++x1;
-            ++y1;
-            --x2;
-            --y2;
-        }
-        return ans;
-    }
-}
-```
-
-<br>
-<br>
-<br>
 
 # [45. Jump Game II](https://leetcode.com/problems/jump-game-ii)
 
@@ -923,15 +828,24 @@ class Solution {
 
 ## Solutions
 
-### Solution 1: Greedy Algorithm
+# Jump Game II
 
-We can use a variable `mx` to record the farthest position that can be reached from the current position, a variable `last` to record the position of the last jump, and a variable `ans` to record the number of jumps.
+## Intuition
+The task is to find the minimum number of jumps needed to reach the last index of the array. We need to ensure that each jump takes us as far as possible to minimize the total number of jumps.
 
-Next, we traverse each position `i` in `[0,..n - 2]`. For each position `i`, we can calculate the farthest position that can be reached from the current position through `i + nums[i]`. We use `mx` to record this farthest position, that is, `mx = max(mx, i + nums[i])`. Then, we check whether the current position has reached the boundary of the last jump, that is, `i = last`. If it has reached, then we need to make a jump, update `last` to `mx`, and increase the number of jumps `ans` by `1`.
+## Approach
+### Steps
+1. **Initialization**:
+   - Define variables for the number of jumps (`ans`), the maximum reach within the current jump (`mx`), and the last index of the current jump (`last`).
 
-Finally, we return the number of jumps `ans`.
+2. **Traversal**:
+   - Iterate through each index of the array (excluding the last one).
+   - Update the maximum reach (`mx`) for the current jump.
+   - When the current index (`i`) reaches the `last` index of the current jump, increment the jump count and update the `last` index to the maximum reach (`mx`).
 
-The time complexity is `O(n)`, where `n` is the length of the array. The space complexity is `O(1)`.
+3. **Return**:
+   - Return the total number of jumps needed to reach the last index.
+
 
 #### Java
 
@@ -991,58 +905,27 @@ Since the researcher has 3 papers with at least 3 citations each and the remaini
 
 ## Solutions
 
-### Solution 1: Sorting
+# H-Index
 
-Time complexity `O(n \times \log n)`, space complexity `O(\log n)`. Here `n` is the length of the array `citations`.
+## Intuition
+The H-index is a metric used to measure the productivity and citation impact of a researcher's publications. To determine the H-index, we need to find the highest number `h` such that the researcher has at least `h` papers with `h` or more citations.
 
-#### Java
+## Approach
+### Steps
+1. **Initialization**:
+   - Define two pointers, `l` (left) and `r` (right), where `l` starts at 0 and `r` is the length of the `citations` array.
 
-```java
-class Solution {
-    public int hIndex(int[] citations) {
-        Arrays.sort(citations);
-        int n = citations.length;
-        for (int h = n; h > 0; h--) {
-            if (citations[n - h] >= h) {
-                return h;
-            }
-        }
-        return 0;
-    }
-}
-```
+2. **Binary Search**:
+   - Perform a binary search to determine the maximum H-index:
+     - Calculate the middle value `mid` as `(l + r + 1) >> 1`.
+     - Count the number of papers with at least `mid` citations.
+     - If this count is greater than or equal to `mid`, update `l` to `mid`.
+     - Otherwise, update `r` to `mid - 1`.
 
-### Solution 2: Counting + Sum
+3. **Return**:
+   - After the binary search concludes, `l` will hold the maximum H-index.
 
-We can use an array `cnt` of length `n+1`, where `cnt[i]` represents the number of papers with the reference count of `i`. We traverse the array `citations` and treat the papers with the reference count greater than `n` as papers with a reference count of `n`. Then we use the reference count as the index and add `1` to the corresponding element of `cnt` for each paper. In this way, we have counted the number of papers for each reference count.
 
-Time complexity `O(n)`, space complexity `O(n)`. Here `n` is the length of the array `citations`.
-
-#### Java
-
-```java
-class Solution {
-    public int hIndex(int[] citations) {
-        int n = citations.length;
-        int[] cnt = new int[n + 1];
-        for (int x : citations) {
-            ++cnt[Math.min(x, n)];
-        }
-        for (int h = n, s = 0;; h--) {
-            s += cnt[h];
-            if (s >= h) {
-                return h;
-            }
-        }
-    }
-}
-```
-
-### Solution 3: Binary Search
-
-We notice that if there is a `h` value that satisfies at least `h` papers are cited at least `h` times, then for any `h'<h`, at least `h'` papers are cited at least `h'` times. Therefore, we can use the binary search method to find the largest `h` such that at least `h` papers are cited at least `h` times.
-
-Time complexity `O(n \times \log n)`, where `n` is the length of array `citations`. Space complexity `O(1)`.
 
 #### Java
 
@@ -1120,17 +1003,32 @@ randomizedSet.getRandom(); // Since 2 is the only number in the set, getRandom()
 
 ## Solutions
 
-### Solution 1: Hash Table + Dynamic List
+# Randomized Set
 
-We define a dynamic list `q` to store the elements in the set, and a hash table `d` to store the index of each element in `q`.
+## Intuition
+The `RandomizedSet` class supports three operations:
+- `insert(val)`: Inserts a value into the set if it is not already present.
+- `remove(val)`: Removes a value from the set if it is present.
+- `getRandom()`: Retrieves a random element from the set with equal probability.
 
-When inserting an element, if the element already exists in the hash table `d`, return `false` directly; otherwise, we insert the element into the end of the dynamic list `q`, and insert the element and its index in `q` into the hash table `d` at the same time, and finally return `true`.
+## Approach
+### Steps
 
-When deleting an element, if the element does not exist in the hash table `d`, return `false` directly; otherwise, we obtain the index of the element in the list `q` from the hash table, then swap the last element `q[-1]` in the list `q` with `q[i]`, and then update the index of `q[-1]` in the hash table to `i`. Then delete the last element in `q`, and remove the element from the hash table at the same time, and finally return `true`.
+1. **Insert Operation**:
+   - Check if the value `val` is already in the set using a HashMap `d`.
+   - If it is not present, add `val` to the list `q` and update the HashMap `d` to map `val` to its index in the list.
+   - Return `true` if the insertion is successful; otherwise, return `false`.
 
-When getting a random element, we can randomly select an element from the dynamic list `q` and return it.
+2. **Remove Operation**:
+   - Check if the value `val` exists in the HashMap `d`.
+   - If it exists, get its index from `d`, and update the last element in the list `q` to replace `val`.
+   - Update the HashMap `d` to reflect this change.
+   - Remove the last element from the list and the entry from the HashMap `d`.
+   - Return `true` if the removal is successful; otherwise, return `false`.
 
-Time complexity `O(1)`, space complexity `O(n)`, where `n` is the number of elements in the set.
+3. **Get Random Operation**:
+   - Use the `Random` class to generate a random index and return the element at that index from the list `q`.
+
 
 #### Java
 
@@ -1214,17 +1112,31 @@ class RandomizedSet {
 
 ## Solutions
 
-### Solution 1: Two Passes
+# Product of Array Except Self
 
-We define two variables `left` and `right`, which represent the product of all elements to the left and right of the current element respectively. Initially, `left=1`, `right=1`. Define an answer array `ans` of length `n`.
+## Intuition
+The `productExceptSelf` method calculates the product of all elements in an array except the element at the current index, without using division.
 
-We first traverse the array from left to right, for the `i`th element we update `ans[i]` with `left`, then `left` multiplied by `nums[i]`.
+## Approach
+### Steps
 
-Then, we traverse the array from right to left, for the `i`th element, we update `ans[i]` to `ans[i] \times right`, then `right` multiplied by `nums[i]`.
+1. **Initialize**:
+   - Create an array `ans` of the same length as the input `nums` to store the results.
+   - Iterate through the array from left to right to calculate the product of elements to the left of each index.
 
-After the traversal, the array `ans` is the answer.
+2. **Calculate Left Products**:
+   - Initialize a variable `left` to 1 (the multiplicative identity).
+   - For each element at index `i`, store the current value of `left` in `ans[i]`.
+   - Update `left` by multiplying it with `nums[i]`.
 
-The time complexity is `O(n)`, where `n` is the length of the array `nums`. Ignore the space consumption of the answer array, the space complexity is `O(1)`.
+3. **Calculate Right Products and Update Result**:
+   - Initialize a variable `right` to 1 (the multiplicative identity).
+   - Iterate through the array from right to left.
+   - For each element at index `i`, multiply `ans[i]` by `right` to include the product of elements to the right of `i`.
+   - Update `right` by multiplying it with `nums[i]`.
+
+4. **Return the Result**:
+   - The `ans` array now contains the product of all elements except the element at each index.
 
 #### Java
 
@@ -1398,15 +1310,33 @@ The third child gets 1 candy because it satisfies the above two conditions.
 
 ## Solutions
 
-### Solution 1: Two traversals
+# Candy Distribution
 
-We initialize two arrays `left` and `right`, where `left[i]` represents the minimum number of candies the current child should get when the current child's score is higher than the left child's score, and `right[i]` represents the minimum number of candies the current child should get when the current child's score is higher than the right child's score. Initially, `left[i]=1`, `right[i]=1`.
+## Intuition
+The `candy` method distributes candies to children such that:
+1. Each child gets at least one candy.
+2. Children with a higher rating receive more candies than their neighbors with a lower rating.
 
-We traverse the array from left to right once, and if the current child's score is higher than the left child's score, then `left[i]=left[i-1]+1`; similarly, we traverse the array from right to left once, and if the current child's score is higher than the right child's score, then `right[i]=right[i+1]+1`.
+## Approach
+### Steps
 
-Finally, we traverse the array of scores once, and the minimum number of candies each child should get is the maximum of `left[i]` and `right[i]`, and we add them up to get the answer.
+1. **Initialization**:
+   - Create two arrays, `left` and `right`, both initialized with `1`. These will store the number of candies needed based on comparisons from left and right respectively.
 
-Time complexity `O(n)`, space complexity `O(n)`. Where `n` is the length of the array of scores.
+2. **Left Pass**:
+   - Traverse the `ratings` array from left to right.
+   - If the current child's rating is greater than the previous child's rating, update `left[i]` to be `left[i - 1] + 1`. This ensures that each child with a higher rating gets more candies than their left neighbor.
+
+3. **Right Pass**:
+   - Traverse the `ratings` array from right to left.
+   - If the current child's rating is greater than the next child's rating, update `right[i]` to be `right[i + 1] + 1`. This ensures that each child with a higher rating gets more candies than their right neighbor.
+
+4. **Calculate Result**:
+   - Iterate through the `ratings` array and for each child, take the maximum of candies from the `left` and `right` arrays to get the total number of candies required.
+
+5. **Return Result**:
+   - Sum up the maximum values from the `left` and `right` arrays for each child to get the total number of candies needed.
+
 
 #### Java
 
@@ -1436,44 +1366,6 @@ class Solution {
     }
 }
 ```
-
-### Solution 2
-
-#### Java
-
-```java
-class Solution {
-    public int candy(int[] ratings) {
-        int n = ratings.length;
-        int up = 0;
-        int down = 0;
-        int peak = 0;
-        int candies = 1;
-        for (int i = 1; i < n; i++) {
-            if (ratings[i - 1] < ratings[i]) {
-                up++;
-                peak = up + 1;
-                down = 0;
-                candies += peak;
-            } else if (ratings[i] == ratings[i - 1]) {
-                peak = 0;
-                up = 0;
-                down = 0;
-                candies++;
-            } else {
-                down++;
-                up = 0;
-                candies += down + (peak > down ? 0 : 1);
-            }
-        }
-        return candies;
-    }
-}
-```
-
-<br>
-<br>
-<br>
 
 # [42. Trapping Rain Water](https://leetcode.com/problems/trapping-rain-water)
 
@@ -1508,11 +1400,33 @@ class Solution {
 
 ## Solutions
 
-### Solution 1: Dynamic Programming
+# Trapping Rain Water
 
-We define `left[i]` as the height of the highest bar to the left of and including the position at index `i`, and `right[i]` as the height of the highest bar to the right of and including the position at index `i`. Therefore, the amount of rainwater that can be trapped at index `i` is `min(left[i], right[i]) - height[i]`. We traverse the array to calculate `left[i]` and `right[i]`, and the final answer is `\sum_{i=0}^{n-1} \min(left[i], right[i]) - height[i]`.
+## Intuition
+The `trap` method calculates the amount of water that can be trapped between the bars after raining, based on the height of the bars.
 
-The time complexity is `O(n)`, and the space complexity is `O(n)`. Here, `n` is the length of the array.
+## Approach
+### Steps
+
+1. **Initialization**:
+   - Create two arrays, `left` and `right`, both of length `n` (the number of bars). 
+   - `left[i]` represents the maximum height of bars from the left up to index `i`.
+   - `right[i]` represents the maximum height of bars from the right up to index `i`.
+
+2. **Fill `left` and `right` Arrays**:
+   - **Left Array**:
+     - Initialize `left[0]` with `height[0]`.
+     - Traverse from left to right, updating `left[i]` to be the maximum of `left[i - 1]` and `height[i]`.
+   - **Right Array**:
+     - Initialize `right[n - 1]` with `height[n - 1]`.
+     - Traverse from right to left, updating `right[n - i - 1]` to be the maximum of `right[n - i]` and `height[n - i - 1]`.
+
+3. **Calculate Trapped Water**:
+   - Traverse through each index `i` and calculate the trapped water at that index as `Math.min(left[i], right[i]) - height[i]`.
+   - Sum up the trapped water for all indices to get the total amount of water trapped.
+
+4. **Return Result**:
+   - Return the total amount of trapped water.
 
 #### Java
 
@@ -1605,11 +1519,26 @@ M             1000</pre>
 
 ## Solutions
 
-### Solution 1: Hash Table + Simulation
+# Roman to Integer
 
-First, we use a hash table `d` to record the numerical value corresponding to each character. Then, we traverse the string `s` from left to right. If the numerical value corresponding to the current character is less than the numerical value corresponding to the character on the right, we subtract the numerical value corresponding to the current character. Otherwise, we add the numerical value corresponding to the current character.
+## Intuition
+The `romanToInt` method converts a Roman numeral string into its corresponding integer value. Roman numerals are based on seven symbols: I, V, X, L, C, D, and M, which represent values from 1 to 1000.
 
-The time complexity is `O(n)`, and the space complexity is `O(m)`. Here, `n` and `m` are the length of the string `s` and the size of the character set, respectively.
+## Approach
+### Steps
+
+1. **Initialize Mappings**:
+   - Create a string `cs` containing the Roman numeral symbols in the order of their values.
+   - Create an array `vs` containing the corresponding integer values for each symbol.
+   - Use a `Map` to associate each Roman numeral symbol with its integer value.
+
+2. **Calculate Integer Value**:
+   - Initialize the result with the value of the last Roman numeral in the string.
+   - Traverse through the Roman numeral string from left to right, comparing the value of each symbol with the value of the next symbol.
+   - If the value of the current symbol is less than the value of the next symbol, subtract its value from the result (indicating a subtractive combination like IV). Otherwise, add its value to the result.
+
+3. **Return Result**:
+   - Return the final integer value computed from the Roman numeral string.
 
 #### Java
 
@@ -1752,11 +1681,25 @@ Note: 49 is not 1 (I) less of 50 (L) because the conversion is based on decimal 
 
 ## Solutions
 
-### Solution 1: Greedy
+# Integer to Roman
 
-We can first list all possible symbols `cs` and their corresponding values `vs`, then enumerate each value `vs[i]` from large to small. Each time, we use as many symbols `cs[i]` corresponding to this value as possible, until the number `num` becomes `0`.
+## Intuition
+The `intToRoman` method converts an integer into its corresponding Roman numeral string. Roman numerals are represented by specific symbols and combinations of symbols that form a numeral system.
 
-The time complexity is `O(m)`, and the space complexity is `O(m)`. Here, `m` is the number of symbols.
+## Approach
+### Steps
+
+1. **Initialize Mappings**:
+   - Create a list `cs` containing Roman numeral symbols in descending order of their values.
+   - Create a list `vs` containing corresponding integer values in the same order.
+
+2. **Convert Integer to Roman**:
+   - Initialize an empty `StringBuilder` to build the resulting Roman numeral string.
+   - Iterate through the list of integer values.
+   - For each value, repeatedly subtract it from the integer `num` and append the corresponding Roman numeral symbol to the `StringBuilder` until `num` is smaller than the current value.
+
+3. **Return Result**:
+   - Convert the `StringBuilder` to a string and return it as the final Roman numeral representation.
 
 #### Java
 
@@ -1899,11 +1842,25 @@ Note: 49 is not 1 (I) less of 50 (L) because the conversion is based on decimal 
 
 ## Solutions
 
-### Solution 1: Greedy
+# Integer to Roman
 
-We can first list all possible symbols `cs` and their corresponding values `vs`, then enumerate each value `vs[i]` from large to small. Each time, we use as many symbols `cs[i]` corresponding to this value as possible, until the number `num` becomes `0`.
+## Intuition
+The `intToRoman` method converts an integer to its equivalent Roman numeral representation. Roman numerals use specific symbols for different values, and combining these symbols in a certain order represents different numbers.
 
-The time complexity is `O(m)`, and the space complexity is `O(m)`. Here, `m` is the number of symbols.
+## Approach
+### Steps
+
+1. **Initialize Mappings**:
+   - Create a list `cs` of Roman numeral symbols ordered from highest to lowest value.
+   - Create a list `vs` of corresponding integer values in the same order.
+
+2. **Conversion Process**:
+   - Initialize an empty `StringBuilder` to construct the Roman numeral string.
+   - Iterate through the integer values in the list `vs`.
+   - For each integer value, subtract it from `num` and append the corresponding Roman numeral symbol from `cs` to the `StringBuilder` until `num` is smaller than the current integer value.
+
+3. **Return Result**:
+   - Convert the `StringBuilder` to a string and return it.
 
 #### Java
 
@@ -1964,13 +1921,23 @@ class Solution {
 
 ## Solutions
 
-### Solution 1: Character Comparison
+# Longest Common Prefix
 
-We use the first string `strs[0]` as a benchmark, and compare whether the `i`-th character of the subsequent strings is the same as the `i`-th character of `strs[0]`. If they are the same, we continue to compare the next character. Otherwise, we return the first `i` characters of `strs[0]`.
+## Intuition
+The `longestCommonPrefix` method finds the longest common prefix string shared among an array of strings. The approach is to compare characters of each string at the same position and determine the longest sequence of matching characters.
 
-If the traversal ends, it means that the first `i` characters of all strings are the same, and we return `strs[0]`.
+## Approach
+### Steps
 
-The time complexity is `O(n \times m)`, where `n` and `m` are the length of the string array and the minimum length of the strings, respectively. The space complexity is `O(1)`.
+1. **Initial Check**:
+   - Iterate through each character position of the first string in the array.
+
+2. **Compare Characters**:
+   - For each position, check the character against the corresponding position in all other strings.
+   - If a mismatch is found or if a string is shorter than the current position, return the substring of the first string up to the current position.
+
+3. **Return Result**:
+   - If the loop completes without finding a mismatch, return the entire first string as it is a common prefix for all strings.
 
 #### Java
 
@@ -1979,7 +1946,7 @@ class Solution {
     public String longestCommonPrefix(String[] strs) {
         int n = strs.length;
         for (int i = 0; i < strs[0].length(); i++) {
-            for (int j = 1; j < n; ++j) {
+            for (int j = 1; j < n; j++) {
                 if (strs[j].length() <= i || strs[j].charAt(i) != strs[0].charAt(i)) {
                     return strs[0].substring(0, i);
                 }
@@ -1996,7 +1963,6 @@ class Solution {
 
 # [151. Reverse Words in a String](https://leetcode.com/problems/reverse-words-in-a-string)
 
-[中文文档](/solution/0100-0199/0151.Reverse%20Words%20in%20a%20String/README.md)
 
 ## Description
 
@@ -2048,11 +2014,22 @@ class Solution {
 
 ## Solutions
 
-### Solution 1: Two Pointers
+# Reverse Words in a String
 
-We can use two pointers `i` and `j` to find each word, add it to the result list, then reverse the result list, and finally concatenate it into a string.
+## Intuition
+The `reverseWords` method aims to reverse the order of words in a given string while maintaining the original word order. It processes the string to extract words, reverses the list of words, and then joins them back into a single string.
 
-The time complexity is `O(n)`, and the space complexity is `O(n)`. Where `n` is the length of the string.
+## Approach
+### Steps
+
+1. **Extract Words**:
+   - Traverse the string and extract non-space sequences as words. Skip over spaces and accumulate characters for each word.
+
+2. **Reverse Word List**:
+   - Use a `List<String>` to store words and then reverse the list to arrange words in reverse order.
+
+3. **Join Words**:
+   - Join the reversed list of words with a single space separator to form the final result string.
 
 #### Java
 
@@ -2075,24 +2052,6 @@ class Solution {
                 i = j;
             }
         }
-        Collections.reverse(words);
-        return String.join(" ", words);
-    }
-}
-```
-
-### Solution 2: String Split
-
-We can use the built-in string split function to split the string into a list of words by spaces, then reverse the list, and finally concatenate it into a string.
-
-The time complexity is `O(n)`, and the space complexity is `O(n)`. Where `n` is the length of the string.
-
-#### Java
-
-```java
-class Solution {
-    public String reverseWords(String s) {
-        List<String> words = Arrays.asList(s.trim().split("\\s+"));
         Collections.reverse(words);
         return String.join(" ", words);
     }
@@ -2163,15 +2122,26 @@ P     I
 
 ## Solutions
 
-### Solution 1: Simulation
+# Zigzag Conversion
 
-We use a two-dimensional array `g` to simulate the process of the `Z`-shape arrangement, where `g[i][j]` represents the character at the `i`-th row and the `j`-th column. Initially, `i=0`, and we define a direction variable `k`, initially `k=-1`, indicating moving upwards.
+## Intuition
+The `convert` method is designed to convert a string into a zigzag pattern on a given number of rows and then read the string line by line. This approach involves simulating the zigzag traversal of the string and reconstructing it based on the zigzag pattern.
 
-We traverse the string `s` from left to right. Each time we traverse to a character `c`, we append it to `g[i]`. If `i=0` or `i=numRows-1` at this time, it means that the current character is at the turning point of the `Z`-shape arrangement, and we reverse the value of `k`, i.e., `k=-k`. Next, we update the value of `i` to `i+k`, i.e., move up or down one row. Continue to traverse the next character until we have traversed the string `s`, and we return the string concatenated by all rows in `g`.
+## Approach
+### Steps
 
-The time complexity is `O(n)`, and the space complexity is `O(n)`. Here, `n` is the length of the string `s`.
+1. **Edge Case Handling**:
+   - If the number of rows is `1`, return the original string since no zigzag conversion is needed.
 
-<!-- tabs:start -->
+2. **Initialization**:
+   - Create an array of `StringBuilder` objects to hold characters for each row.
+
+3. **Traversal and Zigzag Simulation**:
+   - Iterate through the characters of the string. Append each character to the corresponding `StringBuilder` based on the current row index.
+   - Toggle the direction (up or down) when reaching the first or last row.
+
+4. **Concatenate Results**:
+   - Join all `StringBuilder` objects into a single string to get the final zigzag-converted result.
 
 #### Java
 
@@ -2192,35 +2162,6 @@ class Solution {
             i += k;
         }
         return String.join("", g);
-    }
-}
-```
-
-### Solution 2
-
-#### Java
-
-```java
-class Solution {
-    public String convert(String s, int numRows) {
-        if (numRows == 1) {
-            return s;
-        }
-        StringBuilder ans = new StringBuilder();
-        int group = 2 * numRows - 2;
-        for (int i = 1; i <= numRows; i++) {
-            int interval = i == numRows ? group : 2 * numRows - 2 * i;
-            int idx = i - 1;
-            while (idx < s.length()) {
-                ans.append(s.charAt(idx));
-                idx += interval;
-                interval = group - interval;
-                if (interval == 0) {
-                    interval = group;
-                }
-            }
-        }
-        return ans.toString();
     }
 }
 ```
@@ -2263,11 +2204,29 @@ The first occurrence is at index 0, so we return 0.
 
 ## Solutions
 
-### Solution 1: Traversal
+# Implement strStr()
 
-We compare the string `needle` with each character of the string `haystack` as the starting point. If we find a matching index, we return it directly.
+## Intuition
+The `strStr` method aims to find the first occurrence of a substring (`needle`) within a string (`haystack`). If `needle` is an empty string, the method returns `0`. The approach is to simulate the search manually without using built-in functions.
 
-Assuming the length of the string `haystack` is `n` and the length of the string `needle` is `m`, the time complexity is `O((n-m) \times m)`, and the space complexity is `O(1)`.
+## Approach
+### Steps
+
+1. **Edge Case Handling**:
+   - If `needle` is an empty string, return `0` immediately since an empty substring is trivially found at the beginning.
+
+2. **Initialization**:
+   - Obtain the lengths of `haystack` and `needle`.
+   - Use two indices, `p` and `q`, to track positions in `haystack` and `needle`, respectively.
+
+3. **Search Process**:
+   - Iterate through `haystack` using index `p`.
+   - When characters match (`haystack[p] == needle[q]`), increment both indices.
+     - If `needle` is fully matched (`q == len2`), return the starting index of the match.
+   - If characters do not match, reset `p` to the position after the last matched character and reset `q` to `0`.
+
+4. **Return Result**:
+   - If no match is found by the end of `haystack`, return `-1`.
 
 #### Java
 
@@ -2379,11 +2338,37 @@ Note that the second line is also left-justified because it contains only one wo
 
 ## Solutions
 
-### Solution 1: Simulation
+# Full Justify
 
-We can simulate the process according to the problem's requirements. Note that if it is the last line, or if there is only one word in the line, then we should align to the left. Otherwise, we should distribute the spaces evenly.
+## Intuition
+The `fullJustify` method is designed to format text to fit a given width, aligning the text so that each line is exactly `maxWidth` characters long. If a line can’t be perfectly justified, the method should align the text to the left and pad the rest with spaces.
 
-The time complexity is `O(L)`, and the space complexity is `O(L)`. Here, `L` is the sum of the lengths of all words.
+## Approach
+### Steps
+
+1. **Initialization**:
+   - Create a list `ans` to store the fully justified lines of text.
+
+2. **Iterate Through Words**:
+   - Start iterating through the `words` array. For each position `i`, gather words that can fit within `maxWidth`.
+
+3. **Determine Line Words**:
+   - Use a temporary list `t` to collect words for the current line.
+   - Keep track of the total character count `cnt` including spaces between words.
+
+4. **Handle Line End**:
+   - When a line is full or the end of the array is reached:
+     - If it's the last line or it contains only one word, left-justify it and add the necessary trailing spaces.
+     - Otherwise, distribute spaces evenly between words:
+       - Calculate the number of spaces between words (`w`) and any extra spaces (`m`) that need to be added.
+       - Build the justified line with the calculated spacing.
+
+5. **Return Result**:
+   - Add the constructed line to the result list `ans`.
+   - Continue until all words are processed.
+
+6. **Output**:
+   - Return the list `ans` containing all the fully justified lines.
 
 #### Java
 
