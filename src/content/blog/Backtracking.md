@@ -45,45 +45,36 @@ heroImage: "../img/img_blog/backtracking.jpeg"
  <li><code>digits[i]</code> is a digit in the range <code>[&#39;2&#39;, &#39;9&#39;]</code>.</li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: Traversal
+# Letter Combinations of a Phone Number
 
-First, we use an array or hash table to store the letters corresponding to each digit. Then we traverse each digit, combine its corresponding letters with the previous results to get the new results.
+## Intuition
+The `letterCombinations` method generates all possible letter combinations that the given digits could represent on a traditional phone keypad. Each digit corresponds to a set of letters, and the task is to find all possible combinations of these letters.
 
-The time complexity is `O(4^n)`, and the space complexity is `O(4^n)`. Here, `n` is the length of the input digits.
+## Approach
+### Steps
 
-#### Java
+1. **Initialization**:
+   - Define the mapping of digits to letters using a `String[]` array `d`.
+   - Initialize a `StringBuilder` `t` for building combinations and a `List<String>` `ans` to store the results.
 
-```java
-class Solution {
-    public List<String> letterCombinations(String digits) {
-        List<String> ans = new ArrayList<>();
-        if (digits.length() == 0) {
-            return ans;
-        }
-        ans.add("");
-        String[] d = new String[] {"abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
-        for (char i : digits.toCharArray()) {
-            String s = d[i - '2'];
-            List<String> t = new ArrayList<>();
-            for (String a : ans) {
-                for (String b : s.split("")) {
-                    t.add(a + b);
-                }
-            }
-            ans = t;
-        }
-        return ans;
-    }
-}
-```
+2. **Base Case**:
+   - If the input `digits` is empty, return the empty `ans` list immediately.
 
-### Solution 2: DFS
+3. **Depth-First Search (DFS)**:
+   - Implement a recursive DFS method to explore all possible combinations.
+   - For each digit, retrieve the corresponding letters from the `d` array.
+   - For each letter, append it to the current combination (`t`), and recursively continue to the next digit.
+   - After exploring all letters for the current digit, backtrack by removing the last appended letter.
 
-We can use the method of depth-first search to enumerate all possible letter combinations. Suppose that a part of the letter combination has been generated, but some digits have not been exhausted. At this time, we take out the letters corresponding to the next digit, and then enumerate each letter corresponding to this digit one by one, add them to the letter combination that has been generated before, to form all possible combinations.
+4. **Store Result**:
+   - When all digits are processed (base case of DFS), add the current combination to the `ans` list.
 
-The time complexity is `O(4^n)`, and the space complexity is `O(n)`. Here, `n` is the length of the input digits.
+5. **Return Result**:
+   - Return the list `ans` containing all possible combinations.
+
+
 
 #### Java
 
@@ -156,23 +147,34 @@ Note that combinations are unordered, i.e., [1,2] and [2,1] are considered to be
 	<li><code>1 &lt;= k &lt;= n</code></li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: Backtracking (Two Ways)
+# Combinations
 
-We design a function `dfs(i)`, which represents starting the search from number `i`, with the current search path as `t`, and the answer as `ans`.
+## Intuition
+The `combine` method generates all possible combinations of `k` numbers chosen from the range 1 to `n`. This is a classic problem of combinatorial generation where the goal is to explore all subsets of a specific size.
 
-The execution logic of the function `dfs(i)` is as follows:
+## Approach
+### Steps
 
--   If the length of the current search path `t` equals `k`, then add the current search path to the answer and return.
--   If `i \gt n`, it means the search has ended, return.
--   Otherwise, we can choose to add the number `i` to the search path `t`, and then continue the search, i.e., execute `dfs(i + 1)`, and then remove the number `i` from the search path `t`; or we do not add the number `i` to the search path `t`, and directly execute `dfs(i + 1)`.
+1. **Initialization**:
+   - Define the `List<List<Integer>>` to store the result `ans`.
+   - Define a `List<Integer>` `t` to hold the current combination.
+   - Store the values of `n` and `k` for the combination generation.
 
-The above method is actually enumerating whether to select the current number or not, and then recursively searching the next number. We can also enumerate the next number `j` to be selected, where `i \leq j \leq n`. If the next number to be selected is `j`, then we add the number `j` to the search path `t`, and then continue the search, i.e., execute `dfs(j + 1)`, and then remove the number `j` from the search path `t`.
+2. **Depth-First Search (DFS)**:
+   - Implement a recursive DFS method to explore all possible combinations.
+   - **Base Case**:
+     - If the current combination `t` has reached the size `k`, add it to `ans`.
+   - **Recursive Case**:
+     - If the current index `i` is within bounds (`i <= n`), include `i` in the combination and recurse to explore further.
+     - After exploring with `i` included, backtrack by removing `i` and recurse to explore combinations without `i`.
 
-In the main function, we start the search from number `1`, i.e., execute `dfs(1)`.
+3. **Generate Combinations**:
+   - Start the DFS from index `1` and explore all possible combinations by including or excluding each number.
 
-The time complexity is `(C_n^k \times k)`, and the space complexity is `O(k)`. Here, `C_n^k` represents the combination number.
+4. **Return Result**:
+   - Return the list `ans` containing all possible combinations of size `k`.
 
 #### Java
 
@@ -206,45 +208,6 @@ class Solution {
 }
 ```
 
-### Solution 2
-
-#### Java
-
-```java
-class Solution {
-    private List<List<Integer>> ans = new ArrayList<>();
-    private List<Integer> t = new ArrayList<>();
-    private int n;
-    private int k;
-
-    public List<List<Integer>> combine(int n, int k) {
-        this.n = n;
-        this.k = k;
-        dfs(1);
-        return ans;
-    }
-
-    private void dfs(int i) {
-        if (t.size() == k) {
-            ans.add(new ArrayList<>(t));
-            return;
-        }
-        if (i > n) {
-            return;
-        }
-        for (int j = i; j <= n; j++) {
-            t.add(j);
-            dfs(j + 1);
-            t.remove(t.size() - 1);
-        }
-    }
-}
-```
-
-<br>
-<br>
-<br>
-
 # [46. Permutations](https://leetcode.com/problems/permutations)
 
 ## Description
@@ -271,13 +234,35 @@ class Solution {
 	<li>All the integers of <code>nums</code> are <strong>unique</strong>.</li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: DFS (Backtracking)
+# Permutations
 
-We design a function `dfs(i)` to represent that the first `i` positions have been filled, and now we need to fill the `i+1` position. We enumerate all possible numbers, if this number has not been filled, we fill in this number, and then continue to fill the next position, until all positions are filled.
+## Intuition
+The `permute` method generates all possible permutations of a given array of integers. This involves exploring all possible orderings of the elements in the array.
 
-The time complexity is `O(n \times n!)`, where `n` is the length of the array. There are `n!` permutations in total, and each permutation takes `O(n)` time to construct.
+## Approach
+### Steps
+
+1. **Initialization**:
+   - Define `List<List<Integer>>` to store the result `ans`.
+   - Define a `List<Integer>` `t` to hold the current permutation.
+   - Define a boolean array `vis` to track which elements have been included in the current permutation.
+   - Store the input `nums` array for permutation generation.
+
+2. **Depth-First Search (DFS)**:
+   - Implement a recursive DFS method to explore all possible permutations.
+   - **Base Case**:
+     - If the size of the current permutation `t` matches the length of `nums`, add it to `ans`.
+   - **Recursive Case**:
+     - Iterate through each element in `nums`. If an element is not yet visited (`!vis[j]`), mark it as visited, add it to the current permutation, and recurse.
+     - After exploring with the current element, backtrack by removing the element from the current permutation and marking it as not visited.
+
+3. **Generate Permutations**:
+   - Start the DFS from index `0` and explore all possible permutations by including or excluding each element.
+
+4. **Return Result**:
+   - Return the list `ans` containing all possible permutations of the input array.
 
 #### Java
 
@@ -364,20 +349,38 @@ These are the only two combinations.
 	<li><code>1 &lt;= target &lt;= 40</code></li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: Sorting + Pruning + Backtracking
+# Combination Sum
 
-We can first sort the array to facilitate pruning.
+## Intuition
+The `combinationSum` method finds all unique combinations of integers from the given `candidates` array that sum up to a specified `target`. Each number in `candidates` can be used multiple times in the combination.
 
-Next, we design a function `dfs(i, s)`, which means starting the search from index `i` with a remaining target value of `s`. Here, `i` and `s` are both non-negative integers, the current search path is `t`, and the answer is `ans`.
+## Approach
+### Steps
 
-In the function `dfs(i, s)`, we first check whether `s` is `0`. If it is, we add the current search path `t` to the answer `ans`, and then return. If `s \lt candidates[i]`, it means that the elements of the current index and the following indices are all greater than the remaining target value `s`, and the path is invalid, so we return directly. Otherwise, we start the search from index `i`, and the search index range is `j \in [i, n)`, where `n` is the length of the array `candidates`. During the search, we add the element of the current index to the search path `t`, recursively call the function `dfs(j, s - candidates[j])`, and after the recursion ends, we remove the element of the current index from the search path `t`.
+1. **Initialization**:
+   - Define `List<List<Integer>>` to store the result `ans`.
+   - Define a `List<Integer>` `t` to hold the current combination.
+   - Store the sorted `candidates` array for combination generation.
 
-In the main function, we just need to call the function `dfs(0, target)` to get the answer.
+2. **Depth-First Search (DFS)**:
+   - Implement a recursive DFS method to explore all possible combinations.
+   - **Base Case**:
+     - If the remaining sum `s` is `0`, add the current combination `t` to `ans`.
+   - **Pruning**:
+     - If the remaining sum `s` is less than the current candidate, return as it's not possible to form the target with the current candidate.
+   - **Recursive Case**:
+     - Iterate through the `candidates` starting from the current index `i`.
+     - Add the current candidate to the combination `t`.
+     - Recurse with the updated remaining sum (`s - candidates[j]`).
+     - After exploring with the current candidate, backtrack by removing it from the combination `t`.
 
-The time complexity is `O(2^n \times n)`, and the space complexity is `O(n)`. Here, `n` is the length of the array `candidates`. Due to pruning, the actual time complexity is much less than `O(2^n \times n)`.
+3. **Generate Combinations**:
+   - Start the DFS from index `0` and explore all possible combinations by including or excluding each candidate.
 
+4. **Return Result**:
+   - Return the list `ans` containing all unique combinations of candidates that sum up to the target.
 
 #### Java
 
@@ -411,47 +414,6 @@ class Solution {
 }
 ```
 
-### Solution 2: Sorting + Pruning + Backtracking(Another Form)
-
-We can also change the implementation logic of the function `dfs(i, s)` to another form. In the function `dfs(i, s)`, we first check whether `s` is `0`. If it is, we add the current search path `t` to the answer `ans`, and then return. If `i \geq n` or `s \lt candidates[i]`, the path is invalid, so we return directly. Otherwise, we consider two situations, one is not selecting the element of the current index, that is, recursively calling the function `dfs(i + 1, s)`, and the other is selecting the element of the current index, that is, recursively calling the function `dfs(i, s - candidates[i])`.
-
-The time complexity is `O(2^n \times n)`, and the space complexity is `O(n)`. Here, `n` is the length of the array `candidates`. Due to pruning, the actual time complexity is much less than `O(2^n \times n)`.
-
-#### Java
-
-```java
-class Solution {
-    private List<List<Integer>> ans = new ArrayList<>();
-    private List<Integer> t = new ArrayList<>();
-    private int[] candidates;
-
-    public List<List<Integer>> combinationSum(int[] candidates, int target) {
-        Arrays.sort(candidates);
-        this.candidates = candidates;
-        dfs(0, target);
-        return ans;
-    }
-
-    private void dfs(int i, int s) {
-        if (s == 0) {
-            ans.add(new ArrayList(t));
-            return;
-        }
-        if (i >= candidates.length || s < candidates[i]) {
-            return;
-        }
-        dfs(i + 1, s);
-        t.add(candidates[i]);
-        dfs(i, s - candidates[i]);
-        t.remove(t.size() - 1);
-    }
-}
-```
-
-<br>
-<br>
-<br>
-
 # [52. N-Queens II](https://leetcode.com/problems/n-queens-ii)
 
 ## Description
@@ -483,21 +445,35 @@ class Solution {
 	<li><code>1 &lt;= n &lt;= 9</code></li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: Backtracking
+# Total N Queens
 
-We design a function `dfs(i)`, which represents starting the search from the `i`th row, and the results of the search are added to the answer.
+## Intuition
+The `totalNQueens` method calculates the number of distinct solutions for the N-Queens problem, where you place N queens on an N x N chessboard such that no two queens threaten each other.
 
-In the `i`th row, we enumerate each column of the `i`th row. If the current column does not conflict with the queens placed before, then we can place a queen, and then continue to search the next row, that is, call `dfs(i + 1)`.
+## Approach
+### Steps
 
-If a conflict occurs, then we skip the current column and continue to enumerate the next column.
+1. **Initialization**:
+   - Define an integer `ans` to store the count of valid solutions.
+   - Use boolean arrays `cols`, `dg`, and `udg` to keep track of column threats, diagonal threats, and anti-diagonal threats respectively.
 
-To determine whether a conflict occurs, we need to use three arrays to record whether a queen has been placed in each column, each positive diagonal, and each negative diagonal, respectively.
+2. **Depth-First Search (DFS)**:
+   - Implement a recursive DFS method to explore possible placements of queens row by row.
+   - **Base Case**:
+     - If the current row index `i` equals `n`, it means all queens are placed correctly, so increment `ans`.
+   - **Recursive Case**:
+     - Iterate through each column `j` in the current row `i`.
+     - Check if placing a queen in position `(i, j)` is valid by ensuring:
+       - The column `j` is not already threatened by another queen (`cols[j]` is `false`).
+       - The main diagonal `i + j` and the anti-diagonal `i - j + n` are not threatened (`dg[a]` and `udg[b]` are `false`).
+     - Place a queen in the current position by setting the respective `cols`, `dg`, and `udg` arrays to `true`.
+     - Recursively attempt to place queens in the next row (`dfs(i + 1)`).
+     - After exploring, backtrack by removing the queen and resetting the respective arrays.
 
-Specifically, we use the `cols` array to record whether a queen has been placed in each column, the `dg` array to record whether a queen has been placed in each positive diagonal, and the `udg` array to record whether a queen has been placed in each negative diagonal.
-
-The time complexity is `O(n!)`, and the space complexity is `O(n)`. Here, `n` is the number of queens.
+3. **Return Result**:
+   - Return the count `ans` which represents the number of distinct valid solutions for the N-Queens problem.
 
 #### Java
 
@@ -562,20 +538,36 @@ class Solution {
 	<li><code>1 &lt;= n &lt;= 8</code></li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: DFS + Pruning
+# Generate Parentheses
 
-The range of `n` in the problem is `[1, 8]`, so we can directly solve this problem through "brute force search + pruning".
+## Intuition
+The `generateParenthesis` method generates all possible valid combinations of `n` pairs of parentheses. Each combination must be a valid sequence where every opening parenthesis has a corresponding closing parenthesis.
 
-We design a function `dfs(l, r, t)`, where `l` and `r` represent the number of left and right brackets respectively, and `t` represents the current bracket sequence. Then we can get the following recursive structure:
+## Approach
+### Steps
 
--   If `l \gt n` or `r \gt n` or `l \lt r`, then the current bracket combination `t` is invalid, return directly;
--   If `l = n` and `r = n`, then the current bracket combination `t` is valid, add it to the answer array `ans`, and return directly;
--   We can choose to add a left bracket, and recursively execute `dfs(l + 1, r, t + "(")`;
--   We can also choose to add a right bracket, and recursively execute `dfs(l, r + 1, t + ")")`.
+1. **Initialization**:
+   - Define a `List<String>` named `ans` to store the valid combinations of parentheses.
+   - Set the integer `n` to the input value representing the number of pairs of parentheses.
 
-The time complexity is `O(2^{n\times 2} \times n)`, and the space complexity is `O(n)`.
+2. **Depth-First Search (DFS)**:
+   - Implement a recursive `dfs` method to explore all possible combinations of parentheses.
+   - **Parameters**:
+     - `l`: Count of opening parentheses used so far.
+     - `r`: Count of closing parentheses used so far.
+     - `t`: The current string being built.
+   - **Base Cases**:
+     - If `l` or `r` exceeds `n`, or if `r` exceeds `l`, return as this is an invalid state.
+     - If `l` and `r` both equal `n`, it means a valid combination is formed, so add `t` to `ans`.
+   - **Recursive Case**:
+     - Add an opening parenthesis `(` and recurse with updated counts (`l + 1` and `r`).
+     - Add a closing parenthesis `)` and recurse with updated counts (`l` and `r + 1`).
+
+3. **Return Result**:
+   - Return the `ans` list containing all valid combinations of parentheses.
+
 
 #### Java
 
@@ -652,22 +644,38 @@ class Solution {
 <p>&nbsp;</p>
 <p><strong>Follow up:</strong> Could you use search pruning to make your solution faster with a larger <code>board</code>?</p>
 
-## Solutions
+# Solutions
 
-### Solution 1: DFS (Backtracking)
+# Word Search
 
-We can enumerate each position `(i, j)` in the grid as the starting point of the search, and then start a depth-first search from the starting point. If we can search to the end of the word, it means the word exists, otherwise, it means the word does not exist.
+## Intuition
+The `exist` method determines if a given word can be constructed from characters in a 2D board by moving vertically or horizontally (not diagonally). Each cell in the board can only be used once per word.
 
-Therefore, we design a function `dfs(i, j, k)`, which represents whether we can successfully search from the `(i, j)` position of the grid, starting from the `k`th character of the word. The execution steps of the function `dfs(i, j, k)` are as follows:
+## Approach
+### Steps
 
--   If `k = |word|-1`, it means that we have searched to the last character of the word. At this time, we only need to judge whether the character at the `(i, j)` position of the grid is equal to `word[k]`. If they are equal, it means the word exists, otherwise, it means the word does not exist. Whether the word exists or not, there is no need to continue to search, so return the result directly.
--   Otherwise, if the `word[k]` character is not equal to the character at the `(i, j)` position of the grid, it means that the search failed this time, so return `false` directly.
--   Otherwise, we temporarily store the character at the `(i, j)` position of the grid in `c`, and then modify the character at this position to a special character `'0'`, indicating that the character at this position has been used to prevent it from being reused in subsequent searches. Then we start from the up, down, left, and right directions of the `(i, j)` position to search for the `k+1`th character in the grid. If any direction is successful, it means the search is successful, otherwise, it means the search failed. At this time, we need to restore the character at the `(i, j)` position of the grid, that is, put `c` back to the `(i, j)` position (backtracking).
+1. **Initialization**:
+   - Define `m` and `n` as the dimensions of the board.
+   - Store the target `word` and the `board` for use in the recursive search.
 
-In the main function, we enumerate each position `(i, j)` in the grid as the starting point. If calling `dfs(i, j, 0)` returns `true`, it means the word exists, otherwise, it means the word does not exist, so return `false`.
+2. **Depth-First Search (DFS)**:
+   - Implement a recursive `dfs` method to explore possible paths on the board.
+   - **Parameters**:
+     - `i`, `j`: Current cell coordinates.
+     - `k`: Index of the character in the `word` being matched.
+   - **Base Cases**:
+     - If `k` is the last index of the `word`, check if the current cell contains the last character of the `word`.
+     - If the current cell does not match the current character of `word`, return `false`.
+   - **Recursive Case**:
+     - Temporarily mark the current cell as visited by setting it to a special character (`'0'`).
+     - Explore all four possible directions (up, down, left, right) from the current cell.
+     - If any direction leads to a valid continuation of the word, return `true`.
+     - Restore the original value of the cell after exploration.
 
-The time complexity is `O(m \times n \times 3^k)`, and the space complexity is `O(\min(m \times n, k))`. Here, `m` and `n` are the number of rows and columns of the grid, respectively; and `k` is the length of the string `word`.
-
+3. **Start DFS Search**:
+   - Iterate through each cell in the board, initiating the DFS search from each cell.
+   - If DFS returns `true` from any starting cell, return `true`.
+   - If no valid path is found after checking all cells, return `false`.
 
 #### Java
 

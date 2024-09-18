@@ -32,15 +32,27 @@ heroImage: 'https://creatorspace.imgix.net/users/clzmwqjs107miod018j7gwvu9/Vvfdj
 	<li><code>ransomNote</code> and <code>magazine</code> consist of lowercase English letters.</li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: Hash Table or Array
+# Ransom Note
 
-We can use a hash table or an array `cnt` of length `26` to record the number of times each character appears in the string `magazine`. Then traverse the string `ransomNote`, for each character `c` in it, we decrease the number of `c` by `1` in `cnt`. If the number of `c` is less than `0` after the decrease, it means that the number of `c` in `magazine` is not enough, so it cannot be composed of `ransomNote`, just return `false`.
+**Algorithm Used:** Frequency Counting
 
-Otherwise, after the traversal, it means that each character in `ransomNote` can be found in `magazine`. Therefore, return `true`.
+## Intuition
+The problem is to determine if it is possible to construct a ransom note using the letters from a magazine. Each letter in the ransom note must be present in the magazine with at least the same frequency. The solution uses frequency counting to efficiently check if the ransom note can be constructed from the magazine.
 
-The time complexity is `O(m + n)`, and the space complexity is `O(C)`. Where `m` and `n` are the lengths of the strings `ransomNote` and `magazine` respectively; and `C` is the size of the character set, which is `26` in this question.
+## Approach
+1. **Frequency Count**:
+   - Initialize an array `cnt` of size 26 to count the occurrences of each letter in the magazine.
+   - Iterate through each character in the magazine and update the count in the `cnt` array.
+
+2. **Check Ransom Note**:
+   - Iterate through each character in the ransom note.
+   - For each character, decrement its count in the `cnt` array. If the count goes below zero, return `false` as there are not enough characters in the magazine.
+   - If all characters in the ransom note can be accounted for, return `true`.
+
+This approach ensures that the ransom note can be constructed from the magazine if all required letters are available in the required quantities, with a time complexity of O(M + R), where M is the length of the magazine and R is the length of the ransom note.
+
 
 #### Java
 
@@ -125,15 +137,30 @@ class Solution {
 	<li><code>s</code> and <code>t</code> consist of any valid ascii character.</li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: Hash Table or Array
+# Isomorphic Strings
 
-We can use two hash tables or arrays `d_1` and `d_2` to record the character mapping relationship between `s` and `t`.
+**Algorithm Used:** Hash Maps for Character Mapping
 
-Traverse `s` and `t`, if the corresponding character mapping relationships in `d_1` and `d_2` are different, return `false`, otherwise update the corresponding character mapping relationships in `d_1` and `d_2`. After the traversal is complete, it means that `s` and `t` are isomorphic, and return `true`.
+## Intuition
+To determine if two strings `s` and `t` are isomorphic, we need to ensure that each character in `s` can be consistently mapped to a character in `t` and vice versa. This means that no two characters in `s` map to the same character in `t`, and no two characters in `t` map to the same character in `s`.
 
-The time complexity is `O(n)` and the space complexity is `O(C)`. Where `n` is the length of the string `s`; and `C` is the size of the character set, which is `C = 256` in this problem.
+## Approach
+1. **Character Mapping**:
+   - Use two hash maps:
+     - `d1` to map characters from `s` to characters in `t`.
+     - `d2` to map characters from `t` to characters in `s`.
+   - Iterate through each character of both strings simultaneously:
+     - For each character pair `(a, b)` from `s` and `t`, check:
+       - If `a` is already mapped in `d1`, ensure it maps to `b`. If not, return `false`.
+       - If `b` is already mapped in `d2`, ensure it maps to `a`. If not, return `false`.
+     - If both conditions are satisfied, update the mappings in `d1` and `d2`.
+
+2. **Consistency Check**:
+   - If the loop completes without inconsistencies, the strings are isomorphic and return `true`.
+
+This approach ensures that both strings maintain a one-to-one character mapping, with a time complexity of O(n), where n is the length of the strings.
 
 #### Java
 
@@ -153,29 +180,6 @@ class Solution {
             }
             d1.put(a, b);
             d2.put(b, a);
-        }
-        return true;
-    }
-}
-```
-
-### Solution 2
-
-#### Java
-
-```java
-class Solution {
-    public boolean isIsomorphic(String s, String t) {
-        int[] d1 = new int[256];
-        int[] d2 = new int[256];
-        int n = s.length();
-        for (int i = 0; i < n; i++) {
-            char a = s.charAt(i), b = t.charAt(i);
-            if (d1[a] != d2[b]) {
-                return false;
-            }
-            d1[a] = i + 1;
-            d2[b] = i + 1;
         }
         return true;
     }
@@ -246,17 +250,37 @@ class Solution {
 	<li>All the words in <code>s</code> are separated by a <strong>single space</strong>.</li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: Hash Table
+# Word Pattern
 
-First, we split the string `s` into a word array `ws` with spaces. If the length of `pattern` and `ws` is not equal, return `false` directly. Otherwise, we use two hash tables `d_1` and `d_2` to record the correspondence between each character and word in `pattern` and `ws`.
+**Algorithm Used:** Hash Maps for Bidirectional Mapping
 
-Then, we traverse `pattern` and `ws`. For each character `a` and word `b`, if there is a mapping for `a` in `d_1`, and the mapped word is not `b`, or there is a mapping for `b` in `d_2`, and the mapped character is not `a`, return `false`. Otherwise, we add the mapping of `a` and `b` to `d_1` and `d_2` respectively.
+## Intuition
+To determine if a given pattern matches a string `s` where each pattern character corresponds to a unique word in the string, we need to ensure that each character in `pattern` maps consistently to a word in `s` and vice versa.
 
-After the traversal, return `true`.
+## Approach
+1. **Split the String**:
+   - Split the string `s` into words using space as the delimiter.
 
-The time complexity is `O(m + n)` and the space complexity is `O(m + n)`. Here `m` and `n` are the length of `pattern` and string `s`.
+2. **Check Length**:
+   - If the length of the `pattern` does not match the number of words in `s`, return `false` immediately.
+
+3. **Character-to-Word Mapping**:
+   - Use two hash maps:
+     - `d1` to map each character in `pattern` to a word.
+     - `d2` to map each word in `s` to a character in `pattern`.
+
+4. **Iterate and Validate**:
+   - Iterate through the characters of `pattern` and words of `s` simultaneously:
+     - For each character `a` and corresponding word `b`:
+       - Check if `a` is already mapped to a different word in `d1` or if `b` is already mapped to a different character in `d2`. If so, return `false`.
+       - If not, update the mappings in `d1` and `d2`.
+
+5. **Consistency Check**:
+   - If no inconsistencies are found, the pattern matches the string `s` and return `true`.
+
+This approach ensures that both the pattern and the string `s` maintain a consistent one-to-one mapping, with a time complexity of O(n), where n is the number of words in `s` (and the length of `pattern`).
 
 #### Java
 
@@ -323,16 +347,29 @@ class Solution {
 <p>&nbsp;</p>
 <p><strong>Follow up:</strong> What if the inputs contain Unicode characters? How would you adapt your solution to such a case?</p>
 
-## Solutions
+# Solutions
 
-### Solution 1: Counting
+# Valid Anagram
 
-We first determine whether the length of the two strings is equal. If they are not equal, the characters in the two strings must be different, so return `false`.
+**Algorithm Used:** Frequency Count
 
-Otherwise, we use a hash table or an array of length `26` to record the number of times each character appears in the string `s`, and then traverse the other string `t`. Each time we traverse a character, we subtract the number of times the corresponding character appears in the hash table by one. If the number of times after subtraction is less than `0`, the number of times the character appears in the two strings is different, return `false`. If after traversing the two strings, all the character counts in the hash table are `0`, it means that the characters in the two strings appear the same number of times, return `true`.
+## Intuition
+To determine if two strings `s` and `t` are anagrams of each other, they must contain the exact same characters with the exact same frequencies. This problem is solved by counting character occurrences and comparing these counts.
 
-The time complexity is `O(n)`, the space complexity is `O(C)`, where `n` is the length of the string; and `C` is the size of the character set, which is `C=26` in this problem.
+## Approach
+1. **Check Length**:
+   - If the lengths of `s` and `t` are not equal, return `false` immediately since they cannot be anagrams.
 
+2. **Frequency Count**:
+   - Use an integer array `cnt` of size 26 (for each letter of the alphabet) to count the frequency of each character in `s` and subtract the frequency of each character in `t`.
+
+3. **Validate Counts**:
+   - After processing both strings, check if all values in the `cnt` array are zero. A non-zero value indicates that the frequencies of some characters do not match, meaning the strings are not anagrams.
+
+4. **Return Result**:
+   - If all values in `cnt` are zero, the strings are anagrams; otherwise, they are not.
+
+This approach is efficient with a time complexity of O(n), where n is the length of the strings.
 
 #### Java
 
@@ -409,48 +446,31 @@ class Solution {
 	<li><code>strs[i]</code> consists of lowercase English letters.</li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: Hash Table
+# Group Anagrams
 
-1. Traverse the string array, sort each string in **character dictionary order** to get a new string.
-2. Use the new string as `key` and `[str]` as `value`, and store them in the hash table (`HashMap<String, List<String>>`).
-3. When encountering the same `key` during subsequent traversal, add it to the corresponding `value`.
+**Algorithm Used:** Frequency Count and Hashing
 
-Take `strs = ["eat", "tea", "tan", "ate", "nat", "bat"]` as an example. At the end of the traversal, the state of the hash table is:
+## Intuition
+To group anagrams, we need a way to identify which strings are anagrams of each other. Anagrams have the same characters with the same frequencies. Therefore, a common representation (key) for anagrams can be derived from the character frequencies of each string.
 
-| key     | value                   |
-| ------- | ----------------------- |
-| `"aet"` | `["eat", "tea", "ate"]` |
-| `"ant"` | `["tan", "nat"] `       |
-| `"abt"` | `["bat"] `              |
+## Approach
+1. **Frequency Count**:
+   - For each string, compute the frequency of each character using an integer array `cnt` of size 26 (for each letter of the alphabet).
 
-Finally, return the `value` list of the hash table.
+2. **Generate Key**:
+   - Construct a key from the character frequencies. This key will represent the anagram group. Use a `StringBuilder` to build this key by appending each character and its count.
 
-The time complexity is `O(n\times k\times \log k)`, where `n` and `k` are the lengths of the string array and the maximum length of the string, respectively.
+3. **Group by Key**:
+   - Use a `HashMap` to map each key to a list of strings (anagram group). For each string, compute its key and add it to the corresponding list in the map.
 
-#### Java
+4. **Return Result**:
+   - Convert the values of the `HashMap` to a list and return it. Each value in the map represents a group of anagrams.
 
-```java
-class Solution {
-    public List<List<String>> groupAnagrams(String[] strs) {
-        Map<String, List<String>> d = new HashMap<>();
-        for (String s : strs) {
-            char[] t = s.toCharArray();
-            Arrays.sort(t);
-            String k = String.valueOf(t);
-            d.computeIfAbsent(k, key -> new ArrayList<>()).add(s);
-        }
-        return new ArrayList<>(d.values());
-    }
-}
-```
+This approach ensures that all anagrams are grouped together efficiently with a time complexity of O(n * k), where `n` is the number of strings and `k` is the maximum length of the strings.
 
-### Solution 2: Counting
 
-We can also change the sorting part in Solution 1 to counting, that is, use the characters in each string `s` and their occurrence times as `key`, and use the string `s` as `value` to store in the hash table.
-
-The time complexity is `O(n\times (k + C))`, where `n` and `k` are the lengths of the string array and the maximum length of the string, respectively, and `C` is the size of the character set. In this problem, `C = 26`.
 
 #### Java
 
@@ -528,15 +548,32 @@ class Solution {
 <p>&nbsp;</p>
 <strong>Follow-up:&nbsp;</strong>Can you come up with an algorithm that is less than <code>O(n<sup>2</sup>)</code><font face="monospace">&nbsp;</font>time complexity?
 
-## Solutions
+# Solutions
 
-### Solution 1: Hash Table
+# Two Sum
 
-We can use a hash table `\textit{d}` to store each element and its corresponding index.
+**Algorithm Used:** Hash Map
 
-Traverse the array `\textit{nums}`, for the current element `\textit{nums}[i]`, we first check if `\textit{target} - \textit{nums}[i]` is in the hash table `\textit{d}`. If it is in `\textit{d}`, it means the `\textit{target}` value has been found, and we return the indices of `\textit{target} - \textit{nums}[i]` and `i`.
+## Intuition
+To find two numbers in an array that add up to a given target, we need an efficient way to check if the complement of each number (i.e., `target - current number`) exists in the array.
 
-Time complexity is `O(n)`, and space complexity is `O(n)`, where `n` is the length of the array `\textit{nums}`.
+## Approach
+1. **Hash Map Initialization**:
+   - Use a `HashMap` to store each number and its index as we iterate through the array. The key will be the number, and the value will be its index.
+
+2. **Iterate Through Array**:
+   - For each number `x` in the array, calculate its complement `y` which is `target - x`.
+
+3. **Check for Complement**:
+   - If the complement `y` exists in the `HashMap`, return the indices of `y` and `x`.
+
+4. **Update Hash Map**:
+   - If the complement does not exist in the `HashMap`, add the current number `x` and its index to the `HashMap`.
+
+5. **Return Result**:
+   - Once a valid pair is found, return their indices.
+
+This approach ensures that we find the pair of indices in linear time, O(n), where `n` is the number of elements in the array.
 
 #### Java
 
@@ -604,32 +641,30 @@ class Solution {
 </ul>
 
 
-## Solutions
+# Solutions
 
+# Happy Number
 
-### Solution 1
+**Algorithm Used:** Floyd's Cycle Detection (Tortoise and Hare)
 
-#### Java
+## Intuition
+A happy number is a number which eventually reaches 1 when replaced by the sum of the square of each digit repeatedly. If it does not reach 1, it falls into a cycle that does not include 1.
 
-```java
-class Solution {
-    public boolean isHappy(int n) {
-        Set<Integer> vis = new HashSet<>();
-        while (n != 1 && !vis.contains(n)) {
-            vis.add(n);
-            int x = 0;
-            while (n != 0) {
-                x += (n % 10) * (n % 10);
-                n /= 10;
-            }
-            n = x;
-        }
-        return n == 1;
-    }
-}
-```
+## Approach
+1. **Cycle Detection**:
+   - Use Floyd's Tortoise and Hare algorithm to detect cycles. This involves using two pointers (slow and fast) that advance through the sequence at different speeds. If there's a cycle, these two pointers will eventually meet.
 
-### Solution 2
+2. **Calculate Next Number**:
+   - Define a helper function `next(x)` to compute the sum of the squares of the digits of `x`.
+
+3. **Iterate and Check**:
+   - Initialize `slow` and `fast` pointers. `slow` moves one step at a time while `fast` moves two steps at a time.
+   - Continue moving the pointers until they meet or `slow` reaches 1.
+
+4. **Check Result**:
+   - If `slow` equals 1, then the number is a happy number. Otherwise, it falls into a cycle and is not happy.
+
+This method efficiently determines if a number is happy or not using O(log n) space for the digit operations and O(log n) time for detecting the cycle.
 
 #### Java
 
@@ -653,10 +688,6 @@ class Solution {
     }
 }
 ```
-
-<br>
-<br>
-<br>
 
 <br>
 <br>
@@ -699,17 +730,30 @@ class Solution {
 	<li><code>0 &lt;= k &lt;= 10<sup>5</sup></code></li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: Hash Table
+# Contains Nearby Duplicate
 
-We use a hash table `d` to store the nearest index of the number it has visited.
+**Algorithm Used:** Hash Map
 
-We traverse the array `nums`. For the current element `nums[i]`, if it exists in the hash table, and the difference between its index and the current index is no larger than `k`, then return `true`. Otherwise, we add the current element into the hash table.
+## Intuition
+The goal is to check if there are any duplicate values in an array where the duplicates are within a certain index distance from each other.
 
-After the traversal, return `false`.
+## Approach
+1. **Hash Map for Tracking**:
+   - Use a hash map to keep track of the most recent index of each element in the array.
 
-The time complexity is `O(n)` and the space complexity is `O(n)`. Here `n` is the length of array `nums`.
+2. **Iterate Through Array**:
+   - Traverse the array, and for each element, check if it has been seen before and if the difference between the current index and the stored index is less than or equal to `k`.
+
+3. **Update Hash Map**:
+   - Update the hash map with the current index of the element after the check.
+
+4. **Check for Duplicates**:
+   - If a duplicate is found within the required index range, return `true`. Otherwise, return `false` after the traversal is complete.
+
+This approach ensures an O(n) time complexity with O(n) space complexity due to the use of the hash map.
+
 
 #### Java
 
@@ -766,21 +810,34 @@ class Solution {
 	<li><code>-10<sup>9</sup> &lt;= nums[i] &lt;= 10<sup>9</sup></code></li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: Sorting
+# Longest Consecutive Sequence
 
-First, we sort the array, then use a variable `t` to record the current length of the consecutive sequence, and a variable `ans` to record the length of the longest consecutive sequence.
+**Algorithm Used:** Sorting
 
-Next, we start traversing the array from index `i=1`. For the current element `nums[i]`:
+## Intuition
+To find the longest sequence of consecutive integers in an array, first sort the array and then iterate through it to count the length of consecutive sequences.
 
--   If `nums[i] = nums[i-1]`, it means the current element is repeated and does not need to be considered.
--   If `nums[i] = nums[i-1] + 1`, it means the current element can be appended to the previous consecutive sequence to form a longer consecutive sequence. We update `t = t + 1`, and then update the answer `ans = \max(ans, t)`.
--   Otherwise, it means the current element cannot be appended to the previous consecutive sequence, and we reset `t` to `1`.
+## Approach
+1. **Handle Small Cases**:
+   - If the array has fewer than 2 elements, the longest consecutive sequence is the length of the array itself.
 
-Finally, we return the answer `ans`.
+2. **Sort the Array**:
+   - Sort the array to bring consecutive integers together.
 
-The time complexity is `O(n \times \log n)`, and the space complexity is `O(\log n)`. Here, `n` is the length of the array.
+3. **Iterate and Count**:
+   - Traverse the sorted array and count the length of consecutive sequences.
+   - Use a variable to keep track of the length of the current consecutive sequence and update the maximum length found.
+
+4. **Update the Longest Sequence**:
+   - If the current number is consecutive to the previous number, increment the count of the current sequence.
+   - If it is not consecutive, reset the count to 1.
+
+5. **Return the Result**:
+   - After completing the traversal, return the length of the longest consecutive sequence.
+
+This approach ensures an O(n log n) time complexity due to the sorting step, followed by an O(n) traversal.
 
 #### Java
 
@@ -801,36 +858,6 @@ class Solution {
                 ans = Math.max(ans, ++t);
             } else {
                 t = 1;
-            }
-        }
-        return ans;
-    }
-}
-```
-
-### Solution 2: Hash Table
-
-We use a hash table to store all elements in the array, and then traverse each element `x` in the array. If the predecessor `x-1` of the current element is not in the hash table, then we start with the current element and continuously try to match `x+1, x+2, x+3, \dots`, until no match is found. The length of the match at this time is the longest consecutive sequence length starting with `x`, and we update the answer accordingly.
-
-The time complexity is `O(n)`, and the space complexity is `O(n)`. Here, `n` is the length of the array.
-
-#### Java
-
-```java
-class Solution {
-    public int longestConsecutive(int[] nums) {
-        Set<Integer> s = new HashSet<>();
-        for (int x : nums) {
-            s.add(x);
-        }
-        int ans = 0;
-        for (int x : nums) {
-            if (!s.contains(x - 1)) {
-                int y = x + 1;
-                while (s.contains(y)) {
-                    ++y;
-                }
-                ans = Math.max(ans, y - x);
             }
         }
         return ans;

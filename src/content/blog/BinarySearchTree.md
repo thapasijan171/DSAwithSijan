@@ -34,18 +34,28 @@ heroImage: "../img/img_blog/floette.jpeg"
 	<li><code>0 &lt;= Node.val &lt;= 10<sup>5</sup></code></li>
 </ul>
 
-<p>&nbsp;</p>
-<p><strong>Note:</strong> This question is the same as 783: <a href="https://leetcode.com/problems/minimum-distance-between-bst-nodes/" target="_blank">https://leetcode.com/problems/minimum-distance-between-bst-nodes/</a></p>
+# Solutions
 
-## Solutions
+# Intuition
+The problem is to find the minimum absolute difference between values of any two nodes in a Binary Search Tree (BST). Since the BST property ensures that an in-order traversal of the tree will yield a sorted sequence of node values, the smallest difference will be between adjacent nodes in this sorted sequence.
 
-### Solution 1: Inorder Traversal
+# Approach
+1. **In-Order Traversal:** To find the minimum difference, perform an in-order traversal of the BST. This traversal will visit the nodes in ascending order. By comparing the current node’s value with the previous node’s value during the traversal, we can efficiently find the smallest difference.
 
-The problem requires us to find the minimum difference between the values of any two nodes. Since the inorder traversal of a binary search tree is an increasing sequence, we only need to find the minimum difference between the values of two adjacent nodes in the inorder traversal.
+2. **Tracking Minimum Difference:** 
+   - Initialize `ans` to a large value (infinity) to keep track of the minimum difference found.
+   - Initialize `pre` to a very small value (negative infinity) to store the value of the previous node visited during the traversal.
 
-We can use a recursive method to implement the inorder traversal. During the process, we use a variable `\textit{pre}` to save the value of the previous node. This way, we can calculate the minimum difference between the values of two adjacent nodes during the traversal.
+3. **Recursive Traversal:**
+   - Recursively traverse the left subtree.
+   - For the current node, compute the difference between the current node's value and the previous node's value (`pre`). Update `ans` if this difference is smaller than the current minimum difference.
+   - Update `pre` to the current node's value.
+   - Recursively traverse the right subtree.
 
-The time complexity is `O(n)`, and the space complexity is `O(n)`. Here, `n` is the number of nodes in the binary search tree.
+4. **Return Result:** After completing the traversal, `ans` will hold the smallest difference between values of any two nodes in the BST.
+
+The time complexity of this approach is O(n), where n is the number of nodes in the tree, since each node is visited exactly once.
+
 
 #### Java
 
@@ -125,9 +135,27 @@ class Solution {
 <p>&nbsp;</p>
 <p><strong>Follow up:</strong> If the BST is modified often (i.e., we can do insert and delete operations) and you need to find the kth smallest frequently, how would you optimize?</p>
 
-## Solutions
+# Solutions
 
-### Solution 1
+# Intuition
+The task is to find the k-th smallest element in a Binary Search Tree (BST). Given the properties of a BST, an in-order traversal (which visits nodes in ascending order) provides a natural way to access elements in increasing order. Thus, performing an in-order traversal and counting elements will allow us to find the k-th smallest element.
+
+# Approach
+1. **Use of Stack for Iterative Traversal:**
+   - To avoid recursion, we use an explicit stack to simulate the in-order traversal. The stack helps manage the traversal state and navigate through the tree.
+
+2. **Traversal Process:**
+   - Start with the root node and traverse to the leftmost node while pushing nodes onto the stack. This ensures that we explore all nodes in the left subtree before visiting the current node.
+   - Once the left subtree is fully explored, pop nodes from the stack. The node popped is the next node in the in-order sequence.
+   - Decrement `k` each time a node is popped. When `k` becomes 0, the value of the node just popped is the k-th smallest element.
+
+3. **Handling Right Subtree:**
+   - After processing the current node, move to its right subtree and continue the traversal process.
+
+4. **Return Result:**
+   - When `k` reaches 0, return the value of the current node as it is the k-th smallest element.
+
+The time complexity of this approach is O(h + k), where `h` is the height of the tree and `k` is the number of nodes visited. In the worst case, you may need to visit up to `k` nodes plus the nodes on the path from the root to the k-th smallest node.
 
 #### Java
 
@@ -167,74 +195,6 @@ class Solution {
 }
 ```
 
-### Solution 2
-
-#### Java
-
-```java
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode() {}
- *     TreeNode(int val) { this.val = val; }
- *     TreeNode(int val, TreeNode left, TreeNode right) {
- *         this.val = val;
- *         this.left = left;
- *         this.right = right;
- *     }
- * }
- */
-class Solution {
-    public int kthSmallest(TreeNode root, int k) {
-        BST bst = new BST(root);
-        return bst.kthSmallest(k);
-    }
-}
-
-class BST {
-    private TreeNode root;
-    private Map<TreeNode, Integer> cnt = new HashMap<>();
-
-    public BST(TreeNode root) {
-        this.root = root;
-        count(root);
-    }
-
-    public int kthSmallest(int k) {
-        TreeNode node = root;
-        while (node != null) {
-            int v = node.left == null ? 0 : cnt.get(node.left);
-            if (v == k - 1) {
-                return node.val;
-            }
-            if (v < k - 1) {
-                node = node.right;
-                k -= (v + 1);
-            } else {
-                node = node.left;
-            }
-        }
-        return 0;
-    }
-
-    private int count(TreeNode root) {
-        if (root == null) {
-            return 0;
-        }
-        int n = 1 + count(root.left) + count(root.right);
-        cnt.put(root, n);
-        return n;
-    }
-}
-```
-
-<br>
-<br>
-<br>
-
 # [98. Validate Binary Search Tree](https://leetcode.com/problems/validate-binary-search-tree)
 
 ## Description
@@ -273,16 +233,33 @@ class BST {
 	<li><code>-2<sup>31</sup> &lt;= Node.val &lt;= 2<sup>31</sup> - 1</code></li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: Recursion
+# Intuition
+To determine if a binary tree is a valid Binary Search Tree (BST), we need to ensure that for each node:
+- All nodes in its left subtree have values less than the node’s value.
+- All nodes in its right subtree have values greater than the node’s value.
 
-We can perform a recursive in-order traversal on the binary tree. If the result of the traversal is strictly ascending, then this tree is a binary search tree.
+An efficient way to validate this is by performing an in-order traversal of the tree. In a valid BST, this traversal should produce a sequence of values that are strictly increasing.
 
-Therefore, we use a variable `prev` to save the last node we traversed. Initially, `prev = -∞`. Then we recursively traverse the left subtree. If the left subtree is not a binary search tree, we directly return `False`. Otherwise, we check whether the value of the current node is greater than `prev`. If not, we return `False`. Otherwise, we update `prev` to the value of the current node, and then recursively traverse the right subtree.
+# Approach
+1. **In-Order Traversal with Validation:**
+   - Use an in-order traversal to visit each node. This way, nodes are visited in ascending order if the tree is a valid BST.
+   - During traversal, maintain a reference to the previously visited node (`prev`). This helps check if the current node’s value is greater than the previous node’s value.
 
-The time complexity is `O(n)`, and the space complexity is `O(n)`. Where `n` is the number of nodes in the binary tree.
+2. **Traversal Process:**
+   - Recursively traverse the left subtree of the current node.
+   - Check if the value of the current node is greater than the value of `prev`. If not, return `false` as this violates the BST property.
+   - Update `prev` to the current node and recursively traverse the right subtree.
 
+3. **Validation Logic:**
+   - If all nodes are visited and the values are in strictly increasing order, the tree is a valid BST.
+   - If any value is found that does not satisfy the BST property, the function returns `false`.
+
+4. **Edge Cases:**
+   - An empty tree or a tree with only one node is considered a valid BST.
+
+The time complexity of this approach is O(n), where `n` is the number of nodes in the tree, as each node is visited once.
 
 #### Java
 

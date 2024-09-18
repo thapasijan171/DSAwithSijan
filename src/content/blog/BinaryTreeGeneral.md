@@ -36,13 +36,23 @@ heroImage: "https://creatorspace.imgix.net/users/clzmwqjs107miod018j7gwvu9/1arnK
 	<li><code>-100 &lt;= Node.val &lt;= 100</code></li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: Recursion
+# Intuition
+To find the maximum depth (or height) of a binary tree, we need to determine the longest path from the root node to a leaf node. This can be achieved by recursively calculating the depth of the left and right subtrees and taking the maximum of the two.
 
-Recursively traverse the left and right subtrees, calculate the maximum depth of the left and right subtrees, and then take the maximum value plus `1`.
+# Approach
+1. **Recursive Depth Calculation:**
+   - **Base Case:** If the current node is `null`, it means we've reached beyond a leaf node, so the depth is `0`.
+   - **Recursive Case:** Compute the depth of the left and right subtrees by recursively calling the `maxDepth` method.
+   - The depth of the current node is `1` (for the current node itself) plus the maximum of the depths of its left and right subtrees.
 
-The time complexity is `O(n)`, where `n` is the number of nodes in the binary tree. Each node is traversed only once in the recursion.
+2. **Return Value:**
+   - After calculating the depths of the left and right subtrees, return `1` plus the maximum of these depths to account for the current node.
+
+The time complexity of this approach is O(n), where `n` is the number of nodes in the tree, as each node is visited exactly once.
+
+This method efficiently calculates the maximum depth of the binary tree using a depth-first traversal approach.
 
 #### Java
 
@@ -109,13 +119,24 @@ class Solution {
 	<li><code>-100 &lt;= Node.val &lt;= 100</code></li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: Recursion
+# Intuition
+To determine the maximum depth of a binary tree, we need to measure the longest path from the root node to a leaf node. This can be done by recursively exploring both the left and right subtrees and computing the depth.
 
-Recursively traverse the left and right subtrees, calculate the maximum depth of the left and right subtrees, and then take the maximum value plus `1`.
+# Approach
+1. **Base Case:**
+   - If the `root` is `null`, it means we have reached beyond a leaf node, so the depth of this path is `0`.
 
-The time complexity is `O(n)`, where `n` is the number of nodes in the binary tree. Each node is traversed only once in the recursion.
+2. **Recursive Case:**
+   - Compute the depth of the left subtree by calling `maxDepth` on `root.left`.
+   - Compute the depth of the right subtree by calling `maxDepth` on `root.right`.
+   - The depth of the current node is `1` (for the current node itself) plus the maximum of the depths of the left and right subtrees.
+
+3. **Return Value:**
+   - Return `1 + Math.max(l, r)` where `l` is the depth of the left subtree and `r` is the depth of the right subtree.
+
+This method uses a depth-first traversal to efficiently calculate the maximum depth of the binary tree. The time complexity is O(n), where `n` is the number of nodes in the tree, as each node is visited exactly once.
 
 #### Java
 
@@ -187,13 +208,26 @@ class Solution {
 	<li><code>-100 &lt;= Node.val &lt;= 100</code></li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: Recursion
+# Intuition
+The problem requires inverting a binary tree, which means flipping it around its center. This involves swapping the left and right children of every node in the tree.
 
-The idea of recursion is very simple, which is to swap the left and right subtrees of the current node, and then recursively swap the left and right subtrees of the current node.
+# Approach
+1. **Base Case:**
+   - If the `root` is `null`, it means we have reached a leaf node's child, and there's nothing to invert.
 
-The time complexity is `O(n)`, and the space complexity is `O(n)`, where `n` is the number of nodes in the binary tree.
+2. **Swap Children:**
+   - Swap the `left` and `right` children of the current `root` node.
+
+3. **Recursive Case:**
+   - Recursively call `dfs` to invert the left subtree.
+   - Recursively call `dfs` to invert the right subtree.
+
+4. **Return Value:**
+   - After inverting the tree, return the `root` node.
+
+The algorithm uses a depth-first search (DFS) approach to traverse the entire tree and perform the inversion. The time complexity is O(n), where `n` is the number of nodes in the tree, as each node is visited once.
 
 #### Java
 
@@ -232,44 +266,6 @@ class Solution {
 }
 ```
 
-### Solution 2
-
-#### Java
-
-```java
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode() {}
- *     TreeNode(int val) { this.val = val; }
- *     TreeNode(int val, TreeNode left, TreeNode right) {
- *         this.val = val;
- *         this.left = left;
- *         this.right = right;
- *     }
- * }
- */
-class Solution {
-    public TreeNode invertTree(TreeNode root) {
-        if (root == null) {
-            return null;
-        }
-        TreeNode l = invertTree(root.left);
-        TreeNode r = invertTree(root.right);
-        root.left = r;
-        root.right = l;
-        return root;
-    }
-}
-```
-
-<br>
-<br>
-<br>
-
 # [101. Symmetric Tree](https://leetcode.com/problems/symmetric-tree)
 
 ## Description
@@ -302,19 +298,24 @@ class Solution {
 <p>&nbsp;</p>
 <strong>Follow up:</strong> Could you solve it both recursively and iteratively?
 
-## Solutions
+# Solutions
 
-### Solution 1: Recursion
+# Intuition
+To determine if a binary tree is symmetric, we need to check if the left subtree is a mirror reflection of the right subtree.
 
-We design a function `dfs(root1, root2)` to determine whether two binary trees are symmetric. The answer is `dfs(root, root)`.
+# Approach
+1. **Base Cases:**
+   - If both `root1` and `root2` are `null`, the trees are symmetric at this level.
+   - If only one of `root1` or `root2` is `null`, or their values are different, the trees are not symmetric at this level.
 
-The logic of the function `dfs(root1, root2)` is as follows:
+2. **Recursive Case:**
+   - Recursively check if the left subtree of `root1` is symmetric to the right subtree of `root2` (`dfs(root1.left, root2.right)`).
+   - Recursively check if the right subtree of `root1` is symmetric to the left subtree of `root2` (`dfs(root1.right, root2.left)`).
 
--   If both `root1` and `root2` are null, then the two binary trees are symmetric, return `true`.
--   If only one of `root1` and `root2` is null, or if `root1.val \neq root2.val`, then the two binary trees are not symmetric, return `false`.
--   Otherwise, determine whether the left subtree of `root1` is symmetric to the right subtree of `root2`, and whether the right subtree of `root1` is symmetric to the left subtree of `root2`. Here we use recursion.
+3. **Return Value:**
+   - If both recursive checks return `true`, the trees are symmetric; otherwise, they are not.
 
-The time complexity is `O(n)`, and the space complexity is `O(n)`. Here, `n` is the number of nodes in the binary tree.
+The algorithm uses a depth-first search (DFS) approach to compare mirrored nodes in the tree. The time complexity is O(n), where `n` is the number of nodes in the tree, as each node is visited once.
 
 #### Java
 
@@ -389,24 +390,35 @@ class Solution {
 	<li><code>inorder</code> is <strong>guaranteed</strong> to be the inorder traversal of the tree.</li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: Hash Table + Recursion
+# Intuition
+To reconstruct a binary tree from its preorder and inorder traversal arrays, we need to understand the following:
+- **Preorder Traversal**: The first element is always the root of the tree.
+- **Inorder Traversal**: Elements to the left of the root are in the left subtree, and elements to the right are in the right subtree.
 
-The first node `preorder[0]` in the pre-order sequence is the root node. We find the position `k` of the root node in the in-order sequence, which can divide the in-order sequence into the left subtree `inorder[0..k]` and the right subtree `inorder[k+1..]`.
+# Approach
+1. **Initialization:**
+   - Create a `Map` to store the index of each value in the `inorder` array for quick lookup.
 
-Through the intervals of the left and right subtrees, we can calculate the number of nodes in the left and right subtrees, assumed to be `a` and `b`. Then in the pre-order nodes, the `a` nodes after the root node are the left subtree, and the `b` nodes after that are the right subtree.
+2. **Recursive Tree Construction:**
+   - The root of the current subtree is given by the current index in the `preorder` array.
+   - Find the index of this root in the `inorder` array using the `Map`.
+   - Recursively build the left and right subtrees:
+     - **Left Subtree**: Elements before the root index in the `inorder` array.
+     - **Right Subtree**: Elements after the root index in the `inorder` array.
 
-Therefore, we design a function `dfs(i, j, n)`, where `i` and `j` represent the starting positions of the pre-order sequence and the in-order sequence, respectively, and `n` represents the number of nodes. The return value of the function is the binary tree constructed with `preorder[i..i+n-1]` as the pre-order sequence and `inorder[j..j+n-1]` as the in-order sequence.
+3. **Tree Node Creation:**
+   - Create a `TreeNode` for the current root value.
+   - Attach the recursively built left and right subtrees to this node.
 
-The execution process of the function `dfs(i, j, n)` is as follows:
+4. **Base Case:**
+   - If the number of elements is zero or negative, return `null` indicating no subtree.
 
--   If `n \leq 0`, it means there are no nodes, return a null node.
--   Take out the first node `v = preorder[i]` of the pre-order sequence as the root node, and then use the hash table `d` to find the position `k` of the root node in the in-order sequence. Then the number of nodes in the left subtree is `k - j`, and the number of nodes in the right subtree is `n - k + j - 1`.
--   Recursively construct the left subtree `l = dfs(i + 1, j, k - j)` and the right subtree `r = dfs(i + 1 + k - j, k + 1, n - k + j - 1)`.
--   Finally, return the binary tree with `v` as the root node and `l` and `r` as the left and right subtrees, respectively.
+5. **Return Value:**
+   - The root of the reconstructed binary tree is returned.
 
-The time complexity is `O(n)`, and the space complexity is `O(n)`. Here, `n` is the number of nodes in the binary tree.
+This approach uses depth-first search (DFS) to construct the tree, with each node being visited once. The time complexity is O(n), where `n` is the number of nodes in the tree.
 
 #### Java
 
@@ -536,19 +548,35 @@ class Solution {
 	<li><code>postorder</code> is <strong>guaranteed</strong> to be the postorder traversal of the tree.</li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: Hash Table + Recursion
+# Intuition
+To reconstruct a binary tree from its inorder and postorder traversal arrays, consider the following:
+- **Postorder Traversal**: The last element is always the root of the tree or subtree.
+- **Inorder Traversal**: Elements to the left of the root are in the left subtree, and elements to the right are in the right subtree.
 
-The last node in the post-order traversal is the root node. We can find the position of the root node in the in-order traversal, and then recursively construct the left and right subtrees.
+# Approach
+1. **Initialization:**
+   - Create a `Map` to store the index of each value in the `inorder` array for quick lookup.
 
-Specifically, we first use a hash table `d` to store the position of each node in the in-order traversal. Then we design a recursive function `dfs(i, j, n)`, where `i` and `j` represent the starting positions of the in-order and post-order traversals, respectively, and `n` represents the number of nodes in the subtree. The function logic is as follows:
+2. **Recursive Tree Construction:**
+   - The root of the current subtree is given by the last element in the current range of the `postorder` array.
+   - Find the index of this root in the `inorder` array using the `Map`.
+   - Recursively build the left and right subtrees:
+     - **Left Subtree**: Elements in the `inorder` array to the left of the root index.
+     - **Right Subtree**: Elements in the `inorder` array to the right of the root index.
 
--   If `n \leq 0`, it means the subtree is empty, return a null node.
--   Otherwise, take out the last node `v` of the post-order traversal, and then find the position `k` of `v` in the in-order traversal using the hash table `d`. Then the number of nodes in the left subtree is `k - i`, and the number of nodes in the right subtree is `n - k + i - 1`.
--   Recursively construct the left subtree `dfs(i, j, k - i)` and the right subtree `dfs(k + 1, j + k - i, n - k + i - 1)`, connect them to the root node, and finally return the root node.
+3. **Tree Node Creation:**
+   - Create a `TreeNode` for the current root value.
+   - Attach the recursively built left and right subtrees to this node.
 
-The time complexity is `O(n)`, and the space complexity is `O(n)`. Here, `n` is the number of nodes in the binary tree.
+4. **Base Case:**
+   - If the number of elements is zero or negative, return `null` indicating no subtree.
+
+5. **Return Value:**
+   - The root of the reconstructed binary tree is returned.
+
+This approach uses depth-first search (DFS) to construct the tree, with each node being visited once. The time complexity is O(n), where `n` is the number of nodes in the tree.
 
 #### Java
 
@@ -651,13 +679,28 @@ struct Node {
 	<li>The recursive approach is fine. You may assume implicit stack space does not count as extra space for this problem.</li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: BFS
+# Intuition
+The goal is to connect all nodes at the same level of a perfect binary tree with a `next` pointer. For each node, the `next` pointer should point to the node immediately to its right. If there is no such node, the `next` pointer should be set to `null`.
 
-We use a queue `q` for level order traversal. Each time we traverse a level, we connect the nodes of the current level in order.
+# Approach
+1. **Initialization:**
+   - Use a queue to perform a level-order traversal of the tree.
 
-The time complexity is `O(n)`, and the space complexity is `O(n)`. Here, `n` is the number of nodes in the binary tree.
+2. **Level-Order Traversal:**
+   - Start by adding the root node to the queue.
+   - For each level in the tree, process all nodes at that level:
+     - Use a variable `p` to keep track of the previous node in the level.
+     - For each node in the level:
+       - If `p` is not `null`, set `p.next` to the current node.
+       - Update `p` to the current node.
+       - Add the left and right children of the current node to the queue if they exist.
+
+3. **Return Value:**
+   - After processing all levels, return the root node. The `next` pointers will be set appropriately.
+
+This approach ensures that all nodes at the same level are connected correctly. The time complexity is O(n), where `n` is the number of nodes in the tree, as each node is processed once.
 
 #### Java
 
@@ -713,77 +756,6 @@ class Solution {
 }
 ```
 
-### Solution 2: Space Optimization
-
-The space complexity of Solution 1 is relatively high because it requires a queue to store the nodes of each level. We can implement it with constant space.
-
-We define two pointers `prev` and `next`, which point to the previous node and the first node of the next level, respectively. When traversing the nodes of the current level, we string the nodes of the next level together and find the first node of the next level. After the current level is traversed, we assign the first node `next` of the next level to `node` and continue to traverse.
-
-The time complexity is `O(n)`, where `n` is the number of nodes in the binary tree. The space complexity is `O(1)`.
-
-#### Java
-
-```java
-/*
-// Definition for a Node.
-class Node {
-    public int val;
-    public Node left;
-    public Node right;
-    public Node next;
-
-    public Node() {}
-
-    public Node(int _val) {
-        val = _val;
-    }
-
-    public Node(int _val, Node _left, Node _right, Node _next) {
-        val = _val;
-        left = _left;
-        right = _right;
-        next = _next;
-    }
-};
-*/
-
-class Solution {
-    private Node prev, next;
-
-    public Node connect(Node root) {
-        Node node = root;
-        while (node != null) {
-            prev = null;
-            next = null;
-            while (node != null) {
-                modify(node.left);
-                modify(node.right);
-                node = node.next;
-            }
-            node = next;
-        }
-        return root;
-    }
-
-    private void modify(Node curr) {
-        if (curr == null) {
-            return;
-        }
-        if (next == null) {
-            next = curr;
-        }
-        if (prev != null) {
-            prev.next = curr;
-        }
-        prev = curr;
-    }
-}
-```
-
-<br>
-<br>
-<br>
-
 # [114. Flatten Binary Tree to Linked List](https://leetcode.com/problems/flatten-binary-tree-to-linked-list)
 
 ## Description
@@ -828,15 +800,26 @@ class Solution {
 <p>&nbsp;</p>
 <strong>Follow up:</strong> Can you flatten the tree in-place (with <code>O(1)</code> extra space)?
 
-## Solutions
+# Solutions
 
-### Solution 1: Find Predecessor Node
+# Intuition
+The problem is to flatten a binary tree into a linked list in-place. The resulting linked list should be in the same order as a pre-order traversal of the tree. In essence, the tree should be transformed into a right-skewed tree where each node only has a right child.
 
-The visit order of preorder traversal is "root, left subtree, right subtree". After the last node of the left subtree is visited, the right subtree node of the root node will be visited next.
+# Approach
+1. **Iterate Through the Tree:**
+   - Use a `while` loop to traverse the tree starting from the root.
 
-Therefore, for the current node, if its left child node is not null, we find the rightmost node of the left subtree as the predecessor node, and then assign the right child node of the current node to the right child node of the predecessor node. Then assign the left child node of the current node to the right child node of the current node, and set the left child node of the current node to null. Then take the right child node of the current node as the next node and continue processing until all nodes are processed.
+2. **Flatten the Left Subtree:**
+   - For each node, if it has a left child:
+     - Find the rightmost node of the left subtree.
+     - Connect the rightmost node's `right` pointer to the current node's right subtree.
+     - Move the left subtree to the right subtree position.
+     - Set the left child of the current node to `null`.
 
-The time complexity is `O(n)`, where `n` is the number of nodes in the tree. The space complexity is `O(1)`.
+3. **Move to the Next Node:**
+   - Move to the right child of the current node and continue the process.
+
+This approach ensures that the binary tree is flattened into a linked list with O(n) time complexity, where `n` is the number of nodes in the tree. The space complexity is O(1) as it performs the operations in-place without using extra space.
 
 #### Java
 
@@ -925,13 +908,29 @@ There is no root-to-leaf path with sum = 5.
 	<li><code>-1000 &lt;= targetSum &lt;= 1000</code></li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: Recursion
+# Intuition
+To determine if a binary tree has a root-to-leaf path that sums to a given target value, we need to traverse the tree and check if there exists a path where the sum of the node values equals the target value.
 
-Starting from the root node, recursively traverse the tree and update the value of the node to the path sum from the root node to that node. When you traverse to a leaf node, determine whether this path sum is equal to the target value. If it is equal, return `true`, otherwise return `false`.
+# Approach
+1. **Recursive Depth-First Search (DFS):**
+   - Use a recursive function to traverse the tree starting from the root node.
 
-The time complexity is `O(n)`, where `n` is the number of nodes in the binary tree. Each node is visited once.
+2. **Base Case:**
+   - If the current node is `null`, return `false` because there's no path through this node.
+
+3. **Update Target Sum:**
+   - Subtract the value of the current node from the target sum.
+
+4. **Check Leaf Node:**
+   - If the current node is a leaf node (i.e., it has no left or right children) and the updated target sum is `0`, return `true`.
+
+5. **Recursive Calls:**
+   - Recursively call the function for the left and right children of the current node.
+   - Return `true` if either subtree contains a valid path sum, otherwise return `false`.
+
+This approach efficiently checks for the presence of a path that sums to the target value with a time complexity of O(n), where `n` is the number of nodes in the tree, as each node is visited once. The space complexity is O(h), where `h` is the height of the tree, due to the call stack in recursion.
 
 #### Java
 
@@ -1022,20 +1021,26 @@ Therefore, sum = 495 + 491 + 40 = <code>1026</code>.
 	<li>The depth of the tree will not exceed <code>10</code>.</li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: DFS
+# Intuition
+To find the sum of all numbers formed by root-to-leaf paths in a binary tree, we need to traverse the tree and accumulate the numbers formed along each path. Each path's number is formed by concatenating the values of nodes from the root to the leaves.
 
-We can design a function `dfs(root, s)`, which represents the sum of all path numbers from the current node `root` to the leaf nodes, given that the current path number is `s`. The answer is `dfs(root, 0)`.
+# Approach
+1. **Recursive Depth-First Search (DFS):**
+   - Use a recursive function to traverse the tree starting from the root node, maintaining the current number formed along the path.
 
-The calculation of the function `dfs(root, s)` is as follows:
+2. **Update Current Number:**
+   - For each node, update the current number by multiplying the existing number by 10 and adding the value of the current node.
 
--   If the current node `root` is null, return `0`.
--   Otherwise, add the value of the current node to `s`, i.e., `s = s \times 10 + root.val`.
--   If the current node is a leaf node, return `s`.
--   Otherwise, return `dfs(root.left, s) + dfs(root.right, s)`.
+3. **Leaf Node Check:**
+   - If the current node is a leaf (i.e., it has no left or right children), return the current number since it represents a complete root-to-leaf path.
 
-The time complexity is `O(n)`, and the space complexity is `O(\log n)`. Here, `n` is the number of nodes in the binary tree.
+4. **Recursive Calls:**
+   - Recursively call the function for the left and right children of the current node.
+   - Sum up the values returned from the left and right subtree calls to get the total sum of all numbers formed.
+
+This approach efficiently calculates the sum of all root-to-leaf numbers with a time complexity of O(n), where `n` is the number of nodes in the tree, as each node is visited once. The space complexity is O(h), where `h` is the height of the tree, due to the call stack in recursion.
 
 #### Java
 
@@ -1112,29 +1117,34 @@ class Solution {
 	<li><code>-1000 &lt;= Node.val &lt;= 1000</code></li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: Recursion
+# Intuition
+The problem is to find the maximum path sum in a binary tree. The path sum is defined as the sum of node values along a path, which can start and end anywhere in the tree. To achieve this, we need to consider paths that include the root node and those that might go through the root node.
 
-When thinking about the classic routine of recursion problems in binary trees, we consider:
+# Approach
+1. **Recursive Depth-First Search (DFS):**
+   - Use a recursive function to traverse the tree, calculating the maximum path sum for each node.
 
-1. Termination condition (when to terminate recursion)
-2. Recursively process the left and right subtrees
-3. Merge the calculation results of the left and right subtrees
+2. **Path Sum Calculation:**
+   - For each node, calculate the maximum path sum that can be obtained by including the node and extending to its left or right children. 
+   - For each node, compute the maximum path sum by considering paths that might include the node itself, its left subtree, and its right subtree.
 
-For this problem, we design a function `dfs(root)`, which returns the maximum path sum of the binary tree with `root` as the root node.
+3. **Update Maximum Path Sum:**
+   - Update a global variable `ans` to keep track of the maximum path sum encountered so far. This is updated by considering the sum of the current node’s value and the maximum sums of the left and right subtrees.
 
-The execution logic of the function `dfs(root)` is as follows:
+4. **Return Path Sum:**
+   - For each node, return the maximum path sum that extends from the node to any leaf node, either through the left or right subtree.
 
-If `root` does not exist, then `dfs(root)` returns `0`;
+By recursively calculating the maximum path sum that can be extended through each node and updating the global maximum path sum, the solution efficiently computes the desired result with a time complexity of O(n), where `n` is the number of nodes in the tree.
 
-Otherwise, we recursively calculate the maximum path sum of the left and right subtrees of `root`, denoted as `left` and `right`. If `left` is less than `0`, then we set it to `0`, similarly, if `right` is less than `0`, then we set it to `0`.
+**Steps:**
+- Traverse the tree with a DFS approach.
+- Calculate the maximum path sum for each node considering its left and right subtrees.
+- Update the maximum path sum encountered so far.
+- Return the maximum path sum for paths that extend from the current node to its children.
 
-Then, we update the answer with `root.val + left + right`. Finally, the function returns `root.val + \max(left, right)`.
-
-In the main function, we call `dfs(root)` to get the maximum path sum of each node, and the maximum value among them is the answer.
-
-The time complexity is `O(n)`, and the space complexity is `O(n)`. Here, `n` is the number of nodes in the binary tree.
+The space complexity is O(h) due to the recursion stack, where `h` is the height of the tree.
 
 #### Java
 
@@ -1234,9 +1244,40 @@ bSTIterator.hasNext(); // return False
 	<li>Could you implement <code>next()</code> and <code>hasNext()</code> to run in average <code>O(1)</code> time and use&nbsp;<code>O(h)</code> memory, where <code>h</code> is the height of the tree?</li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1
+# Intuition
+The `BSTIterator` class is designed to traverse a binary search tree (BST) in sorted order. It allows for efficient retrieval of the next smallest element in the BST while keeping track of whether more elements are available.
+
+# Approach
+1. **Inorder Traversal:**
+   - To get the elements of the BST in sorted order, perform an inorder traversal. This traversal processes nodes in the left subtree, then the root node, and finally the nodes in the right subtree.
+   - During the traversal, collect the values of the nodes in a list.
+
+2. **Iterator Methods:**
+   - **`next()` Method:**
+     - Returns the next smallest element from the BST. This is achieved by accessing the current index of the list and then incrementing the index.
+   - **`hasNext()` Method:**
+     - Checks if there are more elements to retrieve by comparing the current index with the size of the list.
+
+3. **Constructor:**
+   - The constructor takes the root of the BST and initializes the list of node values by performing an inorder traversal.
+
+**Steps:**
+- **Inorder Traversal:**
+  - Traverse the BST to collect node values in sorted order and store them in a list.
+- **Next Element Retrieval:**
+  - Return the value at the current index and move to the next index.
+- **Check for More Elements:**
+  - Determine if more elements are available based on the current index and the size of the list.
+
+**Space Complexity:**
+- The space complexity is O(n) due to storing all node values in the list, where `n` is the number of nodes in the BST.
+
+**Time Complexity:**
+- The time complexity for the `next()` and `hasNext()` methods is O(1) since they involve simple list operations.
+
+This approach ensures that elements are accessed in sorted order, leveraging the properties of the BST and efficient list operations.
 
 #### Java
 
@@ -1289,60 +1330,6 @@ class BSTIterator {
  */
 ```
 
-### Solution 2
-
-#### Java
-
-```java
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode() {}
- *     TreeNode(int val) { this.val = val; }
- *     TreeNode(int val, TreeNode left, TreeNode right) {
- *         this.val = val;
- *         this.left = left;
- *         this.right = right;
- *     }
- * }
- */
-class BSTIterator {
-    private Deque<TreeNode> stack = new LinkedList<>();
-
-    public BSTIterator(TreeNode root) {
-        for (; root != null; root = root.left) {
-            stack.offerLast(root);
-        }
-    }
-
-    public int next() {
-        TreeNode cur = stack.pollLast();
-        for (TreeNode node = cur.right; node != null; node = node.left) {
-            stack.offerLast(node);
-        }
-        return cur.val;
-    }
-
-    public boolean hasNext() {
-        return !stack.isEmpty();
-    }
-}
-
-/**
- * Your BSTIterator object will be instantiated and called as such:
- * BSTIterator obj = new BSTIterator(root);
- * int param_1 = obj.next();
- * boolean param_2 = obj.hasNext();
- */
-```
-
-<br>
-<br>
-<br>
-
 # [222. Count Complete Tree Nodes](https://leetcode.com/problems/count-complete-tree-nodes)
 
 ## Description
@@ -1384,56 +1371,37 @@ class BSTIterator {
 	<li>The tree is guaranteed to be <strong>complete</strong>.</li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: Recursion
+# Intuition
+To count the number of nodes in a complete binary tree efficiently, we leverage the properties of such a tree where all levels are fully filled except possibly for the last level. The key is to use the depth of the left and right subtrees to determine whether to count the nodes in the left or right subtree.
 
-We recursively traverse the entire tree and count the number of nodes.
+# Approach
+1. **Compute Depth:**
+   - Calculate the depth of the left and right subtrees. In a complete binary tree, if the depth of the left and right subtrees is equal, then the left subtree is full and the right subtree has more nodes.
 
-The time complexity is `O(n)`, and the space complexity is `O(n)`, where `n` is the number of nodes in the tree.
+2. **Count Nodes:**
+   - If the depths of the left and right subtrees are the same, it implies the left subtree is complete. The number of nodes in the left subtree can be computed using the formula `2^depth - 1`, where `depth` is the depth of the left subtree. Then, recursively count the nodes in the right subtree.
+   - If the depths are not equal, the right subtree is complete. The number of nodes in the right subtree can be computed using the formula `2^depth - 1`, where `depth` is the depth of the right subtree. Then, recursively count the nodes in the left subtree.
 
-#### Java
+3. **Depth Calculation:**
+   - The depth of a subtree is determined by traversing from the root to the leftmost leaf node and counting the number of levels.
 
-```java
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode() {}
- *     TreeNode(int val) { this.val = val; }
- *     TreeNode(int val, TreeNode left, TreeNode right) {
- *         this.val = val;
- *         this.left = left;
- *         this.right = right;
- *     }
- * }
- */
-class Solution {
-    public int countNodes(TreeNode root) {
-        if (root == null) {
-            return 0;
-        }
-        return 1 + countNodes(root.left) + countNodes(root.right);
-    }
-}
-```
+**Steps:**
+- **Calculate Depth:**
+  - Use a helper function to compute the depth of the left or right subtree.
+- **Count Nodes Based on Depth:**
+  - Use bit shifting to compute the number of nodes in a complete subtree.
+- **Recursive Counting:**
+  - Adjust the count based on whether the left or right subtree is full and recursively count the nodes in the remaining subtree.
 
-### Solution 2: Binary Search
+**Space Complexity:**
+- The space complexity is O(log^2 n) due to the recursion stack, where `n` is the number of nodes.
 
-For this problem, we can also take advantage of the characteristics of a complete binary tree to design a faster algorithm.
+**Time Complexity:**
+- The time complexity is O(log^2 n), as each level of the tree is processed in O(log n) time due to the depth calculations and recursive calls.
 
-Characteristics of a complete binary tree: leaf nodes can only appear on the bottom and second-to-bottom layers, and the leaf nodes on the bottom layer are concentrated on the left side of the tree. It should be noted that a full binary tree is definitely a complete binary tree, but a complete binary tree is not necessarily a full binary tree.
-
-If the number of layers in a full binary tree is `h`, then the total number of nodes is `2^h - 1`.
-
-We first count the heights of the left and right subtrees of `root`, denoted as `left` and `right`.
-
-1. If `left = right`, it means that the left subtree is a full binary tree, so the total number of nodes in the left subtree is `2^{left} - 1`. Plus the `root` node, it is `2^{left}`. Then we recursively count the right subtree.
-1. If `left > right`, it means that the right subtree is a full binary tree, so the total number of nodes in the right subtree is `2^{right} - 1`. Plus the `root` node, it is `2^{right}`. Then we recursively count the left subtree.
-
-The time complexity is `O(\log^2 n)`.
+This approach efficiently counts the number of nodes in a complete binary tree by leveraging its properties and depth calculations.
 
 #### Java
 
@@ -1525,17 +1493,32 @@ class Solution {
 	<li><code>p</code> and <code>q</code> will exist in the tree.</li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: Recursion
+# Intuition
+The lowest common ancestor (LCA) of two nodes in a binary tree is the deepest node that is an ancestor to both nodes. To find the LCA, we can use a recursive approach to traverse the tree and determine the point where the paths to both nodes diverge.
 
-We recursively traverse the binary tree:
+# Approach
+1. **Base Case:**
+   - If the current node is null, return null.
+   - If the current node matches either `p` or `q`, return the current node. This signifies that either `p` or `q` has been found.
 
-If the current node is null or equals to `p` or `q`, then we return the current node;
+2. **Recursive Case:**
+   - Recursively search for `p` and `q` in the left subtree.
+   - Recursively search for `p` and `q` in the right subtree.
 
-Otherwise, we recursively traverse the left and right subtrees, and record the returned results as `left` and `right`. If both `left` and `right` are not null, it means that `p` and `q` are in the left and right subtrees respectively, so the current node is the nearest common ancestor; If only one of `left` and `right` is not null, we return the one that is not null.
+3. **Determine the LCA:**
+   - If both the left and right recursive calls return non-null values, it means that `p` is in one subtree and `q` is in the other. Thus, the current node is their lowest common ancestor.
+   - If only one of the recursive calls returns a non-null value, then both `p` and `q` are located in that subtree. Hence, return the non-null value from the recursive calls.
 
-The time complexity is `O(n)`, and the space complexity is `O(n)`. Here, `n` is the number of nodes in the binary tree.
+**Steps:**
+- **Check if Node is p or q:**
+  - If the node is `p` or `q`, return it.
+- **Recursive Search:**
+  - Search for `p` and `q` in the left and right subtrees.
+- **Determine LCA:**
+  - If both left and right calls return non-null values, return the current node.
+  - Otherwise, return the non-null result from either the left or right subtree.
 
 #### Java
 

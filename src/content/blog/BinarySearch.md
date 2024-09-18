@@ -9,8 +9,6 @@ heroImage: "../img/img_blog/binarysearch.jpeg"
 
 ## Description
 
-<!-- description:start -->
-
 <p>Given a sorted array of distinct integers and a target value, return the index if the target is found. If not, return the index where it would be if it were inserted in order.</p>
 
 <p>You must&nbsp;write an algorithm with&nbsp;<code>O(log n)</code> runtime complexity.</p>
@@ -48,13 +46,31 @@ heroImage: "../img/img_blog/binarysearch.jpeg"
 </ul>
 
 
-## Solutions
+# Solutions
 
-### Solution 1: Binary Search
+# Search Insert Position
 
-Since the array `nums` is already sorted, we can use the binary search method to find the insertion position of the target value `target`.
+## Intuition
+The `searchInsert` method determines the index at which a target value should be inserted into a sorted array to maintain the array's sorted order. If the target value is already present in the array, the method returns the index of the target.
 
-The time complexity is `O(\log n)`, and the space complexity is `O(1)`. Here, `n` is the length of the array `nums`.
+## Approach
+### Steps
+
+1. **Initialize Pointers**:
+   - Define two pointers: `l` (left) and `r` (right) to represent the search range. Initially, set `l` to 0 and `r` to the length of the array.
+
+2. **Binary Search**:
+   - **Loop Until Convergence**:
+     - While `l` is less than `r`, calculate the middle index `mid` using bitwise right shift to avoid overflow.
+     - **Compare**:
+       - If the value at `nums[mid]` is greater than or equal to the `target`, update the right pointer `r` to `mid`. This means the target could be at `mid` or in the left subarray.
+       - Otherwise, update the left pointer `l` to `mid + 1`. This means the target must be in the right subarray.
+   - **End of Search**:
+     - When `l` equals `r`, the loop terminates, and `l` will be the correct insertion index for the `target`.
+
+3. **Return the Result**:
+   - Return the value of `l`, which represents the position where the `target` should be inserted.
+
 
 #### Java
 
@@ -71,23 +87,6 @@ class Solution {
             }
         }
         return l;
-    }
-}
-```
-
-### Solution 2: Binary Search (Built-in Function)
-
-We can also directly use the built-in function for binary search.
-
-The time complexity is `O(\log n)`, where `n` is the length of the array `nums`. The space complexity is `O(1)`.
-
-#### Java
-
-```java
-class Solution {
-    public int searchInsert(int[] nums, int target) {
-        int i = Arrays.binarySearch(nums, target);
-        return i < 0 ? -i - 1 : i;
     }
 }
 ```
@@ -136,13 +135,35 @@ class Solution {
 	<li><code>-10<sup>4</sup> &lt;= matrix[i][j], target &lt;= 10<sup>4</sup></code></li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: Binary Search
+# Search a 2D Matrix
 
-We can logically unfold the two-dimensional matrix and then perform binary search.
+## Intuition
+The `searchMatrix` method searches for a target value in a 2D matrix that is sorted in ascending order both row-wise and column-wise. It uses binary search on a 1D representation of the 2D matrix to determine if the target value exists in the matrix.
 
-The time complexity is `O(\log(m \times n))`, where `m` and `n` are the number of rows and columns of the matrix, respectively. The space complexity is `O(1)`.
+## Approach
+### Steps
+
+1. **Initialize Pointers**:
+   - Define two pointers: `left` and `right`. `left` starts at 0, and `right` is initialized to the last index of the matrix when flattened into a 1D array (`m * n - 1`).
+
+2. **Binary Search**:
+   - **Loop Until Convergence**:
+     - While `left` is less than `right`, calculate the middle index `mid` using bitwise right shift.
+     - Convert the 1D index `mid` back to 2D coordinates using:
+       - `x = mid / n` (row index)
+       - `y = mid % n` (column index)
+     - **Compare**:
+       - If `matrix[x][y]` is greater than or equal to the `target`, update the right pointer `right` to `mid`. This means the target could be at `mid` or in the left subarray.
+       - Otherwise, update the left pointer `left` to `mid + 1`. This means the target must be in the right subarray.
+
+3. **Final Check**:
+   - When `left` equals `right`, check if the element at the 2D coordinates derived from `left` matches the `target`.
+
+4. **Return Result**:
+   - Return `true` if the element at the calculated position matches the `target`, otherwise return `false`.
+
 
 #### Java
 
@@ -165,38 +186,6 @@ class Solution {
 }
 ```
 
-### Solution 2: Search from the Bottom Left or Top Right
-
-Here, we start searching from the bottom left corner and move towards the top right direction. We compare the current element `matrix[i][j]` with `target`:
-
--   If `matrix[i][j] = target`, we have found the target value and return `true`.
--   If `matrix[i][j] > target`, all elements to the right of the current position in this row are greater than target, so we should move the pointer `i` upwards, i.e., `i = i - 1`.
--   If `matrix[i][j] < target`, all elements above the current position in this column are less than target, so we should move the pointer `j` to the right, i.e., `j = j + 1`.
-
-If we still can't find `target` after the search, return `false`.
-
-The time complexity is `O(m + n)`, where `m` and `n` are the number of rows and columns of the matrix, respectively. The space complexity is `O(1)`.
-
-#### Java
-
-```java
-class Solution {
-    public boolean searchMatrix(int[][] matrix, int target) {
-        int m = matrix.length, n = matrix[0].length;
-        for (int i = m - 1, j = 0; i >= 0 && j < n;) {
-            if (matrix[i][j] == target) {
-                return true;
-            }
-            if (matrix[i][j] > target) {
-                --i;
-            } else {
-                ++j;
-            }
-        }
-        return false;
-    }
-}
-```
 
 <br>
 <br>
@@ -238,17 +227,32 @@ class Solution {
 	<li><code>nums[i] != nums[i + 1]</code> for all valid <code>i</code>.</li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: Binary Search
+# Find Peak Element
 
-We define the left boundary of binary search as `left=0` and the right boundary as `right=n-1`, where `n` is the length of the array. In each step of binary search, we find the middle element `mid` of the current interval, and compare the values of `mid` and its right neighbor `mid+1`:
+## Intuition
+The `findPeakElement` method finds a peak element in a given integer array where a peak element is an element that is greater than its neighbors. It uses binary search to efficiently locate a peak element.
 
--   If the value of `mid` is greater than the value of `mid+1`, there exists a peak element on the left side, and we update the right boundary `right` to `mid`.
--   Otherwise, there exists a peak element on the right side, and we update the left boundary `left` to `mid+1`.
--   Finally, when the left boundary `left` is equal to the right boundary `right`, we have found the peak element of the array.
+## Approach
+### Steps
 
-The time complexity is `O(\log n)`, where `n` is the length of the array `nums`. Each step of binary search can reduce the search interval by half, so the time complexity is `O(\log n)`. The space complexity is `O(1)`.
+1. **Initialize Pointers**:
+   - Define two pointers: `left` and `right`. `left` starts at 0, and `right` starts at `nums.length - 1`.
+
+2. **Binary Search**:
+   - **Loop Until Convergence**:
+     - While `left` is less than `right`, calculate the middle index `mid` using bitwise right shift.
+     - **Compare**:
+       - If `nums[mid]` is greater than `nums[mid + 1]`, it means a peak element must be on the left side (including `mid`). Therefore, update the `right` pointer to `mid`.
+       - Otherwise, update the `left` pointer to `mid + 1` because a peak element must be on the right side.
+
+3. **Return Result**:
+   - When `left` equals `right`, return the `left` (or `right`) pointer which will be pointing to a peak element.
+
+### Notes
+- The array is guaranteed to have at least one peak element due to the edge cases at the boundaries.
+- This approach efficiently finds a peak element in `O(log n)` time complexity.
 
 #### Java
 
@@ -307,24 +311,35 @@ class Solution {
 	<li><code>-10<sup>4</sup> &lt;= target &lt;= 10<sup>4</sup></code></li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: Binary Search
+# Search in Rotated Sorted Array
 
-We use binary search to divide the array into two parts, `[left,.. mid]` and `[mid + 1,.. right]`. At this point, we can find that one part must be sorted.
+## Intuition
+The `search` method finds the index of a target value in a rotated sorted array. The array is initially sorted in ascending order but then rotated. This method leverages binary search to efficiently find the target value.
 
-Therefore, we can determine whether `target` is in this part based on the sorted part:
+## Approach
+### Steps
 
--   If the elements in the range `[0,.. mid]` form a sorted array:
-    -   If `nums[0] \leq target \leq nums[mid]`, then our search range can be narrowed down to `[left,.. mid]`;
-    -   Otherwise, search in `[mid + 1,.. right]`;
--   If the elements in the range `[mid + 1, n - 1]` form a sorted array:
-    -   If `nums[mid] \lt target \leq nums[n - 1]`, then our search range can be narrowed down to `[mid + 1,.. right]`;
-    -   Otherwise, search in `[left,.. mid]`.
+1. **Initialize Pointers**:
+   - Define two pointers: `left` starting at 0 and `right` starting at `nums.length - 1`.
 
-The termination condition for binary search is `left \geq right`. If at the end we find that `nums[left]` is not equal to `target`, it means that there is no element with a value of `target` in the array, and we return `-1`. Otherwise, we return the index `left`.
+2. **Binary Search with Rotation Handling**:
+   - **Loop Until Convergence**:
+     - Calculate the middle index `mid` using bitwise right shift.
+     - **Determine Sorted Half**:
+       - If the left half of the array (`nums[0]` to `nums[mid]`) is sorted:
+         - Check if the target is within this sorted half. If yes, adjust the `right` pointer to `mid`. Otherwise, adjust the `left` pointer to `mid + 1`.
+       - If the right half (`nums[mid]` to `nums[n - 1]`) is sorted:
+         - Check if the target is within this sorted half. If yes, adjust the `left` pointer to `mid + 1`. Otherwise, adjust the `right` pointer to `mid`.
 
-The time complexity is `O(\log n)`, where `n` is the length of the array `nums`. The space complexity is `O(1)`.
+3. **Return Result**:
+   - After the loop, check if `nums[left]` equals the target. If true, return `left`; otherwise, return -1.
+
+### Notes
+- The array is rotated, but at least one half of the array remains sorted. This property helps in deciding which half of the array to continue searching.
+- This approach finds the target in `O(log n)` time complexity.
+
 
 #### Java
 
@@ -389,64 +404,42 @@ class Solution {
 	<li><code>-10<sup>9</sup>&nbsp;&lt;= target&nbsp;&lt;= 10<sup>9</sup></code></li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: Binary Search
+# Search Range in Sorted Array
 
-We can perform binary search twice to find the left and right boundaries respectively.
+## Intuition
+The `searchRange` method finds the starting and ending positions of a given target value in a sorted array. It uses binary search to efficiently locate the range of the target value.
 
-The time complexity is `O(\log n)`, and the space complexity is `O(1)`. Here, `n` is the length of the array `nums`.
+## Approach
+### Steps
 
-Below are two general templates for binary search:
+1. **Find the Starting Position**:
+   - Use the `search` helper method to find the first position where `target` could be inserted to maintain the sorted order.
 
-Template 1:
+2. **Find the Ending Position**:
+   - Use the `search` helper method to find the first position where `target + 1` could be inserted. This effectively gives the position just after the last occurrence of `target`.
 
-```java
-boolean check(int x) {
-}
+3. **Determine the Range**:
+   - If the starting and ending positions are the same, it means the target is not present in the array, so return `[-1, -1]`.
+   - Otherwise, return the range from the starting position to one less than the ending position.
 
-int search(int left, int right) {
-    while (left < right) {
-        int mid = (left + right) >> 1;
-        if (check(mid)) {
-            right = mid;
-        } else {
-            left = mid + 1;
-        }
-    }
-    return left;
-}
-```
+### Helper Method: `search`
+The `search` method performs a binary search to find the position of the given value `x` or the position where it could be inserted.
 
-Template 2:
+- **Initialization**: Set `left` to 0 and `right` to the length of the array.
+- **Binary Search**:
+  - Calculate the middle index `mid`.
+  - If `nums[mid] >= x`, update `right` to `mid`.
+  - Otherwise, update `left` to `mid + 1`.
+- **Return**: After the loop, `left` will be the insertion point.
 
-```java
-boolean check(int x) {
-}
+### Example
+For an array `[5, 7, 7, 8, 8, 10]` and target `8`:
+- The starting index of `8` is `3`.
+- The position of `9` (i.e., `8 + 1`) is `5`, so the ending index of `8` is `5 - 1 = 4`.
 
-int search(int left, int right) {
-    while (left < right) {
-        int mid = (left + right + 1) >> 1;
-        if (check(mid)) {
-            left = mid;
-        } else {
-            right = mid - 1;
-        }
-    }
-    return left;
-}
-```
-
-When doing binary search problems, you can follow the following routine:
-
-1. Write out the loop condition `left < right`;
-2. Inside the loop, you might as well write `mid = \lfloor \frac{left + right}{2} \rfloor` first;
-3. According to the specific problem, implement the `check()` function (sometimes the logic is very simple, you can not define `check`), think about whether to use `right = mid` (Template `1`) or `left = mid` (Template `2`);
-    - If `right = mid`, then write the else statement `left = mid + 1`, and there is no need to change the calculation of `mid`, that is, keep `mid = \lfloor \frac{left + right}{2} \rfloor`;
-    - If `left = mid`, then write the else statement `right = mid - 1`, and add +1 when calculating `mid`, that is, `mid = \lfloor \frac{left + right + 1}{2} \rfloor`;
-4. When the loop ends, `left` equals `right`.
-
-Note that the advantage of these two templates is that they always keep the answer within the binary search interval, and the value corresponding to the end condition of the binary search is exactly at the position of the answer. For the case that may have no solution, just check whether the `left` or `right` after the binary search ends satisfies the problem.
+The result will be `[3, 4]`.
 
 #### Java
 
@@ -530,9 +523,27 @@ class Solution {
 	<li><code>nums</code> is sorted and rotated between <code>1</code> and <code>n</code> times.</li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1
+# Find Minimum in Rotated Sorted Array
+
+## Intuition
+The `findMin` method finds the minimum element in a rotated sorted array. The array was originally sorted in ascending order but has been rotated at an unknown pivot.
+
+## Approach
+### Steps
+
+1. **Check if Array is Not Rotated**:
+   - If the first element of the array is less than or equal to the last element, the array is not rotated, so the minimum element is the first element.
+
+2. **Binary Search**:
+   - If the array is rotated, use binary search to find the pivot where the array is rotated.
+   - Initialize `left` to 0 and `right` to the length of the array minus one.
+   - In each iteration of the binary search:
+     - Calculate the middle index `mid`.
+     - If the middle element is greater than or equal to the first element, it means the minimum is to the right of `mid`, so set `left` to `mid + 1`.
+     - Otherwise, set `right` to `mid`.
+   - After the loop, `left` will point to the minimum element.
 
 #### Java
 
@@ -599,11 +610,25 @@ class Solution {
 	<li><code>-10<sup>6</sup> &lt;= nums1[i], nums2[i] &lt;= 10<sup>6</sup></code></li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: Divide and Conquer
+# Intuition
+To find the median of two sorted arrays, the goal is to partition the arrays such that the left half contains elements smaller than or equal to all elements in the right half. Since the arrays are sorted, the median will be the average of the maximum element in the left half and the minimum element in the right half.
 
-The problem requires the time complexity of the algorithm to be `O(\log (m + n))`, so we cannot directly traverse the two arrays, but need to use the binary search method.
+# Approach
+1. **Determine the Target Position:** To find the median, we need to identify the middle element(s) in the combined array of `nums1` and `nums2`. The position of the median depends on whether the total number of elements is odd or even. For an odd number of elements, the median is the middle element; for an even number of elements, it is the average of the two middle elements.
+
+2. **Binary Search Method:** We use a binary search to efficiently find the k-th smallest element in the merged array without merging them explicitly. This is done using a helper function `f` which finds the k-th smallest element in the arrays starting from indices `i` and `j`.
+
+3. **Recursive Function:** The function `f` is used to determine the k-th smallest element. It compares elements from the current positions of both arrays and discards half of the elements at each step based on the comparison:
+   - If the position `i` in `nums1` has reached the end, the k-th smallest element must be in `nums2`.
+   - If the position `j` in `nums2` has reached the end, the k-th smallest element must be in `nums1`.
+   - If `k` is 1, return the minimum of the current elements of both arrays.
+   - Otherwise, compare the elements at `i + p - 1` in `nums1` and `j + p - 1` in `nums2`, where `p` is half of `k`. Adjust the search range based on the comparison result.
+
+4. **Combine Results:** Compute the median by averaging the results of two calls to `f` to handle both odd and even cases. This ensures accurate results for both scenarios.
+
+The approach efficiently finds the median without merging the arrays, achieving a time complexity of O(log(min(m, n))) where m and n are the sizes of the input arrays.
 
 #### Java
 

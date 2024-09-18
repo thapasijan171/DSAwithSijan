@@ -28,7 +28,7 @@ heroImage: "https://creatorspace.imgix.net/users/clzmwqjs107miod018j7gwvu9/EKFBz
 	<li>Each string does not contain leading zeros except for the zero itself.</li>
 </ul>
 
-## Solutions
+# Solutions
 
 ### Solution 1: Simulation
 
@@ -97,7 +97,7 @@ class Solution {
 <p>&nbsp;</p>
 <p><strong>Follow up:</strong> If this function is called many times, how would you optimize it?</p>
 
-## Solutions
+# Solutions
 
 ### Solution 1: Bit Manipulation
 
@@ -180,7 +180,7 @@ public class Solution {
 <p>&nbsp;</p>
 <strong>Follow up:</strong> If this function is called many times, how would you optimize it?
 
-## Solutions
+# Solutions
 
 ### Solution 1
 
@@ -250,7 +250,7 @@ public class Solution {
 	<li>Each element in the array appears twice except for one element which appears only once.</li>
 </ul>
 
-## Solutions
+# Solutions
 
 ### Solution 1: Bitwise Operation
 
@@ -318,7 +318,7 @@ class Solution {
 	<li>Each element in <code>nums</code> appears exactly <strong>three times</strong> except for one element which appears <strong>once</strong>.</li>
 </ul>
 
-## Solutions
+# Solutions
 
 ### Solution 1: Bitwise Operation
 
@@ -439,7 +439,7 @@ class Solution {
 	<li><code>0 &lt;= left &lt;= right &lt;= 2<sup>31</sup> - 1</code></li>
 </ul>
 
-## Solutions
+# Solutions
 
 ### Solution 1
 

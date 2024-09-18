@@ -38,23 +38,25 @@ heroImage: "https://creatorspace.imgix.net/users/clzmwqjs107miod018j7gwvu9/9nCVo
 	<li><code>nums</code> is sorted in a <strong>strictly increasing</strong> order.</li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: Binary Search + Recursion
+# Convert Sorted Array to Binary Search Tree
 
-We design a recursive function `dfs(l, r)`, which indicates that the node values of the current binary search tree to be constructed are all within the index range `[l, r]` of the array `nums`. This function returns the root node of the constructed binary search tree.
+**Algorithm Used:** Binary Search Tree (BST) Construction
 
-The execution process of the function `dfs(l, r)` is as follows:
+## Intuition
+The problem requires converting a sorted array into a height-balanced binary search tree (BST). The idea is to use the middle element of the array as the root of the tree to ensure that the tree remains balanced. By recursively applying this approach to the left and right halves of the array, we can construct the entire BST.
 
-1. If `l > r`, it means the current array is empty, return `null`.
-2. If `l \leq r`, take the element with the index `mid = \lfloor \frac{l + r}{2} \rfloor` in the array as the root node of the current binary search tree, where `\lfloor x \rfloor` represents rounding down `x`.
-3. Recursively construct the left subtree of the current binary search tree, whose root node value is the element with the index `mid - 1` in the array, and the node values of the left subtree are all within the index range `[l, mid - 1]` of the array.
-4. Recursively construct the right subtree of the current binary search tree, whose root node value is the element with the index `mid + 1` in the array, and the node values of the right subtree are all within the index range `[mid + 1, r]` of the array.
-5. Return the root node of the current binary search tree.
+## Approach
+1. **Recursive Method**: Use a recursive depth-first search (DFS) approach to build the BST.
+   - **Base Case**: If the left index is greater than the right index, return `null`, as there are no elements to process.
+   - **Find Middle**: Calculate the middle index of the current subarray. This element will be the root of the subtree.
+   - **Recursive Calls**: 
+     - Recursively build the left subtree using the subarray to the left of the middle element.
+     - Recursively build the right subtree using the subarray to the right of the middle element.
+   - **Construct TreeNode**: Create a new `TreeNode` with the middle element as its value and set its left and right children using the results of the recursive calls.
 
-The answer is the return value of the function `dfs(0, n - 1)`.
-
-The time complexity is `O(n)`, and the space complexity is `O(\log n)`. Here, `n` is the length of the array `nums`.
+This approach ensures that each subtree is balanced, as the middle element is always chosen as the root, resulting in a height-balanced BST.
 
 #### Java
 
@@ -137,9 +139,39 @@ class Solution {
 <p>&nbsp;</p>
 <p><strong>Follow up:</strong> Can you sort the linked list in <code>O(n logn)</code> time and <code>O(1)</code> memory (i.e. constant space)?</p>
 
-## Solutions
+# Solutions
 
-### Solution 1
+# Sort a Linked List
+
+**Algorithm Used:** Merge Sort for Linked Lists
+
+## Intuition
+To sort a singly-linked list efficiently, we can use the merge sort algorithm. This algorithm is well-suited for linked lists because it divides the list into smaller sublists, sorts them, and then merges them. This approach leverages the fact that merging two sorted linked lists can be done in linear time.
+
+## Approach
+1. **Base Case**: If the list is empty or has only one node, it is already sorted, so return the head.
+
+2. **Find the Middle**: Use the slow and fast pointer technique to find the middle of the linked list. 
+   - Initialize two pointers: `slow` and `fast`. Move `slow` one step and `fast` two steps until `fast` reaches the end of the list.
+   - The `slow` pointer will be at the middle of the list when `fast` reaches the end.
+
+3. **Split the List**: 
+   - Divide the list into two halves: from the head to the middle (first half) and from the middle to the end (second half).
+   - Set the `next` pointer of the `slow` node to `null` to split the list.
+
+4. **Recursive Sort**:
+   - Recursively sort both halves of the list.
+
+5. **Merge Sorted Lists**:
+   - Merge the two sorted halves.
+   - Use a dummy node to simplify the merging process.
+   - Compare nodes from both halves and append the smaller node to the merged list.
+   - Continue until all nodes from both lists are processed.
+
+6. **Return the Sorted List**:
+   - The sorted list starts from the node following the dummy node.
+
+This approach ensures that the list is sorted efficiently using merge sort, which operates in O(n log n) time complexity.
 
 #### Java
 
@@ -268,9 +300,35 @@ Explanation is shown in the photo below:
 	<li><code>n == 2<sup>x</sup></code> where <code>0 &lt;= x &lt;= 6</code></li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1
+# Construct Quad Tree from 2D Grid
+
+**Algorithm Used:** Quad Tree Construction
+
+## Intuition
+To represent a 2D grid efficiently, we can use a quad tree. Each node in the quad tree represents a quadrant of the grid and can be either a leaf node (if the entire quadrant is uniform) or an internal node with four children. The goal is to construct a quad tree from the given grid where each node represents a specific region of the grid.
+
+## Approach
+1. **Base Case**:
+   - If the current region of the grid is uniform (all zeros or all ones), create a leaf node with the appropriate value.
+   - A region is uniform if all elements in that region are the same.
+
+2. **Recursive Case**:
+   - If the region is not uniform, split the region into four quadrants and recursively construct the quad tree for each quadrant.
+   - The four quadrants are:
+     - Top-left
+     - Top-right
+     - Bottom-left
+     - Bottom-right
+
+3. **Node Creation**:
+   - Create a node for the current region. If the region is uniform, set it as a leaf node. Otherwise, set it as an internal node with its four children pointing to the nodes created from the four quadrants.
+
+4. **Construct Node**:
+   - Use the recursive `dfs` method to process each quadrant and construct the corresponding nodes.
+
+This approach ensures that the quad tree representation of the grid is constructed efficiently by dividing the grid into smaller regions and processing each region recursively.
 
 #### Java
 
@@ -396,13 +454,34 @@ merging them into one sorted list:
 	<li>The sum of <code>lists[i].length</code> will not exceed <code>10<sup>4</sup></code>.</li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: Priority Queue (Min Heap)
+# Merge k Sorted Linked Lists
 
-We can create a min heap `pq` to maintain the head nodes of all linked lists. Each time, we take out the node with the smallest value from the min heap, add it to the end of the result linked list, and then add the next node of this node to the heap. Repeat the above steps until the heap is empty.
+**Algorithm Used:** Priority Queue (Min-Heap)
 
-The time complexity is `O(n \times \log k)`, and the space complexity is `O(k)`. Here, `n` is the total number of all linked list nodes, and `k` is the number of linked lists given in the problem.
+## Intuition
+The task is to merge `k` sorted linked lists into one sorted linked list. A priority queue (min-heap) is an efficient way to achieve this, as it allows us to extract the smallest element from the list of heads quickly. By maintaining a priority queue of the current nodes from each list, we can build the final sorted list in linear time relative to the total number of nodes.
+
+## Approach
+1. **Initialize Priority Queue**:
+   - Create a priority queue to hold the nodes of the linked lists. The priority queue will automatically sort the nodes based on their values.
+
+2. **Add Initial Nodes**:
+   - Traverse through the array of linked lists and add the head nodes of each list to the priority queue. Only add non-null nodes.
+
+3. **Merge Lists**:
+   - Create a dummy node to act as the start of the merged list. Use a pointer, `cur`, to keep track of the end of the merged list.
+   - While the priority queue is not empty:
+     - Extract the node with the smallest value from the queue.
+     - Add this node to the merged list.
+     - If the extracted node has a next node, add the next node to the priority queue.
+   - Continue this process until the priority queue is empty.
+
+4. **Return Result**:
+   - The merged list starts from the node following the dummy node.
+
+This approach ensures that the merging of `k` sorted linked lists is performed efficiently using a priority queue, with each node being processed in constant time, leading to an overall time complexity of O(N log k), where N is the total number of nodes and k is the number of linked lists.
 
 #### Java
 

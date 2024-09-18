@@ -35,60 +35,30 @@ heroImage: "https://creatorspace.imgix.net/users/clzmwqjs107miod018j7gwvu9/Mp2Bg
 
 <!-- description:end -->
 
-## Solutions
+# Solutions
 
-<!-- solution:start -->
+# Find Kth Largest Element in an Array
 
-### Solution 1: Quick Select
+**Algorithm Used:** Min-Heap
 
-Quick Select is an algorithm for finding the `k^{th}` largest or smallest element in an unsorted array. Its basic idea is to select a pivot element each time, dividing the array into two parts: one part contains elements smaller than the pivot, and the other part contains elements larger than the pivot. Then, based on the position of the pivot, it decides whether to continue the search on the left or right side until the `k^{th}` largest element is found.
+## Intuition
+To find the k-th largest element in an array, we use a min-heap (priority queue) to efficiently keep track of the top k largest elements seen so far.
 
-The time complexity is `O(n)`, and the space complexity is `O(\log n)`. Here, `n` is the length of the array `\textit{nums}`.
+## Approach
+1. **Initialize a Min-Heap**:
+   - Use a priority queue (min-heap) to store the k largest elements encountered.
 
-#### Java
+2. **Process Each Element**:
+   - Iterate through each element in the array.
+   - Add the current element to the min-heap.
 
-```java
-class Solution {
-    private int[] nums;
-    private int k;
+3. **Maintain Heap Size**:
+   - If the size of the heap exceeds k, remove the smallest element. This ensures that only the k largest elements are retained in the heap.
 
-    public int findKthLargest(int[] nums, int k) {
-        this.nums = nums;
-        this.k = nums.length - k;
-        return quickSort(0, nums.length - 1);
-    }
+4. **Retrieve the Result**:
+   - The root of the min-heap will be the k-th largest element after processing all elements.
 
-    private int quickSort(int l, int r) {
-        if (l == r) {
-            return nums[l];
-        }
-        int i = l - 1, j = r + 1;
-        int x = nums[(l + r) >>> 1];
-        while (i < j) {
-            while (nums[++i] < x) {
-            }
-            while (nums[--j] > x) {
-            }
-            if (i < j) {
-                int t = nums[i];
-                nums[i] = nums[j];
-                nums[j] = t;
-            }
-        }
-        if (j < k) {
-            return quickSort(j + 1, r);
-        }
-        return quickSort(l, j);
-    }
-}
-```
-
-### Solution 2: Priority Queue (Min Heap)
-
-We can maintain a min heap `\textit{minQ}` of size `k`, and then iterate through the array `\textit{nums}`, adding each element to the min heap. When the size of the min heap exceeds `k`, we pop the top element of the heap. This way, the final `k` elements in the min heap are the `k` largest elements in the array, and the top element of the heap is the `k^{th}` largest element.
-
-The time complexity is `O(n\log k)`, and the space complexity is `O(k)`. Here, `n` is the length of the array `\textit{nums}`.
-
+This approach leverages the properties of a min-heap to keep the k largest elements in the heap with a time complexity of O(n log k), where n is the number of elements in the array.
 
 #### Java
 
@@ -103,33 +73,6 @@ class Solution {
             }
         }
         return minQ.peek();
-    }
-}
-```
-
-### Solution 3: Counting Sort
-
-We can use the idea of counting sort, counting the occurrence of each element in the array `\textit{nums}` and recording it in a hash table `\textit{cnt}`. Then, we iterate over the elements `i` from largest to smallest, subtracting the occurrence count `\textit{cnt}[i]` each time, until `k` is less than or equal to `0`. At this point, the element `i` is the `k^{th}` largest element in the array.
-
-The time complexity is `O(n + m)`, and the space complexity is `O(n)`. Here, `n` is the length of the array `\textit{nums}`, and `m` is the maximum value among the elements in `\textit{nums}`.
-
-#### Java
-
-```java
-class Solution {
-    public int findKthLargest(int[] nums, int k) {
-        Map<Integer, Integer> cnt = new HashMap<>(nums.length);
-        int m = Integer.MIN_VALUE;
-        for (int x : nums) {
-            m = Math.max(m, x);
-            cnt.merge(x, 1, Integer::sum);
-        }
-        for (int i = m;; i--) {
-            k -= cnt.getOrDefault(i, 0);
-            if (k <= 0) {
-                return i;
-            }
-        }
     }
 }
 ```
@@ -186,9 +129,31 @@ Therefore, output the final maximized capital, which is 0 + 1 + 3 = 4.
 </ul>
 
 
-## Solutions
+# Solutions
 
-### Solution 1
+# Find Maximized Capital
+
+**Algorithm Used:** Priority Queues
+
+## Intuition
+To maximize capital after a series of investments, we need to carefully select projects based on their capital requirements and profits. The goal is to maximize the total capital by selecting projects within the available capital and iterating through the most profitable ones.
+
+## Approach
+1. **Initialize Priority Queues**:
+   - Use a min-heap (priority queue) `q1` to store projects by their required capital.
+   - Use a max-heap (priority queue) `q2` to store the profits of the projects that can be undertaken with the current capital.
+
+2. **Add Projects to Min-Heap**:
+   - Iterate through each project and add it to the min-heap `q1` based on its capital requirement.
+
+3. **Select Projects**:
+   - For each of the k iterations (representing the number of investments), move projects from `q1` to `q2` if their capital requirement is less than or equal to the current available capital `w`.
+   - If `q2` is not empty, select the most profitable project (poll the max-heap) and add its profit to the available capital `w`.
+
+4. **Return the Result**:
+   - After completing the k investments or exhausting the projects, the final capital `w` is returned.
+
+This approach ensures that we are always selecting the most profitable projects that we can afford, thereby maximizing the final capital.
 
 #### Java
 
@@ -260,9 +225,32 @@ class Solution {
 </ul>
 
 
-## Solutions
+# Solutions
 
-### Solution 1
+# K Smallest Pairs
+
+**Algorithm Used:** Min-Heap (Priority Queue)
+
+## Intuition
+To find the k smallest pairs from two sorted arrays, we can use a min-heap to efficiently retrieve the smallest pairs. By maintaining a min-heap of pairs, we can ensure that we always process the smallest available pair and generate new pairs systematically.
+
+## Approach
+1. **Initialize the Min-Heap**:
+   - Use a min-heap to store pairs of indices and their corresponding sums. Initially, add pairs consisting of each element from `nums1` and the first element from `nums2`.
+
+2. **Process the Heap**:
+   - Extract the smallest pair (based on the sum of its elements) from the heap.
+   - Add this pair to the result list.
+   - Generate a new pair by moving to the next element in `nums2` while keeping the same element from `nums1`.
+   - Add this new pair to the heap if it is valid.
+
+3. **Limit Results**:
+   - Continue this process until k pairs have been added to the result list or the heap is empty.
+
+4. **Return the Result**:
+   - The result list contains the k smallest pairs.
+
+This approach ensures that we efficiently retrieve the smallest pairs using a min-heap, which allows us to avoid generating and sorting all possible pairs.
 
 #### Java
 
@@ -346,17 +334,33 @@ medianFinder.findMedian(); // return 2.0
 	<li>If <code>99%</code> of all integer numbers from the stream are in the range <code>[0, 100]</code>, how would you optimize your solution?</li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: Min Heap and Max Heap (Priority Queue)
+# Median Finder
 
-We can use two heaps to maintain all the elements, a min heap `\textit{minQ}` and a max heap `\textit{maxQ}`, where the min heap `\textit{minQ}` stores the larger half, and the max heap `\textit{maxQ}` stores the smaller half.
+**Algorithm Used:** Two-Heap Approach
 
-When calling the `addNum` method, we first add the element to the max heap `\textit{maxQ}`, then pop the top element of `\textit{maxQ}` and add it to the min heap `\textit{minQ}`. If at this time the size difference between `\textit{minQ}` and `\textit{maxQ}` is greater than `1`, we pop the top element of `\textit{minQ}` and add it to `\textit{maxQ}`. The time complexity is `O(\log n)`.
+## Intuition
+To efficiently find the median of a dynamically changing data stream, we use two heaps:
+- A max-heap to maintain the smaller half of the data.
+- A min-heap to maintain the larger half of the data.
 
-When calling the `findMedian` method, if the size of `\textit{minQ}` is equal to the size of `\textit{maxQ}`, it means the total number of elements is even, and we can return the average value of the top elements of `\textit{minQ}` and `\textit{maxQ}`; otherwise, we return the top element of `\textit{minQ}`. The time complexity is `O(1)`.
+By keeping the heaps balanced, we can quickly compute the median based on the root elements of the heaps.
 
-The space complexity is `O(n)`, where `n` is the number of elements.
+## Approach
+
+1. **Data Structures**:
+   - Use a max-heap (`maxQ`) to store the smaller half of the elements.
+   - Use a min-heap (`minQ`) to store the larger half of the elements.
+
+2. **Adding a Number**:
+   - Add the new number to the max-heap.
+   - Move the largest element from the max-heap to the min-heap to ensure that all elements in the min-heap are greater than those in the max-heap.
+   - If the min-heap becomes larger than the max-heap by more than one element, move the smallest element from the min-heap to the max-heap to maintain the balance.
+
+3. **Finding the Median**:
+   - If both heaps have the same size, the median is the average of the roots of both heaps.
+   - If the min-heap has one more element than the max-heap, the median is the root of the min-heap.
 
 #### Java
 

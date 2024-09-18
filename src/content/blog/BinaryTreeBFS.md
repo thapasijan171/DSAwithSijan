@@ -44,12 +44,28 @@ heroImage: "../img/img_blog/1dp.jpg"
 </ul>
 
 
-## Solutions
+# Solutions
 
-<!-- solution:start -->
+# Intuition
+To view the right side of a binary tree, we need to capture the last node seen at each level of the tree. This way, we will see the nodes that are visible from the right side.
 
-### Solution 1
+# Approach
+1. **Breadth-First Search (BFS):**
+   - Use BFS to traverse the tree level by level. BFS ensures that nodes at each level are processed before moving to the next level.
 
+2. **Queue for Level Order Traversal:**
+   - Utilize a queue to help in BFS traversal. Start by adding the root node to the queue.
+   - For each level of the tree, the rightmost node is the last node to be processed for that level. Capture this node's value.
+
+3. **Processing Each Level:**
+   - For each level, iterate through all nodes in the queue (which represents that level).
+   - For each node, add its children to the queue for processing in the next level.
+   - After processing all nodes at the current level, record the value of the last node processed (rightmost node).
+
+4. **Edge Cases:**
+   - If the tree is empty (`root` is `null`), return an empty list.
+
+The time complexity of this approach is O(n), where `n` is the number of nodes in the tree, as each node is visited once.
 
 #### Java
 
@@ -94,51 +110,6 @@ class Solution {
 }
 ```
 
-### Solution 2
-
-#### Java
-
-```java
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode() {}
- *     TreeNode(int val) { this.val = val; }
- *     TreeNode(int val, TreeNode left, TreeNode right) {
- *         this.val = val;
- *         this.left = left;
- *         this.right = right;
- *     }
- * }
- */
-class Solution {
-    private List<Integer> ans = new ArrayList<>();
-
-    public List<Integer> rightSideView(TreeNode root) {
-        dfs(root, 0);
-        return ans;
-    }
-
-    private void dfs(TreeNode node, int depth) {
-        if (node == null) {
-            return;
-        }
-        if (depth == ans.size()) {
-            ans.add(node.val);
-        }
-        dfs(node.right, depth + 1);
-        dfs(node.left, depth + 1);
-    }
-}
-```
-
-<br>
-<br>
-<br>
-
 # [637. Average of Levels in Binary Tree](https://leetcode.com/problems/average-of-levels-in-binary-tree)
 
 ## Description
@@ -174,69 +145,29 @@ Hence return [3, 14.5, 11].
 
 <!-- description:end -->
 
-## Solutions
+# Solutions
 
-<!-- solution:start -->
+# Intuition
+To calculate the average value of nodes at each level of a binary tree, we need to traverse the tree level by level and compute the sum and count of nodes at each level.
 
-### Solution 1: BFS
+# Approach
+1. **Depth-First Search (DFS):**
+   - Use DFS to traverse the tree and keep track of the sum and count of nodes at each level.
+   - Maintain two lists: one for the sum of values at each level (`s`) and another for the count of nodes at each level (`cnt`).
 
-We can use the Breadth-First Search (BFS) method to traverse the nodes of each level and calculate the average value of each level.
+2. **Updating Sum and Count:**
+   - As we traverse each node, update the sum and count for the current level.
+   - If the level is being visited for the first time, initialize the sum and count for that level.
+   - For subsequent visits to the same level, update the existing sum and count.
 
-Specifically, we define a queue `q`, initially adding the root node to the queue. Each time, we take out all the nodes in the queue, calculate their average value, add it to the answer array, and then add their child nodes to the queue. Repeat this process until the queue is empty.
+3. **Computing Averages:**
+   - After traversing the entire tree, compute the average for each level by dividing the total sum by the number of nodes at that level.
+   - Convert these averages to `Double` and store them in a result list.
 
-The time complexity is `O(n)`, and the space complexity is `O(n)`. Here, `n` is the number of nodes in the binary tree.
+4. **Edge Cases:**
+   - If the tree is empty (`root` is `null`), return an empty list.
 
-#### Java
-
-```java
-/**
- * Definition for a binary tree node.
- * public class TreeNode {
- *     int val;
- *     TreeNode left;
- *     TreeNode right;
- *     TreeNode() {}
- *     TreeNode(int val) { this.val = val; }
- *     TreeNode(int val, TreeNode left, TreeNode right) {
- *         this.val = val;
- *         this.left = left;
- *         this.right = right;
- *     }
- * }
- */
-class Solution {
-    public List<Double> averageOfLevels(TreeNode root) {
-        List<Double> ans = new ArrayList<>();
-        Deque<TreeNode> q = new ArrayDeque<>();
-        q.offer(root);
-        while (!q.isEmpty()) {
-            int n = q.size();
-            long s = 0;
-            for (int i = 0; i < n; i++) {
-                root = q.pollFirst();
-                s += root.val;
-                if (root.left != null) {
-                    q.offer(root.left);
-                }
-                if (root.right != null) {
-                    q.offer(root.right);
-                }
-            }
-            ans.add(s * 1.0 / n);
-        }
-        return ans;
-    }
-}
-```
-
-### Solution 2: DFS
-
-We can also use the Depth-First Search (DFS) method to calculate the average value of each level.
-
-Specifically, we define an array `s`, where `s[i]` is a tuple representing the sum of node values and the number of nodes at the `i`-th level. We perform a depth-first search on the tree. For each node, we add the node's value to the corresponding `s[i]` and increment the node count by one. Finally, for each `s[i]`, we calculate the average value and add it to the answer array.
-
-The time complexity is `O(n)`, and the space complexity is `O(n)`. Here, `n` is the number of nodes in the binary tree.
-
+The time complexity of this approach is O(n), where `n` is the number of nodes in the tree, as each node is visited once.
 
 #### Java
 
@@ -327,22 +258,26 @@ class Solution {
 	<li><code>-1000 &lt;= Node.val &lt;= 1000</code></li>
 </ul>
 
-<!-- description:end -->
 
-## Solutions
+# Solutions
 
-<!-- solution:start -->
+# Intuition
+To get the level order traversal of a binary tree, we need to visit nodes level by level from top to bottom. This can be efficiently achieved using a breadth-first traversal approach.
 
-### Solution 1: BFS
+# Approach
+1. **Breadth-First Search (BFS):**
+   - Use BFS to traverse the tree level by level.
+   - Utilize a queue to keep track of nodes to be processed. This ensures nodes are processed in the order they are added, maintaining the level-wise structure.
 
-We can use the BFS method to solve this problem. First, enqueue the root node, then continuously perform the following operations until the queue is empty:
+2. **Processing Nodes:**
+   - Start by adding the root node to the queue.
+   - For each level, dequeue nodes, add their values to a temporary list (`t`), and enqueue their children.
+   - After processing all nodes at the current level, add the temporary list (`t`) to the result list (`ans`).
 
--   Traverse all nodes in the current queue, store their values in a temporary array `t`, and then enqueue their child nodes.
--   Store the temporary array `t` in the answer array.
+3. **Edge Cases:**
+   - If the tree is empty (`root` is `null`), return an empty list.
 
-Finally, return the answer array.
-
-The time complexity is `O(n)`, and the space complexity is `O(n)`. Here, `n` is the number of nodes in the binary tree.
+The time complexity of this approach is O(n), where `n` is the number of nodes in the tree, as each node is processed exactly once.
 
 #### Java
 
@@ -372,7 +307,7 @@ class Solution {
         q.offer(root);
         while (!q.isEmpty()) {
             List<Integer> t = new ArrayList<>();
-            for (int n = q.size(); n > 0; --n) {
+            for (int n = q.size(); n > 0; n--) {
                 TreeNode node = q.poll();
                 t.add(node.val);
                 if (node.left != null) {
@@ -429,17 +364,26 @@ class Solution {
 	<li><code>-100 &lt;= Node.val &lt;= 100</code></li>
 </ul>
 
-<!-- description:end -->
+# Solutions
 
-## Solutions
+# Intuition
+To achieve a zigzag level order traversal of a binary tree, we need to traverse the tree level by level but alternate the direction of traversal at each level. This requires visiting nodes from left to right on some levels and from right to left on others.
 
-<!-- solution:start -->
+# Approach
+1. **Breadth-First Search (BFS) with Zigzag Pattern:**
+   - Use BFS to traverse the tree level by level.
+   - Utilize a queue to manage nodes at each level and a boolean flag to determine the direction of traversal.
 
-### Solution 1: BFS
+2. **Processing Nodes:**
+   - Initialize the queue with the root node and a boolean flag (`left`) to track the current direction of traversal.
+   - For each level, dequeue nodes, add their values to a temporary list (`t`), and enqueue their children.
+   - If the current level is supposed to be traversed in reverse order (`left` is `false`), reverse the temporary list before adding it to the result list (`ans`).
+   - Toggle the direction flag (`left`) after processing each level.
 
-To implement zigzag level order traversal, we need to add a flag `left` on the basis of level order traversal. This flag is used to mark the order of the node values in the current level. If `left` is `true`, the node values of the current level are stored in the result array `ans` from left to right. If `left` is `false`, the node values of the current level are stored in the result array `ans` from right to left.
+3. **Edge Cases:**
+   - If the tree is empty (`root` is `null`), return an empty list.
 
-The time complexity is `O(n)`, and the space complexity is `O(n)`. Here, `n` is the number of nodes in the binary tree.
+The time complexity of this approach is O(n), where `n` is the number of nodes in the tree, as each node is processed exactly once.
 
 #### Java
 

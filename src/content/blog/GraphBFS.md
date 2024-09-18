@@ -67,21 +67,36 @@ This is the lowest possible number of moves to reach the last square, so return 
 	<li>The squares labeled <code>1</code> and <code>n<sup>2</sup></code> are not the starting points of any snake or ladder.</li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: BFS
+# Snakes and Ladders
 
-We can use the Breadth-First Search (BFS) method, starting from the starting point, moving forward 1 to 6 steps each time, and then checking for snakes or ladders. If there are any, move to the destination of the snake or ladder; otherwise, move to the next square.
+**Algorithm Used:** Breadth-First Search (BFS)
 
-Specifically, we use a queue `\textit{q}` to store the current reachable square numbers, initially putting number `1` into the queue. At the same time, we use a set `\textit{vis}` to record the squares that have been reached to avoid revisiting them, initially adding number `1` to the set `\textit{vis}`.
+## Intuition
+The problem involves navigating a board game where the player starts at square 1 and aims to reach the last square using dice rolls. The board contains snakes and ladders that alter the player's position. The goal is to find the minimum number of dice rolls required to reach the last square.
 
-In each operation, we take out the square number `x` at the front of the queue. If `x` is the endpoint, we can return the current number of steps. Otherwise, we move `x` forward 1 to 6 steps, setting the new number as `y`. If `y` falls outside the board, we skip it directly. Otherwise, we need to find the row and column corresponding to `y`. Since the row numbers decrease from bottom to top, and the column numbers depend on the parity of the row, we need to perform some calculations to get the row and column corresponding to `y`.
+## Approach
+1. **Initialization**:
+   - Create a queue to perform Breadth-First Search (BFS) starting from square 1.
+   - Maintain a boolean array `vis` to track visited squares and prevent revisits.
+   - Initialize the queue with the starting position (square 1) and mark it as visited.
 
-If the square corresponding to `y` has a snake or ladder, we need to move to the destination of the snake or ladder, denoted as `z`. If `z` has not been visited, we add `z` to the queue and set, allowing us to continue the breadth-first search.
+2. **Breadth-First Search (BFS)**:
+   - Use a level-wise approach to explore all possible moves from the current position.
+   - For each position, simulate dice rolls from 1 to 6.
+   - Compute the destination square based on the dice roll and check if it is a ladder or snake. Adjust the position accordingly.
+   - If the destination square is the last square, return the number of moves taken.
+   - If not, add the position to the queue if it hasn't been visited.
 
-If we ultimately cannot reach the endpoint, we return `-1`.
+3. **Board Conversion**:
+   - Convert the 2D board position to a 1D representation to simplify movement calculations.
+   - Handle the board's zigzag pattern by adjusting column indices based on the row.
 
-The time complexity is `O(n^2)`, and the space complexity is `O(n^2)`. Here, `n` is the length of the side of the board.
+4. **Return Result**:
+   - If the queue is exhausted and the last square hasn't been reached, return -1 indicating that the last square is not reachable.
+
+This approach ensures that the shortest path is found using BFS, with each position being processed at most once, resulting in efficient traversal of the board.
 
 #### Java
 
@@ -165,18 +180,35 @@ class Solution {
 	<li><code>startGene</code>, <code>endGene</code>, and <code>bank[i]</code> consist of only the characters <code>[&#39;A&#39;, &#39;C&#39;, &#39;G&#39;, &#39;T&#39;]</code>.</li>
 </ul>
 
-## Solutions
+# Solutions
 
+# Minimum Genetic Mutation
 
-### Solution 1: BFS
+**Algorithm Used:** Breadth-First Search (BFS)
 
-We define a queue `q` to store the current gene sequence and the number of changes, and a set `vis` to store the visited gene sequences. Initially, we add the starting gene sequence `start` to the queue `q` and the set `vis`.
+## Intuition
+The problem involves finding the shortest sequence of genetic mutations required to transform a start gene into an end gene using a given list of valid mutations (bank). Each mutation changes exactly one character, and valid mutations are specified in the bank.
 
-Then, we continuously take out a gene sequence from the queue `q`. If this gene sequence equals the target gene sequence, we return the current number of changes. Otherwise, we iterate through the gene bank `bank`, calculate the difference value between the current gene sequence and the gene sequence in the gene bank. If the difference value is `1` and the gene sequence in the gene bank has not been visited, we add it to the queue `q` and the set `vis`.
+## Approach
+1. **Initialization**:
+   - Use a queue to perform Breadth-First Search (BFS) starting from the `startGene`.
+   - Maintain a set to track visited genes and prevent reprocessing.
 
-If the queue `q` is empty, it means that the gene change cannot be completed, so we return `-1`.
+2. **Breadth-First Search (BFS)**:
+   - Initialize the queue with the `startGene` and mark it as visited.
+   - For each gene in the queue, check all possible mutations by comparing with each gene in the bank.
+   - A mutation is valid if it differs by exactly one character.
+   - If a valid mutation matches the `endGene`, return the current depth of the BFS traversal.
+   - Otherwise, add the valid mutation to the queue and mark it as visited.
 
-The time complexity is `O(C \times n \times m)`, and the space complexity is `O(n \times m)`. Where `n` and `m` are the lengths of the gene sequence and the gene bank respectively, and `C` is the size of the character set of the gene sequence. In this problem, `C = 4`.
+3. **Gene Mutation**:
+   - For each gene, compare it with each gene in the bank to determine if they differ by exactly one character.
+   - This comparison is done by counting character differences. If only one character differs, it's a valid mutation.
+
+4. **Return Result**:
+   - If the BFS completes and the `endGene` is not found, return -1 indicating that the mutation sequence is not possible.
+
+This approach ensures that the shortest mutation sequence is found efficiently using BFS, with each gene being processed at most once, resulting in a time complexity proportional to the number of genes and mutations.
 
 #### Java
 
@@ -264,57 +296,36 @@ class Solution {
 	<li>All the words in <code>wordList</code> are <strong>unique</strong>.</li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: BFS
+# Word Ladder II
 
-BFS minimum step model. This problem can be solved with naive BFS, or it can be optimized with bidirectional BFS to reduce the search space and improve efficiency.
+**Algorithm Used:** Bidirectional Breadth-First Search (BFS)
 
-Bidirectional BFS is a common optimization method for BFS, with the main implementation ideas as follows:
+## Intuition
+The problem involves finding the shortest transformation sequence from a `beginWord` to an `endWord` using a dictionary of words where each transformation changes exactly one character and must be in the dictionary. The solution leverages bidirectional BFS to efficiently find the shortest path.
 
-1. Create two queues, q1 and q2, for "start -> end" and "end -> start" search directions, respectively.
-2. Create two hash maps, m1 and m2, to record the visited nodes and their corresponding expansion times (steps).
-3. During each search, prioritize the queue with fewer elements for search expansion. If a node visited from the other direction is found during the expansion, it means the shortest path has been found.
-4. If one of the queues is empty, it means that the search in the current direction cannot continue, indicating that the start and end points are not connected, and there is no need to continue the search.
+## Approach
+1. **Initialization**:
+   - Convert the list of words into a set for O(1) lookups.
+   - Check if the `endWord` is present in the set. If not, return 0 as transformation is not possible.
 
-#### Java
+2. **Bidirectional BFS Setup**:
+   - Use two queues: `q1` for the forward search from `beginWord` and `q2` for the backward search from `endWord`.
+   - Maintain two maps: `m1` to track distances from `beginWord` and `m2` to track distances from `endWord`.
 
-```java
-class Solution {
-    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
-        Set<String> words = new HashSet<>(wordList);
-        Queue<String> q = new ArrayDeque<>();
-        q.offer(beginWord);
-        int ans = 1;
-        while (!q.isEmpty()) {
-            ++ans;
-            for (int i = q.size(); i > 0; i--) {
-                String s = q.poll();
-                char[] chars = s.toCharArray();
-                for (int j = 0; j < chars.length; j++) {
-                    char ch = chars[j];
-                    for (char k = 'a'; k <= 'z'; k++) {
-                        chars[j] = k;
-                        String t = new String(chars);
-                        if (!words.contains(t)) {
-                            continue;
-                        }
-                        if (endWord.equals(t)) {
-                            return ans;
-                        }
-                        q.offer(t);
-                        words.remove(t);
-                    }
-                    chars[j] = ch;
-                }
-            }
-        }
-        return 0;
-    }
-}
-```
+3. **Bidirectional Search**:
+   - Perform BFS from both ends (start and end) simultaneously:
+     - Extend the search by one step from the current queue.
+     - For each word, generate all possible transformations by changing each character to all letters from 'a' to 'z'.
+     - Check if the transformed word is in the set and has not been visited in the current direction.
+     - If a transformed word is found in the opposite direction's map, the shortest path is found.
 
-### Solution 2
+4. **Return Result**:
+   - If a connection is found between the forward and backward searches, return the total number of steps.
+   - If the queues are exhausted without finding a connection, return 0 indicating no possible transformation sequence.
+
+This approach ensures that the shortest transformation sequence is found efficiently by reducing the search space using bidirectional BFS, which is faster than a single-ended BFS for large graphs.
 
 #### Java
 

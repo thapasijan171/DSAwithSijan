@@ -48,95 +48,33 @@ heroImage: "https://creatorspace.imgix.net/users/clzmwqjs107miod018j7gwvu9/H7V7T
 	<li><code>grid[i][j]</code> is <code>&#39;0&#39;</code> or <code>&#39;1&#39;</code>.</li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1
+# Number of Islands
 
-#### Java
+**Algorithm Used:** Union-Find (Disjoint Set Union, DSU)
 
-```java
-class Solution {
-    private char[][] grid;
-    private int m;
-    private int n;
+## Intuition
+The problem involves finding the number of distinct islands in a 2D grid where '1' represents land and '0' represents water. An island is a group of connected lands (vertically or horizontally). The solution uses the Union-Find data structure to efficiently group and count distinct islands.
 
-    public int numIslands(char[][] grid) {
-        m = grid.length;
-        n = grid[0].length;
-        this.grid = grid;
-        int ans = 0;
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (grid[i][j] == '1') {
-                    dfs(i, j);
-                    ++ans;
-                }
-            }
-        }
-        return ans;
-    }
+## Approach
+1. **Initialization**:
+   - Convert the 2D grid into a 1D representation using a Union-Find data structure.
+   - Initialize each cell in the grid as its own parent in the Union-Find structure.
 
-    private void dfs(int i, int j) {
-        grid[i][j] = '0';
-        int[] dirs = {-1, 0, 1, 0, -1};
-        for (int k = 0; k < 4; ++k) {
-            int x = i + dirs[k];
-            int y = j + dirs[k + 1];
-            if (x >= 0 && x < m && y >= 0 && y < n && grid[x][y] == '1') {
-                dfs(x, y);
-            }
-        }
-    }
-}
-```
+2. **Union Operation**:
+   - Traverse through each cell in the grid.
+   - For each land cell ('1'), check its right and down neighbors (to avoid redundant checks).
+   - If a neighbor is also land ('1'), perform a union operation to group the current cell with the neighbor.
 
-### Solution 2
+3. **Find Operation**:
+   - Use path compression to efficiently find the root of a cell in the Union-Find structure.
 
-#### Java
+4. **Counting Islands**:
+   - After processing all cells, count the number of unique roots (i.e., distinct islands) by iterating through the grid and checking if a cell is its own root.
 
-```java
-class Solution {
-    private char[][] grid;
-    private int m;
-    private int n;
-
-    public int numIslands(char[][] grid) {
-        m = grid.length;
-        n = grid[0].length;
-        this.grid = grid;
-        int ans = 0;
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (grid[i][j] == '1') {
-                    bfs(i, j);
-                    ++ans;
-                }
-            }
-        }
-        return ans;
-    }
-
-    private void bfs(int i, int j) {
-        grid[i][j] = '0';
-        Deque<int[]> q = new ArrayDeque<>();
-        q.offer(new int[] {i, j});
-        int[] dirs = {-1, 0, 1, 0, -1};
-        while (!q.isEmpty()) {
-            int[] p = q.poll();
-            for (int k = 0; k < 4; k++) {
-                int x = p[0] + dirs[k];
-                int y = p[1] + dirs[k + 1];
-                if (x >= 0 && x < m && y >= 0 && y < n && grid[x][y] == '1') {
-                    q.offer(new int[] {x, y});
-                    grid[x][y] = '0';
-                }
-            }
-        }
-    }
-}
-```
-
-### Solution 3
+5. **Return Result**:
+   - Return the count of unique islands.
 
 #### Java
 
@@ -236,70 +174,32 @@ class Solution {
 	<li><code>board[i][j]</code> is <code>&#39;X&#39;</code> or <code>&#39;O&#39;</code>.</li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: Depth-First Search (DFS)
+# Surrounded Regions
 
-We can start from the boundary of the matrix, taking each 'O' on the matrix boundary as a starting point, and perform depth-first search. All 'O's found in the search are replaced with '.'.
+**Algorithm Used:** Union-Find (Disjoint Set Union, DSU)
 
-Then we traverse the matrix again, for each position:
+## Intuition
+The problem involves marking 'O' cells that are surrounded by 'X' cells in a 2D board. Cells connected to the border are not surrounded and should remain as 'O'. The solution uses the Union-Find data structure to efficiently group and identify connected regions.
 
--   If it is '.', replace it with 'O';
--   Otherwise, if it is 'O', replace it with 'X'.
+## Approach
+1. **Initialization**:
+   - Convert the 2D board into a 1D representation using a Union-Find data structure.
+   - Initialize each cell in the board as its own parent, with an additional virtual node for the border.
 
-The time complexity is `O(m \times n)`, and the space complexity is `O(m \times n)`. Here, `m` and `n` are the number of rows and columns in the matrix, respectively.
+2. **Union Operation**:
+   - Traverse the border cells of the board. For each 'O' cell on the border, connect it to the virtual node representing the border.
+   - For non-border 'O' cells, connect them to their adjacent 'O' cells.
 
-#### Java
+3. **Find Operation**:
+   - Use path compression to efficiently find the root of a cell in the Union-Find structure.
 
-```java
-class Solution {
-    private final int[] dirs = {-1, 0, 1, 0, -1};
-    private char[][] board;
-    private int m;
-    private int n;
+4. **Update Board**:
+   - After processing all cells, iterate through the board and mark 'O' cells as 'X' if they are not connected to the border node.
 
-    public void solve(char[][] board) {
-        m = board.length;
-        n = board[0].length;
-        this.board = board;
-        for (int i = 0; i < m; i++) {
-            dfs(i, 0);
-            dfs(i, n - 1);
-        }
-        for (int j = 0; j < n; j++) {
-            dfs(0, j);
-            dfs(m - 1, j);
-        }
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (board[i][j] == '.') {
-                    board[i][j] = 'O';
-                } else if (board[i][j] == 'O') {
-                    board[i][j] = 'X';
-                }
-            }
-        }
-    }
-
-    private void dfs(int i, int j) {
-        if (i < 0 || i >= m || j < 0 || j >= n || board[i][j] != 'O') {
-            return;
-        }
-        board[i][j] = '.';
-        for (int k = 0; k < 4; k++) {
-            dfs(i + dirs[k], j + dirs[k + 1]);
-        }
-    }
-}
-```
-
-### Solution 2: Union-Find Set
-
-We can also use a union-find set, connecting each 'O' on the matrix boundary with a super node `m \times n`, and connecting each 'O' in the matrix with the 'O's above, below, left, and right of it.
-
-Then we traverse this matrix, for each position, if it is 'O' and it is not connected to the super node, then we replace it with 'X'.
-
-The time complexity is `O(m \times n \times \alpha(m \times n))`, and the space complexity is `O(m \times n)`. Here, `m` and `n` are the number of rows and columns in the matrix, respectively, and `\alpha` is the inverse Ackermann function.
+5. **Return Result**:
+   - Modify the board in place to reflect the changes.
 
 #### Java
 
@@ -421,9 +321,31 @@ class Node {
 	<li>The Graph is connected and all nodes can be visited starting from the given node.</li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1
+# Clone Graph
+
+**Algorithm Used:** Depth-First Search (DFS)
+
+## Intuition
+The problem involves creating a deep copy of an undirected graph where each node has a list of its neighbors. The solution uses Depth-First Search (DFS) to traverse the graph and clone each node while maintaining the structure of the original graph.
+
+## Approach
+1. **Initialization**:
+   - Use a `Map` to keep track of the original nodes and their corresponding cloned nodes.
+
+2. **DFS Traversal**:
+   - If the node is `null`, return `null`.
+   - If the node has already been cloned (i.e., exists in the `visited` map), return the cloned node.
+   - Create a new node with the same value as the original node.
+   - Add the new node to the `visited` map to mark it as cloned.
+   - Recursively clone each neighbor of the original node and add the cloned neighbors to the new node.
+
+3. **Return Result**:
+   - Return the cloned node, which represents the root of the cloned graph.
+
+This approach ensures that each node and its neighbors are cloned efficiently while preserving the original graph's structure.
+
 
 #### Java
 
@@ -527,9 +449,35 @@ note: x is undefined =&gt; -1.0</pre>
 	<li><code>A<sub>i</sub>, B<sub>i</sub>, C<sub>j</sub>, D<sub>j</sub></code> consist of lower case English letters and digits.</li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1
+# Evaluate Division
+
+**Algorithm Used:** Union-Find (Disjoint Set Union, DSU)
+
+## Intuition
+The problem involves evaluating division expressions given a set of equations and corresponding values. Each equation represents a division relationship between two variables. The solution uses the Union-Find data structure to efficiently manage and query these relationships.
+
+## Approach
+1. **Initialization**:
+   - Use two maps: `p` for the parent of each variable and `w` for the weight of each variable relative to its parent.
+   - Initialize each variable's parent to itself and weight to 1.0.
+
+2. **Union Operation**:
+   - For each equation, perform a union operation to connect the two variables.
+   - Update the weight of the parent to reflect the division value.
+
+3. **Find Operation**:
+   - Use path compression to find the root of a variable and update its weight relative to its root.
+
+4. **Query Processing**:
+   - For each query, check if both variables are present and connected.
+   - If connected, compute the result using the stored weights. If not connected or variables are missing, return -1.0.
+
+5. **Return Result**:
+   - Return an array of results for all queries.
+
+This approach ensures that each equation and query is processed efficiently, leading to an overall time complexity of O((E + Q) * α(N)), where E is the number of equations, Q is the number of queries, and α(N) is the inverse Ackermann function.
 
 #### Java
 
@@ -627,17 +575,33 @@ To take course 1 you should have finished course 0, and to take course 0 you sho
 	<li>All the pairs prerequisites[i] are <strong>unique</strong>.</li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: Topological Sorting
+# Course Schedule
 
-For this problem, we can consider the courses as nodes in a graph, and prerequisites as edges in the graph. Thus, we can transform this problem into determining whether there is a cycle in the directed graph.
+**Algorithm Used:** Topological Sort (Kahn's Algorithm)
 
-Specifically, we can use the idea of topological sorting. For each node with an in-degree of `0`, we reduce the in-degree of its out-degree nodes by `1`, until all nodes have been traversed.
+## Intuition
+The problem is to determine if it is possible to finish all courses given a list of prerequisites. Each course may have one or more prerequisites, forming a directed graph where an edge from course A to course B indicates that course A must be completed before course B. The solution uses a topological sort to check if there are any cycles in the graph, which would make it impossible to complete all courses.
 
-If all nodes have been traversed, it means there is no cycle in the graph, and we can complete all courses; otherwise, we cannot complete all courses.
+## Approach
+1. **Graph Construction**:
+   - Create an adjacency list `g` to represent the graph where each course points to its subsequent courses.
+   - Use an array `indeg` to track the in-degrees of each course (i.e., the number of prerequisites for each course).
 
-The time complexity is `O(n + m)`, and the space complexity is `O(n + m)`. Here, `n` and `m` are the number of courses and prerequisites respectively.
+2. **Initialize Queue**:
+   - Add all courses with zero in-degrees (i.e., courses that have no prerequisites) to a queue.
+
+3. **Process Courses**:
+   - While the queue is not empty:
+     - Remove a course from the queue and increment the count of completed courses.
+     - For each course dependent on the removed course, decrement its in-degree. If the in-degree of any course becomes zero, add it to the queue.
+
+4. **Check Completion**:
+   - After processing all courses, compare the count of completed courses with the total number of courses.
+   - If they match, return `true`, indicating all courses can be completed. Otherwise, return `false`.
+
+This approach ensures that all courses are processed if no cycles are present, with a time complexity of O(V + E), where V is the number of courses and E is the number of prerequisites.
 
 #### Java
 
@@ -726,9 +690,32 @@ So one correct course order is [0,1,2,3]. Another correct ordering is [0,2,1,3].
 	<li>All the pairs <code>[a<sub>i</sub>, b<sub>i</sub>]</code> are <strong>distinct</strong>.</li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1
+# Course Schedule II
+
+**Algorithm Used:** Topological Sort (Kahn's Algorithm)
+
+## Intuition
+The problem requires finding a possible order to complete all courses given a list of prerequisites. Each course may depend on other courses, forming a directed graph where an edge from course A to course B indicates that course A must be completed before course B. The solution uses a topological sort to determine a valid order to complete all courses, or returns an empty array if it's not possible.
+
+## Approach
+1. **Graph Construction**:
+   - Create an adjacency list `g` to represent the graph where each course points to its dependent courses.
+   - Use an array `indeg` to track the in-degrees of each course (i.e., the number of prerequisites for each course).
+
+2. **Initialize Queue**:
+   - Add all courses with zero in-degrees (i.e., courses that have no prerequisites) to a queue.
+
+3. **Process Courses**:
+   - While the queue is not empty:
+     - Remove a course from the queue and add it to the result array.
+     - For each course dependent on the removed course, decrement its in-degree. If the in-degree of any course becomes zero, add it to the queue.
+
+4. **Check Completion**:
+   - After processing all courses, if the number of processed courses equals the total number of courses, return the result array containing the valid order. Otherwise, return an empty array, indicating that it's not possible to complete all courses.
+
+This approach ensures that a valid course order is found if possible, with a time complexity of O(V + E), where V is the number of courses and E is the number of prerequisites.
 
 #### Java
 
@@ -764,8 +751,4 @@ class Solution {
     }
 }
 ```
-
-<br>
-<br>
-<br>
 
