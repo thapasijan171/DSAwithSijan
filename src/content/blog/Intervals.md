@@ -58,15 +58,32 @@ heroImage: "https://creatorspace.imgix.net/users/clzmwqjs107miod018j7gwvu9/wuOwq
 	<li><code>nums</code> is sorted in ascending order.</li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: Two Pointers
+## Problem Overview
 
-We can use two pointers `i` and `j` to find the left and right endpoints of each interval.
+Given an integer array `nums` and an integer `k`, this program finds the maximum value for each sliding window of size `k`. As the window moves from left to right across the array, it returns a list of the maximum values for each window.
 
-Traverse the array, when `j + 1 < n` and `nums[j + 1] = nums[j] + 1`, move `j` to the right, otherwise the interval `[i, j]` has been found, add it to the answer, then move `i` to the position of `j + 1`, and continue to find the next interval.
+## Approach
 
-Time complexity `O(n)`, where `n` is the length of the array. Space complexity `O(1)`.
+This solution uses a **Max-Heap** (Priority Queue) to efficiently track the maximum value within the current sliding window.
+
+### Steps:
+1. **Initialize Priority Queue (Max-Heap):**  
+   - Use a priority queue (`PriorityQueue<int[]>`) to store pairs of the form `(value, index)`, where `value` is the element in `nums` and `index` tracks its position.
+   - The priority queue is organized by value in descending order, so the largest value is always at the top.
+
+2. **Pre-fill the Priority Queue:**  
+   - Before processing, the priority queue is filled with the first `k - 1` elements of the array to prepare for the first sliding window.
+
+3. **Sliding Window Processing:**  
+   - Iterate through the array from index `k - 1` to the end.
+   - For each new element, add it to the priority queue.
+   - Remove any elements from the top of the heap that fall outside the current sliding window (i.e., index less than `i - k + 1`).
+   - Store the maximum value (top of the heap) for the current window in the result array.
+
+4. **Output the Maximum Values:**  
+   - The result array contains the maximum values for each window as the window slides through the array.
 
 #### Java
 
@@ -98,8 +115,6 @@ class Solution {
 
 ## Description
 
-<!-- description:start -->
-
 <p>Given an array&nbsp;of <code>intervals</code>&nbsp;where <code>intervals[i] = [start<sub>i</sub>, end<sub>i</sub>]</code>, merge all overlapping intervals, and return <em>an array of the non-overlapping intervals that cover all the intervals in the input</em>.</p>
 
 <p>&nbsp;</p>
@@ -128,20 +143,38 @@ class Solution {
 	<li><code>0 &lt;= start<sub>i</sub> &lt;= end<sub>i</sub> &lt;= 10<sup>4</sup></code></li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: Sorting + One-pass Traversal
+## Problem Overview
 
-We can sort the intervals in ascending order by the left endpoint, and then traverse the intervals for merging operations.
+Given a collection of intervals, the goal is to merge all overlapping intervals. The result should contain non-overlapping intervals that cover all the intervals from the input.
 
-The specific merging operation is as follows.
+## Approach
 
-First, we add the first interval to the answer. Then, we consider each subsequent interval in turn:
+The solution involves sorting the intervals by their starting values and then iterating through the sorted intervals to merge overlapping ones.
 
--   If the right endpoint of the last interval in the answer array is less than the left endpoint of the current interval, it means that the two intervals will not overlap, so we can directly add the current interval to the end of the answer array;
--   Otherwise, it means that the two intervals overlap. We need to use the right endpoint of the current interval to update the right endpoint of the last interval in the answer array, setting it to the larger of the two.
+### Steps:
 
-Finally, we return the answer array.
+1. **Sorting Intervals:**  
+   - The intervals are first sorted by their start time. This allows for easier comparison of overlapping intervals.
+
+2. **Iterating and Merging:**
+   - Initialize the start (`st`) and end (`ed`) with the first interval's values.
+   - Iterate over the remaining intervals:
+     - If the current interval's start (`s`) is greater than the previous end (`ed`), it means there is no overlap. Add the previous interval (`st, ed`) to the result and update `st` and `ed` to the current interval's start and end.
+     - If there is overlap, update `ed` to the maximum of the current end and the previous end.
+   - After processing all intervals, the final interval is added to the result.
+
+3. **Return the Result:**  
+   - The result is returned as a list of merged intervals.
+
+## Complexity Analysis
+
+- **Time Complexity:**  
+  The time complexity is `O(n log n)` due to sorting the intervals, where `n` is the number of intervals. The subsequent iteration over the intervals is `O(n)`.
+
+- **Space Complexity:**  
+  The space complexity is `O(n)` for storing the merged intervals.
 
 #### Java
 
@@ -167,28 +200,6 @@ class Solution {
 }
 ```
 
-### Solution 2
-#### Java
-
-```java
-class Solution {
-    public int[][] merge(int[][] intervals) {
-        Arrays.sort(intervals, (a, b) -> a[0] - b[0]);
-        List<int[]> ans = new ArrayList<>();
-        ans.add(intervals[0]);
-        for (int i = 1; i < intervals.length; i++) {
-            int s = intervals[i][0], e = intervals[i][1];
-            if (ans.get(ans.size() - 1)[1] < s) {
-                ans.add(intervals[i]);
-            } else {
-                ans.get(ans.size() - 1)[1] = Math.max(ans.get(ans.size() - 1)[1], e);
-            }
-        }
-        return ans.toArray(new int[ans.size()][]);
-    }
-}
-```
-
 <br>
 <br>
 <br>
@@ -196,8 +207,6 @@ class Solution {
 # [57. Insert Interval](https://leetcode.com/problems/insert-interval)
 
 ## Description
-
-<!-- description:start -->
 
 <p>You are given an array of non-overlapping intervals <code>intervals</code> where <code>intervals[i] = [start<sub>i</sub>, end<sub>i</sub>]</code> represent the start and the end of the <code>i<sup>th</sup></code> interval and <code>intervals</code> is sorted in ascending order by <code>start<sub>i</sub></code>. You are also given an interval <code>newInterval = [start, end]</code> that represents the start and end of another interval.</p>
 
@@ -236,11 +245,32 @@ class Solution {
 </ul>
 
 
-## Solutions
+# Solutions
 
-### Solution 1: Sorting + Interval Merging
+# Intuition
+When given a new interval to insert into a list of existing intervals, the challenge is to maintain the intervals in sorted order and merge any overlapping intervals. The best way to do this is by inserting the new interval into the correct position, and then merging the intervals if necessary.
 
-We can first add the new interval `newInterval` to the interval list `intervals`, and then merge according to the regular method of interval merging.
+# Approach
+1. **Insert the New Interval:**  
+   - Copy the existing intervals into a new array and append the new interval at the end.
+
+2. **Merge Overlapping Intervals:**  
+   - Sort the intervals based on their start times.
+   - Iterate through the sorted intervals:
+     - If the current interval does not overlap with the last interval in the result list, add it to the result.
+     - If it does overlap, merge the intervals by adjusting the end time to be the maximum of the two intervals.
+
+3. **Return the Result:**  
+   The merged intervals are returned as a list of non-overlapping intervals.
+
+# Complexity
+
+- Time complexity:  
+  Sorting the intervals takes $$O(n \log n)$$ where `n` is the number of intervals. Merging them requires a linear pass through the intervals, which is $$O(n)$$. Thus, the overall time complexity is $$O(n \log n)$$.
+
+- Space complexity:  
+  The space complexity is $$O(n)$$ for the additional list used to store the merged intervals.
+
 
 #### Java
 
@@ -266,49 +296,6 @@ class Solution {
             } else {
                 ans.get(ans.size() - 1)[1] = Math.max(ans.get(ans.size() - 1)[1], e);
             }
-        }
-        return ans.toArray(new int[ans.size()][]);
-    }
-}
-```
-
-### Solution 2: One-pass Traversal
-
-We can traverse the interval list `intervals`, let the current interval be `interval`, and there are three situations for each interval:
-
--   The current interval is on the right side of the new interval, that is, `newInterval[1] < interval[0]`. At this time, if the new interval has not been added, then add the new interval to the answer, and then add the current interval to the answer.
--   The current interval is on the left side of the new interval, that is, `interval[1] < newInterval[0]`. At this time, add the current interval to the answer.
--   Otherwise, it means that the current interval and the new interval intersect. We take the minimum of the left endpoint of the current interval and the left endpoint of the new interval, and the maximum of the right endpoint of the current interval and the right endpoint of the new interval, as the left and right endpoints of the new interval, and then continue to traverse the interval list.
-
-After the traversal, if the new interval has not been added, then add the new interval to the answer.
-
-The time complexity is `O(n)`, where `n` is the number of intervals. Ignoring the space consumption of the answer array, the space complexity is `O(1)`.
-
-#### Java
-
-```java
-class Solution {
-    public int[][] insert(int[][] intervals, int[] newInterval) {
-        List<int[]> ans = new ArrayList<>();
-        int st = newInterval[0], ed = newInterval[1];
-        boolean insert = false;
-        for (int[] interval : intervals) {
-            int s = interval[0], e = interval[1];
-            if (ed < s) {
-                if (!insert) {
-                    ans.add(new int[] {st, ed});
-                    insert = true;
-                }
-                ans.add(interval);
-            } else if (e < st) {
-                ans.add(interval);
-            } else {
-                st = Math.min(st, s);
-                ed = Math.max(ed, e);
-            }
-        }
-        if (!insert) {
-            ans.add(new int[] {st, ed});
         }
         return ans.toArray(new int[ans.size()][]);
     }
@@ -369,7 +356,28 @@ class Solution {
 
 ## Solutions
 
-### Solution 1
+# Intuition
+The problem can be viewed as finding the minimum number of non-overlapping intervals that cover all the balloon intervals. To minimize the number of arrows, we should aim to pop as many overlapping balloons as possible with a single arrow.
+
+# Approach
+1. **Sort by End Time:**  
+   First, sort the balloons by their end coordinates. This way, for each balloon, we can try to burst it with the same arrow as the previous balloon if it overlaps with it.
+
+2. **Greedy Selection:**  
+   As we iterate over the sorted balloons, we check if the current balloon starts after the last arrow shot. If it does, we need to shoot a new arrow, and we update the position of the last arrow shot to the current balloon's end.
+
+3. **Count the Arrows:**  
+   Each time we decide to shoot a new arrow, we increment the counter. At the end, the counter represents the minimum number of arrows needed.
+
+# Complexity
+
+- Time complexity:  
+  Sorting the intervals takes $$O(n \log n)$$, where `n` is the number of balloons. Iterating through the balloons requires a linear pass, which is $$O(n)$$. Thus, the overall time complexity is $$O(n \log n)$$.
+
+- Space complexity:  
+  The space complexity is $$O(1)$$ if we don't count the input storage, as we only use a few extra variables during the iteration.
+
+
 
 #### Java
 
