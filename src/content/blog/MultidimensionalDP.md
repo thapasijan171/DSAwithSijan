@@ -47,42 +47,38 @@ The minimum path sum from top to bottom is 2 + 3 + 5 + 1 = 11 (underlined above)
 <p>&nbsp;</p>
 <strong>Follow up:</strong> Could you&nbsp;do this using only <code>O(n)</code> extra space, where <code>n</code> is the total number of rows in the triangle?
 
-## Solutions
+# Solutions
 
-### Solution 1: Dynamic Programming
+# Minimum Path Sum in Triangle
 
-We define `f[i][j]` as the minimum path sum from the bottom of the triangle to the position `(i, j)`. Here, the position `(i, j)` refers to the position in the `i`th row and `j`th column of the triangle (both starting from `0`). Then we have the following state transition equation:
+**Algorithm Used:** Dynamic Programming
 
-`
-f[i][j] = \min(f[i + 1][j], f[i + 1][j + 1]) + triangle[i][j]
-`
+## Intuition
+The problem involves finding the minimum path sum from the top to the bottom of a triangle. Each step you can only move to adjacent numbers on the row below. Dynamic Programming is used to efficiently compute the minimum path sum by updating the triangle in place.
 
-The answer is `f[0][0]`.
+## Approach
+The approach is to modify the triangle itself to store the minimum path sums. This allows for efficient space usage by leveraging the triangle's structure.
 
-We notice that the state `f[i][j]` is only related to the states `f[i + 1][j]` and `f[i + 1][j + 1]`, so we can use a one-dimensional array instead of a two-dimensional array, reducing the space complexity from `O(n^2)` to `O(n)`.
+1. **Start from the Second Last Row**:
+   - Traverse from the second last row to the top. Update each cell with the minimum path sum possible to reach the bottom of the triangle.
 
-The time complexity is `O(n^2)`, and the space complexity is `O(n)`. Here, `n` is the number of rows in the triangle.
+2. **Update Minimum Path Sum**:
+   - For each cell in the current row, calculate the minimum path sum by adding the current cell's value to the minimum of the two adjacent cells in the row directly below.
 
-Furthermore, we can directly reuse the `triangle` as the `f` array, so there is no need to create an additional `f` array, reducing the space complexity to `O(1)`.
+3. **Final Result**:
+   - After processing all rows, the top cell of the triangle will contain the minimum path sum.
 
-#### Java
+### Steps
+1. **Traverse from Bottom to Top**:
+   - Iterate through the triangle from the second last row to the top row.
 
-```java
-class Solution {
-    public int minimumTotal(List<List<Integer>> triangle) {
-        int n = triangle.size();
-        int[] f = new int[n + 1];
-        for (int i = n - 1; i >= 0; i--) {
-            for (int j = 0; j <= i; j++) {
-                f[j] = Math.min(f[j], f[j + 1]) + triangle.get(i).get(j);
-            }
-        }
-        return f[0];
-    }
-}
-```
+2. **Update Each Cell**:
+   - For each cell in the row, update its value to be the sum of its original value and the minimum of the two adjacent cells directly below it.
 
-### Solution 2
+3. **Return the Result**:
+   - The value at the top of the triangle after all updates represents the minimum path sum.
+
+This method uses O(n) extra space as the triangle is updated in place, and has a time complexity of O(n^2), where n is the number of rows in the triangle.
 
 #### Java
 
@@ -139,21 +135,43 @@ class Solution {
 	<li><code>0 &lt;= grid[i][j] &lt;= 200</code></li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: Dynamic Programming
+# Minimum Path Sum in Grid
 
-We define `f[i][j]` to represent the minimum path sum from the top left corner to `(i, j)`. Initially, `f[0][0] = grid[0][0]`, and the answer is `f[m - 1][n - 1]`.
+**Algorithm Used:** Dynamic Programming
 
-Consider `f[i][j]`:
+## Intuition
+The problem involves finding the minimum path sum from the top-left corner to the bottom-right corner of a grid. You can only move down or right. Dynamic Programming is used to calculate the minimum path sum by building solutions from smaller subproblems.
 
--   If `j = 0`, then `f[i][j] = f[i - 1][j] + grid[i][j]`;
--   If `i = 0`, then `f[i][j] = f[i][j - 1] + grid[i][j]`;
--   If `i > 0` and `j > 0`, then `f[i][j] = \min(f[i - 1][j], f[i][j - 1]) + grid[i][j]`.
+## Approach
+The approach is to use a 2D DP array where each cell represents the minimum path sum to reach that cell from the start.
 
-Finally, return `f[m - 1][n - 1]`.
+1. **Initialize the DP Table**:
+   - Create a 2D DP table `f` where `f[i][j]` represents the minimum path sum to reach cell `(i, j)`.
 
-The time complexity is `O(m \times n)`, and the space complexity is `O(m \times n)`. Here, `m` and `n` are the number of rows and columns of the grid, respectively.
+2. **Fill the First Row and Column**:
+   - For the first row, each cell can only be reached from the cell directly to its left.
+   - For the first column, each cell can only be reached from the cell directly above it.
+
+3. **Fill the Rest of the DP Table**:
+   - For each cell `(i, j)`, the minimum path sum is the value in the cell itself plus the minimum of the path sums from the cell above it or the cell to the left.
+
+4. **Return the Result**:
+   - The value in the bottom-right corner of the DP table will be the minimum path sum from the top-left to the bottom-right of the grid.
+
+### Steps
+1. **Initialize DP Table**:
+   - Set `f[0][0]` to `grid[0][0]`.
+   - Fill the first row and column based on the sums from adjacent cells.
+
+2. **Update Each Cell**:
+   - For each cell `(i, j)`, compute the minimum path sum by considering the minimum of the sum from the cell above or the cell to the left plus the current cell's value.
+
+3. **Return Minimum Path Sum**:
+   - Return the value in `f[m-1][n-1]` as it represents the minimum path sum to reach the bottom-right corner.
+
+This method uses O(m * n) extra space for the DP table and has a time complexity of O(m * n), where m and n are the number of rows and columns in the grid, respectively.
 
 #### Java
 
@@ -224,66 +242,40 @@ There are two ways to reach the bottom-right corner:
 	<li><code>obstacleGrid[i][j]</code> is <code>0</code> or <code>1</code>.</li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: Memoization Search
+# Unique Paths with Obstacles
 
-We design a function `dfs(i, j)` to represent the number of paths from the grid `(i, j)` to the grid `(m - 1, n - 1)`, where `m` and `n` are the number of rows and columns of the grid, respectively.
+**Algorithm Used:** Dynamic Programming
 
-The execution process of the function `dfs(i, j)` is as follows:
+## Intuition
+The problem asks to find the number of unique paths from the top-left corner to the bottom-right corner of a grid, where some cells may have obstacles. The task is to only move right or down. Dynamic Programming provides an efficient way to compute the number of valid paths while avoiding obstacles.
 
--   If `i \ge m` or `j \ge n`, or `obstacleGrid[i][j] = 1`, then the number of paths is `0`;
--   If `i = m - 1` and `j = n - 1`, then the number of paths is `1`;
--   Otherwise, the number of paths is `dfs(i + 1, j) + dfs(i, j + 1)`.
+## Approach
+1. **Grid Initialization**:
+   - We initialize a 2D DP array `f`, where `f[i][j]` represents the number of unique paths to reach cell `(i, j)`.
 
-To avoid repeated calculations, we can use the method of memoization search.
+2. **First Row and First Column**:
+   - The first row and first column can only be filled with `1`s if there are no obstacles in the way. We stop filling them once we encounter an obstacle.
 
-The time complexity is `O(m \times n)`, and the space complexity is `O(m \times n)`. Where `m` and `n` are the number of rows and columns of the grid, respectively.
+3. **Filling the DP Table**:
+   - For each subsequent cell, if there is no obstacle in the current cell, the number of unique paths to this cell is the sum of the number of unique paths to the cell above it (`f[i-1][j]`) and the cell to its left (`f[i][j-1]`).
+   
+4. **Result**:
+   - The value at `f[m-1][n-1]` will hold the number of unique paths from the top-left to the bottom-right of the grid.
 
-#### Java
+### Steps
+1. **Initialize the First Row and First Column**:
+   - Fill the first row and the first column with `1` until an obstacle is encountered.
 
-```java
-class Solution {
-    private Integer[][] f;
-    private int[][] obstacleGrid;
-    private int m;
-    private int n;
+2. **Compute the DP Table**:
+   - For each cell `(i, j)`, if there is no obstacle (`obstacleGrid[i][j] == 0`), calculate the value of `f[i][j]` by adding the values from the cell above and the cell to the left.
+   - If there is an obstacle, the value remains `0` since no paths can pass through.
 
-    public int uniquePathsWithObstacles(int[][] obstacleGrid) {
-        m = obstacleGrid.length;
-        n = obstacleGrid[0].length;
-        this.obstacleGrid = obstacleGrid;
-        f = new Integer[m][n];
-        return dfs(0, 0);
-    }
+3. **Return the Result**:
+   - The final result will be the value at `f[m-1][n-1]`, which gives the total number of unique paths to the destination.
 
-    private int dfs(int i, int j) {
-        if (i >= m || j >= n || obstacleGrid[i][j] == 1) {
-            return 0;
-        }
-        if (i == m - 1 && j == n - 1) {
-            return 1;
-        }
-        if (f[i][j] == null) {
-            f[i][j] = dfs(i + 1, j) + dfs(i, j + 1);
-        }
-        return f[i][j];
-    }
-}
-```
-
-### Solution 2: Dynamic Programming
-
-We define `f[i][j]` as the number of paths to reach the grid `(i,j)`.
-
-First, initialize all values in the first column and first row of `f`. Then, traverse other rows and columns, there are two cases:
-
--   If `obstacleGrid[i][j] = 1`, it means the number of paths is `0`, so `f[i][j] = 0`;
--   If `obstacleGrid[i][j] = 0`, then `f[i][j] = f[i - 1][j] + f[i][j - 1]`.
-
-Finally, return `f[m - 1][n - 1]`.
-
-The time complexity is `O(m \times n)`, and the space complexity is `O(m \times n)`. Where `m` and `n` are the number of rows and columns of the grid, respectively.
+This solution has a time complexity of O(m * n) and space complexity of O(m * n), where `m` and `n` are the number of rows and columns of the grid, respectively.
 
 #### Java
 
@@ -346,56 +338,43 @@ class Solution {
 
 <!-- description:end -->
 
-## Solutions
+# Solutions
 
-<!-- solution:start -->
+# Longest Palindromic Substring
 
-### Solution 1: Dynamic Programming
+**Algorithm Used:** Expand Around Center
 
-We define `f[i][j]` to represent whether the string `s[i..j]` is a palindrome, initially `f[i][j] = true`.
+## Intuition
+To find the longest palindromic substring in a given string, we can leverage the fact that a palindrome mirrors around its center. For each character (and between every two characters), we attempt to expand outwards and check for palindromes. The longest palindrome found during this process will be our result.
 
-Next, we define variables `k` and `mx`, where `k` represents the starting position of the longest palindrome, and `mx` represents the length of the longest palindrome. Initially, `k = 0`, `mx = 1`.
+## Approach
+1. **Expanding Around Centers**:
+   - A palindrome can be centered around either a single character or two consecutive characters. Thus, for every character (and between every pair of characters), we attempt to expand outwards to find the longest palindrome centered there.
 
-Considering `f[i][j]`, if `s[i] = s[j]`, then `f[i][j] = f[i + 1][j - 1]`; otherwise, `f[i][j] = false`. If `f[i][j] = true` and `mx < j - i + 1`, then we update `k = i`, `mx = j - i + 1`.
+2. **Check Both Odd and Even Length Palindromes**:
+   - For each character at index `i`, we calculate the length of the palindrome by expanding from both a single character center (`f(i, i)`) and a two-character center (`f(i, i+1)`).
+   
+3. **Track Maximum Palindrome**:
+   - We keep track of the maximum palindrome length found (`mx`) and its starting position (`start`). Whenever a longer palindrome is found, we update these values accordingly.
 
-Since `f[i][j]` depends on `f[i + 1][j - 1]`, we need to ensure that `i + 1` is before `j - 1`, so we need to enumerate `i` from large to small, and enumerate `j` from small to large.
+4. **Return the Longest Palindrome**:
+   - After checking all centers, the substring starting at `start` with a length of `mx` is returned as the longest palindrome.
 
-The time complexity is `O(n^2)`, and the space complexity is `O(n^2)`. Here, `n` is the length of the string `s`.
+### Steps
+1. **Iterate Over Centers**:
+   - For each character in the string, consider it as the center of a potential palindrome. Compute the longest palindromic substring centered at that character and its neighbor.
 
+2. **Expand Around Center**:
+   - Use a helper function `f(l, r)` that expands outward from the center while the characters on both sides are equal. It returns the length of the palindrome.
 
-#### Java
+3. **Update Maximum Length**:
+   - Keep track of the maximum length palindrome found and its starting position.
 
-```java
-class Solution {
-    public String longestPalindrome(String s) {
-        int n = s.length();
-        boolean[][] f = new boolean[n][n];
-        for (var g : f) {
-            Arrays.fill(g, true);
-        }
-        int k = 0, mx = 1;
-        for (int i = n - 2; i >= 0; i--) {
-            for (int j = i + 1; j < n; j++) {
-                f[i][j] = false;
-                if (s.charAt(i) == s.charAt(j)) {
-                    f[i][j] = f[i + 1][j - 1];
-                    if (f[i][j] && mx < j - i + 1) {
-                        mx = j - i + 1;
-                        k = i;
-                    }
-                }
-            }
-        }
-        return s.substring(k, k + mx);
-    }
-}
-```
+4. **Return the Result**:
+   - Finally, return the substring of the input string starting at `start` with a length of `mx`.
 
-### Solution 2: Enumerate Palindrome Midpoint
+This solution has a time complexity of O(n^2) and space complexity of O(1), where `n` is the length of the input string.
 
-We can enumerate the midpoint of the palindrome, spread to both sides, and find the longest palindrome.
-
-The time complexity is `O(n^2)`, and the space complexity is `O(1)`. Here, `n` is the length of the string `s`.
 
 #### Java
 
@@ -493,9 +472,42 @@ Since s3 can be obtained by interleaving s1 and s2, we return true.
 <p>&nbsp;</p>
 <p><strong>Follow up:</strong> Could you solve it using only <code>O(s2.length)</code> additional memory space?</p>
 
-## Solutions
+# Solutions
 
-### Solution 1: Memoization Search
+# Interleaving String
+
+**Algorithm Used:** Dynamic Programming with Memoization (Depth-First Search)
+
+## Intuition
+The problem is to determine whether a string `s3` can be formed by interleaving two other strings `s1` and `s2`, while maintaining the relative order of characters from both `s1` and `s2`. The key observation is that at any given point in the process, we can either pick a character from `s1` or `s2`, as long as it matches the current character in `s3`.
+
+## Approach
+1. **Recursive DFS with Memoization**:
+   - We can solve this problem using a recursive depth-first search (DFS) approach, where at each step, we decide whether to pick the next character from `s1` or `s2`. 
+   - Memoization is used to store previously computed results for combinations of `i` (position in `s1`) and `j` (position in `s2`), to avoid redundant calculations and improve efficiency.
+
+2. **Base Case**:
+   - The recursion ends when both `s1` and `s2` are fully used (i.e., `i >= m` and `j >= n`). In this case, we return `true` as a valid interleaving is found.
+
+3. **Memoization**:
+   - A `Map` is used to store results of subproblems identified by a tuple `(i, j)`, where `i` and `j` represent the current indices in `s1` and `s2`.
+
+4. **Recursive Steps**:
+   - If the current character in `s3` matches the current character in `s1`, we move forward in `s1` and recursively check the rest.
+   - Similarly, if the current character in `s3` matches the current character in `s2`, we move forward in `s2` and check recursively.
+   - If either choice results in a valid solution, we return `true`.
+
+### Steps
+1. **Initial Validation**:
+   - If the combined length of `s1` and `s2` doesn't match the length of `s3`, return `false`.
+
+2. **Recursive DFS with Memoization**:
+   - Start a recursive depth-first search from the beginning of both `s1` and `s2`. At each step, decide whether to use the current character from `s1` or `s2`.
+
+3. **Return Final Result**:
+   - The final result is whether it is possible to completely interleave `s1` and `s2` to match `s3`.
+
+This approach ensures we avoid recalculating the result for overlapping subproblems by using memoization.
 
 #### Java
 
@@ -542,76 +554,6 @@ class Solution {
 }
 ```
 
-### Solution 2: Dynamic Programming
-
-We can convert the memoization search in Solution 1 into dynamic programming.
-
-We define `f[i][j]` to represent whether the first `i` characters of string `s_1` and the first `j` characters of string `s_2` can interleave to form the first `i + j` characters of string `s_3`. When transitioning states, we can consider whether the current character is obtained from the last character of `s_1` or the last character of `s_2`. Therefore, we have the state transition equation:
-
-
-where `f[0][0] = \textit{true}` indicates that an empty string is an interleaving string of two empty strings.
-
-The answer is `f[m][n]`.
-
-The time complexity is `O(m \times n)`, and the space complexity is `O(m \times n)`. Here, `m` and `n` are the lengths of strings `s_1` and `s_2` respectively.
-
-#### Java
-
-```java
-class Solution {
-    public boolean isInterleave(String s1, String s2, String s3) {
-        int m = s1.length(), n = s2.length();
-        if (m + n != s3.length()) {
-            return false;
-        }
-        boolean[][] f = new boolean[m + 1][n + 1];
-        f[0][0] = true;
-        for (int i = 0; i <= m; i++) {
-            for (int j = 0; j <= n; j++) {
-                int k = i + j - 1;
-                if (i > 0 && s1.charAt(i - 1) == s3.charAt(k)) {
-                    f[i][j] = f[i - 1][j];
-                }
-                if (j > 0 && s2.charAt(j - 1) == s3.charAt(k)) {
-                    f[i][j] |= f[i][j - 1];
-                }
-            }
-        }
-        return f[m][n];
-    }
-}
-```
-
-#### Java
-
-```java
-class Solution {
-    public boolean isInterleave(String s1, String s2, String s3) {
-        int m = s1.length(), n = s2.length();
-        if (m + n != s3.length()) {
-            return false;
-        }
-        boolean[] f = new boolean[n + 1];
-        f[0] = true;
-        for (int i = 0; i <= m; i++) {
-            for (int j = 0; j <= n; j++) {
-                int k = i + j - 1;
-                if (i > 0) {
-                    f[j] &= s1.charAt(i - 1) == s3.charAt(k);
-                }
-                if (j > 0) {
-                    f[j] |= (f[j - 1] & s2.charAt(j - 1) == s3.charAt(k));
-                }
-            }
-        }
-        return f[n];
-    }
-}
-```
-
-<br>
-<br>
-<br>
 
 # [72. Edit Distance](https://leetcode.com/problems/edit-distance)
 
@@ -662,20 +604,46 @@ exection -&gt; execution (insert &#39;u&#39;)
 	<li><code>word1</code> and <code>word2</code> consist of lowercase English letters.</li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: Dynamic Programming
+# Edit Distance
 
-We define `f[i][j]` as the minimum number of operations to convert `word1` of length `i` to `word2` of length `j`. `f[i][0] = i`, `f[0][j] = j`, `i \in [1, m], j \in [0, n]`.
+**Algorithm Used:** Dynamic Programming
 
-We consider `f[i][j]`:
+## Intuition
+The problem requires finding the minimum number of operations (insertions, deletions, or substitutions) needed to convert one string (`word1`) into another (`word2`). This is a classic problem known as **Edit Distance** or **Levenshtein Distance**.
 
--   If `word1[i - 1] = word2[j - 1]`, then we only need to consider the minimum number of operations to convert `word1` of length `i - 1` to `word2` of length `j - 1`, so `f[i][j] = f[i - 1][j - 1]`;
--   Otherwise, we can consider insert, delete, and replace operations, then `f[i][j] = \min(f[i - 1][j], f[i][j - 1], f[i - 1][j - 1]) + 1`.
+The intuition behind the solution is to build a dynamic programming (DP) table where each cell `f[i][j]` represents the minimum edit distance to convert the first `i` characters of `word1` into the first `j` characters of `word2`.
 
-Finally, we return `f[m][n]`.
+## Approach
+1. **Dynamic Programming Table Construction**:
+   - We create a 2D DP table `f` where `f[i][j]` will store the minimum number of operations needed to convert the first `i` characters of `word1` to the first `j` characters of `word2`.
+   - The base cases are:
+     - `f[0][j] = j`: It takes `j` insertions to convert an empty string into the first `j` characters of `word2`.
+     - `f[i][0] = i`: It takes `i` deletions to convert the first `i` characters of `word1` into an empty string.
 
-The time complexity is `O(m \times n)`, and the space complexity is `O(m \times n)`. `m` and `n` are the lengths of `word1` and `word2` respectively.
+2. **DP Transitions**:
+   - For each character pair `word1[i-1]` and `word2[j-1]`, if the characters match, no additional operation is required, and we carry over the previous result: `f[i][j] = f[i-1][j-1]`.
+   - If the characters differ, we take the minimum of three possible operations (insertion, deletion, substitution) and add one to the result:
+     - **Insertion**: `f[i][j-1] + 1`
+     - **Deletion**: `f[i-1][j] + 1`
+     - **Substitution**: `f[i-1][j-1] + 1`
+
+3. **Final Result**:
+   - After filling out the DP table, the value at `f[m][n]` will represent the minimum edit distance between `word1` and `word2`.
+
+### Steps
+1. **Initialize DP Table**:
+   - Set base cases for converting between empty strings and the two input strings.
+
+2. **Fill DP Table**:
+   - For each character in `word1` and `word2`, compute the minimum edit distance by considering the three operations (insertion, deletion, substitution).
+
+3. **Return Result**:
+   - Return the value `f[m][n]` from the DP table, which gives the minimum number of operations required to convert `word1` into `word2`.
+
+This approach ensures that we compute the optimal solution in `O(m * n)` time, where `m` and `n` are the lengths of `word1` and `word2`.
+
 
 #### Java
 
@@ -754,24 +722,50 @@ Note that you cannot buy on day 1, buy on day 2 and sell them later, as you are 
 
 <!-- description:end -->
 
-## Solutions
+# Solutions
 
-<!-- solution:start -->
+# Best Time to Buy and Sell Stock IV
 
-### Solution 1: Dynamic Programming
+**Algorithm Used:** Dynamic Programming
 
-We define the following variables:
+## Intuition
+This problem involves finding the maximum profit from at most two transactions in the stock market. A transaction consists of buying and selling a stock, and multiple transactions must occur in order, i.e., a stock must be sold before buying it again.
 
--   `f1` represents the maximum profit after the first purchase of the stock;
--   `f2` represents the maximum profit after the first sale of the stock;
--   `f3` represents the maximum profit after the second purchase of the stock;
--   `f4` represents the maximum profit after the second sale of the stock.
+We maintain four key variables during the iterations:
+- `f1`: Maximum profit after the first buy.
+- `f2`: Maximum profit after the first sell.
+- `f3`: Maximum profit after the second buy.
+- `f4`: Maximum profit after the second sell.
 
-During the traversal, we directly calculate `f1`, `f2`, `f3`, `f4`. We consider that buying and selling on the same day will result in a profit of `0`, which will not affect the answer.
+## Approach
+The idea is to track profits after each buy/sell action in the following way:
 
-Finally, return `f4`.
+1. **First Buy (`f1`)**:
+   - We want to minimize the cost of buying the stock. Therefore, at each step, we update `f1` to the maximum of the current `f1` or the negative of the current stock price, i.e., `f1 = max(f1, -prices[i])`.
 
-The time complexity is `O(n)`, where `n` is the length of the `prices` array. The space complexity is `O(1)`.
+2. **First Sell (`f2`)**:
+   - After the first buy, the first sell should maximize the profit from selling the stock. At each step, we update `f2` to the maximum of the current `f2` or the profit from selling the stock, i.e., `f2 = max(f2, f1 + prices[i])`.
+
+3. **Second Buy (`f3`)**:
+   - The second buy is the profit we can make after selling the first stock and then buying again. At each step, we update `f3` to the maximum of the current `f3` or the profit after buying again, i.e., `f3 = max(f3, f2 - prices[i])`.
+
+4. **Second Sell (`f4`)**:
+   - Finally, the second sell gives us the maximum profit after completing two transactions. At each step, we update `f4` to the maximum of the current `f4` or the profit from the second sell, i.e., `f4 = max(f4, f3 + prices[i])`.
+
+At the end of the iteration, `f4` will contain the maximum profit that can be made with at most two transactions.
+
+### Steps
+1. **Initialize Variables**:
+   - Set initial values for `f1`, `f2`, `f3`, and `f4`.
+
+2. **Iterate Through Prices**:
+   - Update the variables at each step by calculating the possible profits for both buys and sells.
+
+3. **Return Result**:
+   - The value of `f4` will hold the maximum profit possible with two transactions.
+
+This approach ensures that we calculate the result in `O(n)` time, where `n` is the length of the `prices` array.
+
 
 #### Java
 
@@ -834,7 +828,7 @@ class Solution {
 
 <!-- description:end -->
 
-## Solutions
+# Solutions
 
 ### Solution 1: Memoization Search
 
@@ -960,11 +954,42 @@ class Solution {
 
 <!-- description:end -->
 
-## Solutions
+# Solutions
 
-### Solution 1: Dynamic Programming
+# Maximal Square
 
-We define `dp[i + 1][j + 1]` as the maximum square side length with the lower right corner at index `(i, j)`. The answer is the maximum value among all `dp[i + 1][j + 1]`.
+**Algorithm Used:** Dynamic Programming
+
+## Intuition
+The problem asks to find the largest square containing only `1`s in a given binary matrix. The key idea is to use dynamic programming (DP) to store the size of the largest square ending at each cell.
+
+For any cell in the matrix, if it contains a `1`, the size of the square that can be formed with this cell as the bottom-right corner depends on its neighboring cells to the top, left, and top-left. The size will be the minimum value among these neighbors, plus one.
+
+## Approach
+
+1. **DP Table**: 
+   - We create a 2D DP table, `dp`, where `dp[i][j]` stores the size of the largest square that can end at position `(i-1, j-1)` in the original matrix.
+   - If `matrix[i-1][j-1] == '1'`, we calculate `dp[i][j]` as the minimum of `dp[i-1][j]`, `dp[i][j-1]`, and `dp[i-1][j-1]`, plus one.
+   - If `matrix[i-1][j-1] == '0'`, then `dp[i][j] = 0`.
+
+2. **Track Maximum Size**: 
+   - While populating the DP table, we also track the largest square size found so far.
+
+3. **Return Result**: 
+   - The area of the maximal square is the square of the largest value in the DP table.
+
+### Steps
+
+1. **Initialize DP Table**:
+   - Create a DP table with dimensions `(m+1) x (n+1)` to handle the boundary conditions easily.
+
+2. **Iterate Over Matrix**:
+   - For each cell in the matrix, if it's a `1`, calculate the value in the DP table using the minimum of its neighboring cells and update the maximum square size.
+
+3. **Compute the Square Area**:
+   - Multiply the maximum side length by itself to get the area of the largest square.
+
+This approach runs in `O(m * n)` time, where `m` and `n` are the dimensions of the matrix.
 
 
 #### Java

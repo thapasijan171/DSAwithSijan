@@ -69,19 +69,33 @@ heroImage: "https://creatorspace.imgix.net/users/clzmwqjs107miod018j7gwvu9/d8EAb
 	<li><code>board[i][j]</code> is a digit <code>1-9</code> or <code>&#39;.&#39;</code>.</li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: Traversal once
+# Valid Sudoku
 
-The valid sudoku satisfies the following three conditions:
+**Algorithm Used:** Set-based Checking
 
--   The digits are not repeated in each row;
--   The digits are not repeated in each column;
--   The digits are not repeated in each `3 \times 3` box.
+## Intuition
+To determine if a given 9x9 Sudoku board is valid, each row, column, and 3x3 sub-grid must contain all digits from 1 to 9 exactly once. This problem can be efficiently solved by using boolean arrays to track the presence of digits in each row, column, and sub-grid.
 
-Traverse the sudoku, for each digit, check whether the row, column and `3 \times 3` box it is in have appeared the digit. If it is, return `false`. If the traversal is over, return `true`.
+## Approach
+1. **Initialize Tracking Arrays**:
+   - Create three 2D boolean arrays:
+     - `row[i][num]` to track if the number `num` has been seen in row `i`.
+     - `col[j][num]` to track if the number `num` has been seen in column `j`.
+     - `sub[k][num]` to track if the number `num` has been seen in the 3x3 sub-grid `k`.
 
-The time complexity is `O(C)` and the space complexity is `O(C)`, where `C` is the number of empty spaces in the sudoku. In this question, `C=81`.
+2. **Iterate Through the Board**:
+   - For each cell `(i, j)` in the board:
+     - If the cell contains a digit (not `.`), compute its index `num` (0-based) and sub-grid index `k`.
+     - Check if the number has already been seen in the current row, column, or sub-grid.
+     - If it has, the board is invalid, so return `false`.
+     - Otherwise, mark the number as seen in the respective row, column, and sub-grid.
+
+3. **Return the Result**:
+   - If no duplicates are found in any row, column, or sub-grid, return `true`.
+
+This approach ensures that each cell is checked only once, and the time complexity is O(1) since the board size is fixed.
 
 #### Java
 
@@ -152,78 +166,34 @@ class Solution {
 
 <!-- description:end -->
 
-## Solutions
+# Solutions
 
-<!-- solution:start -->
+# Spiral Order Matrix
 
-### Solution 1: Simulation
+**Algorithm Used:** Layer-by-Layer Traversal
 
-We use `i` and `j` to represent the row and column of the current element, use `k` to represent the current direction, and use an array or hash table `vis` to record whether each element has been visited. Each time we visit an element, we mark it as visited, then move forward in the current direction. If we find that it is out of bounds or has been visited after moving forward, we change the direction and continue to move forward until the entire matrix is traversed.
+## Intuition
+To traverse a matrix in a spiral order, you can visualize the matrix as being divided into concentric layers. By processing each layer sequentially, you can collect elements in the desired spiral order.
 
-The time complexity is `O(m \times n)`, and the space complexity is `O(m \times n)`. Here, `m` and `n` are the number of rows and columns of the matrix, respectively.
+## Approach
+1. **Initialize Boundaries**:
+   - Define boundaries for the current layer: `x1` (top row), `y1` (left column), `x2` (bottom row), and `y2` (right column).
 
-For visited elements, we can also add a constant `300` to their values, so we don't need an extra `vis` array or hash table to record whether they have been visited, thereby reducing the space complexity to `O(1)`.
+2. **Traverse Layers**:
+   - While the current layer is valid (i.e., `x1 <= x2` and `y1 <= y2`):
+     - Traverse from left to right along the top boundary (`x1` row).
+     - Traverse from top to bottom along the right boundary (`y2` column).
+     - If the current layer has more than one row and column:
+       - Traverse from right to left along the bottom boundary (`x2` row).
+       - Traverse from bottom to top along the left boundary (`y1` column).
+     - Update boundaries to move inward for the next layer:
+       - Increment `x1` and `y1` to move the top and left boundaries inward.
+       - Decrement `x2` and `y2` to move the bottom and right boundaries inward.
 
-#### Java
+3. **Return the Result**:
+   - The `ans` list contains the elements of the matrix in spiral order.
 
-```java
-class Solution {
-    public List<Integer> spiralOrder(int[][] matrix) {
-        int m = matrix.length, n = matrix[0].length;
-        int[] dirs = {0, 1, 0, -1, 0};
-        int i = 0, j = 0, k = 0;
-        List<Integer> ans = new ArrayList<>();
-        boolean[][] vis = new boolean[m][n];
-        for (int h = m * n; h > 0; h--) {
-            ans.add(matrix[i][j]);
-            vis[i][j] = true;
-            int x = i + dirs[k], y = j + dirs[k + 1];
-            if (x < 0 || x >= m || y < 0 || y >= n || vis[x][y]) {
-                k = (k + 1) % 4;
-            }
-            i += dirs[k];
-            j += dirs[k + 1];
-        }
-        return ans;
-    }
-}
-```
-
-### Solution 2: Layer-by-layer Simulation
-
-We can also traverse and store the matrix elements from the outside to the inside, layer by layer.
-
-The time complexity is `O(m \times n)`, and the space complexity is `O(1)`. Here, `m` and `n` are the number of rows and columns of the matrix, respectively.
-
-#### Java
-
-```java
-class Solution {
-    public List<Integer> spiralOrder(int[][] matrix) {
-        int m = matrix.length, n = matrix[0].length;
-        int[] dirs = {0, 1, 0, -1, 0};
-        List<Integer> ans = new ArrayList<>();
-        for (int h = m * n, i = 0, j = 0, k = 0; h > 0; h--) {
-            ans.add(matrix[i][j]);
-            matrix[i][j] += 300;
-            int x = i + dirs[k], y = j + dirs[k + 1];
-            if (x < 0 || x >= m || y < 0 || y >= n || matrix[x][y] > 100) {
-                k = (k + 1) % 4;
-            }
-            i += dirs[k];
-            j += dirs[k + 1];
-        }
-        // for (int i = 0; i < m; ++i) {
-        //     for (int j = 0; j < n; ++j) {
-        //         matrix[i][j] -= 300;
-        //     }
-        // }
-        return ans;
-    }
-}
-```
-
-### Solution 3
+This approach ensures that each element is visited exactly once, and the time complexity is O(m * n), where `m` and `n` are the dimensions of the matrix.
 
 #### Java
 
@@ -294,15 +264,31 @@ class Solution {
 	<li><code>-1000 &lt;= matrix[i][j] &lt;= 1000</code></li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: In-place Rotation
+# Rotate Image
 
-According to the problem requirements, we actually need to rotate `matrix[i][j]` to `matrix[j][n - i - 1]`.
+**Algorithm Used:** Transpose and Reverse
 
-We can first flip the matrix upside down, that is, swap `matrix[i][j]` and `matrix[n - i - 1][j]`, and then flip the matrix along the main diagonal, that is, swap `matrix[i][j]` and `matrix[j][i]`. This way, we can rotate `matrix[i][j]` to `matrix[j][n - i - 1]`.
+## Intuition
+To rotate an `n x n` matrix by 90 degrees clockwise, you can use a two-step approach: first transpose the matrix, then reverse each row. This effectively achieves the rotation in-place.
 
-The time complexity is `O(n^2)`, where `n` is the side length of the matrix. The space complexity is `O(1)`.
+## Approach
+1. **Transpose the Matrix**:
+   - Swap elements across the main diagonal. For each element at position `(i, j)`, swap it with the element at `(j, i)`. This step converts rows into columns.
+
+2. **Reverse Each Row**:
+   - After transposing, reverse each row to achieve the final rotated matrix. This step converts columns into rows, completing the 90-degree rotation.
+
+### Steps
+1. **Transpose**:
+   - Iterate over each element below the main diagonal of the matrix and swap it with the corresponding element above the diagonal.
+   - This transforms the matrix so that rows become columns.
+
+2. **Reverse Rows**:
+   - For each row in the matrix, reverse the order of its elements.
+
+This approach operates in O(n^2) time complexity and uses O(1) extra space, as it performs the rotation in-place.
 
 #### Java
 
@@ -374,50 +360,43 @@ class Solution {
 	<li>Could you devise a constant space solution?</li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: Array Mark
+# Set Matrix Zeroes
 
-We use arrays `rows` and `cols` to mark the rows and columns to be cleared.
+**Algorithm Used:** Matrix Marking
 
-Then traverse the matrix again, and clear the elements in the rows and columns marked in `rows` and `cols`.
+## Intuition
+To set entire rows and columns to zeroes based on the presence of zeroes in a matrix, you can use a marking technique. This involves using the first row and first column as markers to record which rows and columns should be set to zeroes.
 
-The time complexity is `O(m\times n)`, and the space complexity is `O(m+n)`. Where `m` and `n` are the number of rows and columns of the matrix respectively.
+## Approach
+1. **Check First Row and Column**:
+   - Determine if the first row or the first column contains any zeroes. Use boolean flags `i0` and `j0` to keep track of this.
 
-#### Java
+2. **Mark Rows and Columns**:
+   - Iterate through the matrix (excluding the first row and column) and mark the respective positions in the first row and column if a zero is found. This marking helps to identify which rows and columns should be zeroed out.
 
-```java
-class Solution {
-    public void setZeroes(int[][] matrix) {
-        int m = matrix.length, n = matrix[0].length;
-        boolean[] rows = new boolean[m];
-        boolean[] cols = new boolean[n];
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (matrix[i][j] == 0) {
-                    rows[i] = true;
-                    cols[j] = true;
-                }
-            }
-        }
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (rows[i] || cols[j]) {
-                    matrix[i][j] = 0;
-                }
-            }
-        }
-    }
-}
-```
+3. **Set Zeroes Based on Markers**:
+   - Iterate through the matrix (excluding the first row and column) and set the element to zero if its corresponding row or column marker is zero.
 
-### Solution 2: Mark in Place
+4. **Set First Row and Column**:
+   - If the `i0` flag is set, zero out the entire first row.
+   - If the `j0` flag is set, zero out the entire first column.
 
-In the first method, we use an additional array to mark the rows and columns to be cleared. In fact, we can also use the first row and first column of the matrix to mark them, without creating an additional array.
+### Steps
+1. **Check for Zeroes in First Row/Column**:
+   - Scan the first row and column to see if they contain any zeroes and set the flags accordingly.
 
-Since the first row and the first column are used to mark, their values ​​may change due to the mark, so we need additional variables `i0`, `j0` to mark whether the first row and the first column need to be cleared.
+2. **Mark Zeroes**:
+   - For each zero found in the matrix (excluding the first row and column), mark the corresponding first row and column elements.
 
-The time complexity is `O(m\times n)`, and the space complexity is `O(1)`. Where `m` and `n` are the number of rows and columns of the matrix respectively.
+3. **Update Matrix**:
+   - Use the marks in the first row and column to set the appropriate elements in the matrix to zero.
+
+4. **Update First Row/Column**:
+   - Apply the zeroes to the first row and column if needed.
+
+This approach ensures that the matrix is updated in-place with a time complexity of O(m * n) and a space complexity of O(1), excluding the input matrix.
 
 #### Java
 
@@ -521,17 +500,44 @@ class Solution {
 	<li>In this question, we represent the board using a 2D array. In principle, the board is infinite, which would cause problems when the active area encroaches upon the border of the array (i.e., live cells reach the border). How would you address these problems?</li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: In-place marking
+# Game of Life
 
-Let's define two new states. State `2` indicates that the living cell becomes dead in the next state, and state `-1` indicates that the dead cell becomes alive in the next state. Therefore, for the current grid we are traversing, if the grid is greater than `0`, it means that the current grid is a living cell, otherwise it is a dead cell.
+**Algorithm Used:** In-Place Transformation
 
-So we can traverse the entire board, for each grid, count the number of living neighbors around the grid, and use the variable `live` to represent it. If the current grid is a living cell, then when `live \lt 2` or `live \gt 3`, the next state of the current grid is a dead cell, that is, state `2`; if the current grid is a dead cell, then when `live = 3`, the next state of the current grid is an active cell, that is, state `-1`.
+## Intuition
+The Game of Life is a cellular automaton where cells can either be alive or dead. The game updates the state of each cell based on its neighbors' states. This problem requires updating the board's state in place.
 
-Finally, we traverse the board again, and update the grid with state `2` to a dead cell, and update the grid with state `-1` to an active cell.
+## Approach
+The approach involves using an in-place encoding scheme to avoid using extra space while processing the board.
 
-The time complexity is `O(m \times n)`, where `m` and `n` are the number of rows and columns of the board, respectively. We need to traverse the entire board. And the space complexity is `O(1)`.
+1. **Encoding States**:
+   - Use positive numbers to represent live cells and negative numbers for dead cells. Specifically:
+     - `1` for a live cell.
+     - `0` for a dead cell.
+     - `2` for a cell that was previously alive but is now dead (used to mark transitions).
+     - `-1` for a cell that was previously dead but is now alive (used to mark transitions).
+
+2. **Count Live Neighbors**:
+   - For each cell, count the number of live neighbors. Update the cell's state based on the number of live neighbors and the cell's current state.
+
+3. **Update Board**:
+   - After processing all cells, convert the temporary states back to the final states:
+     - Change cells with value `2` to `0` (dead).
+     - Change cells with value `-1` to `1` (alive).
+
+### Steps
+1. **Process Each Cell**:
+   - For each cell, count the number of live neighbors by iterating over the 3x3 neighborhood.
+   - Update the cell's state based on the neighbor count:
+     - Cells that remain alive should be marked as `2` if they die.
+     - Cells that come to life should be marked as `-1`.
+
+2. **Finalize the Board**:
+   - Iterate through the board to convert the encoded states to the final states.
+
+This approach ensures that the board is updated in-place with a time complexity of O(m * n) and a space complexity of O(1), excluding the input board.
 
 
 #### Java

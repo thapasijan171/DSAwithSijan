@@ -54,47 +54,31 @@ heroImage: "https://creatorspace.imgix.net/users/clzmwqjs107miod018j7gwvu9/tLSkm
 <p>&nbsp;</p>
 <p><strong>Follow up:</strong> Can you solve it using <code>O(1)</code> (i.e. constant) memory?</p>
 
-## Solutions
+# Solutions
 
-### Solution 1: Hash Table
+# Linked List Cycle Detection
 
-We can traverse the linked list and use a hash table `s` to record each node. When a node appears for the second time, it indicates that there is a cycle, and we directly return `true`. Otherwise, when the linked list traversal ends, we return `false`.
+**Algorithm Used:** Floyd's Cycle-Finding Algorithm (Tortoise and Hare)
 
-The time complexity is `O(n)`, and the space complexity is `O(n)`, where `n` is the number of nodes in the linked list.
+## Intuition
+To determine if a linked list contains a cycle, we need to check if there's any node that can be revisited. Floyd's Cycle-Finding Algorithm is efficient for this purpose, using two pointers that traverse the list at different speeds.
 
-#### Java
+## Approach
 
-```java
-/**
- * Definition for singly-linked list.
- * class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode(int x) {
- *         val = x;
- *         next = null;
- *     }
- * }
- */
-public class Solution {
-    public boolean hasCycle(ListNode head) {
-        Set<ListNode> s = new HashSet<>();
-        for (; head != null; head = head.next) {
-            if (!s.add(head)) {
-                return true;
-            }
-        }
-        return false;
-    }
-}
-```
-### Solution 2: Fast and Slow Pointers
+1. **Initialization**:
+   - Use two pointers, `slow` and `fast`. Both start at the head of the linked list.
 
-We define two pointers, `fast` and `slow`, both initially pointing to `head`.
+2. **Traversal**:
+   - Move the `slow` pointer one step at a time (`slow = slow.next`).
+   - Move the `fast` pointer two steps at a time (`fast = fast.next.next`).
 
-The fast pointer moves two steps at a time, and the slow pointer moves one step at a time, in a continuous loop. When the fast and slow pointers meet, it indicates that there is a cycle in the linked list. If the loop ends without the pointers meeting, it indicates that there is no cycle in the linked list.
+3. **Cycle Detection**:
+   - If there's a cycle, the `slow` and `fast` pointers will eventually meet because `fast` moves faster and will lap `slow` if there’s a loop.
+   - If `fast` reaches the end of the list (`fast == null` or `fast.next == null`), the list does not contain a cycle.
 
-The time complexity is `O(n)`, and the space complexity is `O(1)`, where `n` is the number of nodes in the linked list.
+4. **Return Result**:
+   - Return `true` if the `slow` and `fast` pointers meet, indicating a cycle.
+   - Return `false` if `fast` reaches the end of the list, indicating no cycle.
 
 #### Java
 
@@ -173,15 +157,27 @@ public class Solution {
 	<li>It is guaranteed that the list represents a number that does not have leading zeros.</li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: Simulation
+# Add Two Numbers
 
-We traverse two linked lists `l_1` and `l_2` at the same time, and use the variable `carry` to indicate whether there is a carry.
+## Problem Statement
 
-Each time we traverse, we take out the current bit of the corresponding linked list, calculate the sum with the carry `carry`, and then update the value of the carry. Then we add the current bit to the answer linked list. If both linked lists are traversed, and the carry is `0`, the traversal ends.
+Given two non-empty linked lists representing two non-negative integers, where the digits are stored in reverse order and each of their nodes contains a single digit, add the two numbers and return it as a linked list.
 
-Finally, we return the head node of the answer linked list.
+## Intuition
+
+To solve this problem, we need to add two numbers represented by linked lists, digit by digit, considering the carry for each digit addition.
+
+## Approach
+
+1. **Initialize** a dummy node to serve as the starting point of the result list and a pointer `cur` to keep track of the current node in the result list.
+2. **Iterate** through both linked lists `l1` and `l2` until both lists are exhausted and no carry remains:
+   - Retrieve the current digit values from `l1` and `l2` (use 0 if a list is exhausted).
+   - Compute the sum of these values along with the carry.
+   - Update the carry for the next digit addition.
+   - Create a new node with the resulting digit and attach it to the result list.
+   - Move to the next node in each list.
 
 #### Java
 
@@ -259,57 +255,33 @@ class Solution {
 	<li>Both <code>list1</code> and <code>list2</code> are sorted in <strong>non-decreasing</strong> order.</li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: Recursion
+# Merge Two Sorted Lists
 
-First, we judge whether the linked lists `l_1` and `l_2` are empty. If one of them is empty, we return the other linked list. Otherwise, we compare the head nodes of `l_1` and `l_2`:
+**Algorithm Used:** Iterative Merge
 
--   If the value of the head node of `l_1` is less than or equal to the value of the head node of `l_2`, we recursively call the function `mergeTwoLists(l_1.next, l_2)`, and connect the head node of `l_1` with the returned linked list head node, and return the head node of `l_1`.
--   Otherwise, we recursively call the function `mergeTwoLists(l_1, l_2.next)`, and connect the head node of `l_2` with the returned linked list head node, and return the head node of `l_2`.
+## Intuition
+To merge two sorted linked lists into a single sorted linked list, we use a dummy node to simplify the merging process. By iterating through both lists and comparing their values, we can build the merged list efficiently.
 
-The time complexity is `O(m + n)`, and the space complexity is `O(m + n)`. Here, `m` and `n` are the lengths of the two linked lists respectively.
-#### Java
+## Approach
+1. **Initialize Dummy Node**:
+   - Create a dummy node to serve as the starting point of the merged list. Use a pointer, `curr`, to keep track of the current position in the merged list.
 
-```java
-/**
- * Definition for singly-linked list.
- * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode() {}
- *     ListNode(int val) { this.val = val; }
- *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
- * }
- */
-class Solution {
-    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
-        if (list1 == null) {
-            return list2;
-        }
-        if (list2 == null) {
-            return list1;
-        }
-        if (list1.val <= list2.val) {
-            list1.next = mergeTwoLists(list1.next, list2);
-            return list1;
-        } else {
-            list2.next = mergeTwoLists(list1, list2.next);
-            return list2;
-        }
-    }
-}
-```
+2. **Merge Lists**:
+   - While both `list1` and `list2` are not empty:
+     - Compare the values of the current nodes in `list1` and `list2`.
+     - Attach the smaller node to `curr.next` and advance the pointer in the respective list.
+     - Move the `curr` pointer to `curr.next`.
 
-### Solution 2: Iteration
+3. **Attach Remaining Nodes**:
+   - Once one of the lists is exhausted, attach the remaining nodes from the non-empty list to `curr.next`.
 
-We can also use iteration to implement the merging of two sorted linked lists.
+4. **Return the Result**:
+   - Return `dummy.next`, which points to the head of the merged list.
 
-First, we define a dummy head node `dummy`, then loop through the two linked lists, compare the head nodes of the two linked lists, add the smaller node to the end of `dummy`, until one of the linked lists is empty, then add the remaining part of the other linked list to the end of `dummy`.
+This approach ensures that the lists are merged in linear time, taking advantage of their sorted order.
 
-Finally, return `dummy.next`.
-
-The time complexity is `O(m + n)`, where `m` and `n` are the lengths of the two linked lists respectively. Ignoring the space consumption of the answer linked list, the space complexity is `O(1)`.
 
 #### Java
 
@@ -403,48 +375,30 @@ class Solution {
 	<li><code>Node.random</code> is <code>null</code> or is pointing to some node in the linked list.</li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1
+# Copy List with Random Pointer
 
-#### Java
+**Algorithm Used:** Node Duplication and Separation
 
-```java
-/*
-// Definition for a Node.
-class Node {
-    int val;
-    Node next;
-    Node random;
+## Intuition
+To create a deep copy of a linked list where each node has an additional random pointer, we can first duplicate each node and then separate the original list from the copied list. This approach ensures that the random pointers in the copied list are correctly assigned.
 
-    public Node(int val) {
-        this.val = val;
-        this.next = null;
-        this.random = null;
-    }
-}
-*/
-class Solution {
-    public Node copyRandomList(Node head) {
-        Map<Node, Node> d = new HashMap<>();
-        Node dummy = new Node(0);
-        Node tail = dummy;
-        for (Node cur = head; cur != null; cur = cur.next) {
-            tail.next = new Node(cur.val);
-            tail = tail.next;
-            d.put(cur, tail);
-        }
-        tail = dummy.next;
-        for (Node cur = head; cur != null; cur = cur.next) {
-            tail.random = d.get(cur.random);
-            tail = tail.next;
-        }
-        return dummy.next;
-    }
-}
-```
+## Approach
+1. **Duplicate Nodes**:
+   - Traverse the original list and, for each node, create a duplicate node.
+   - Insert the duplicate node immediately after the original node in the list. For example, if the original list is `A -> B`, the updated list will be `A -> A' -> B -> B'`.
 
-### Solution 2
+2. **Assign Random Pointers**:
+   - Traverse the updated list again and assign the random pointers for the duplicate nodes. If a node’s random pointer points to `X`, then its duplicate node’s random pointer should point to the duplicate of `X`.
+
+3. **Separate the Lists**:
+   - Finally, restore the original list and extract the duplicate list. The duplicate list is constructed by linking the duplicate nodes together while detaching them from the original nodes.
+
+4. **Return the Result**:
+   - Return the head of the duplicate list.
+
+This approach ensures that each node’s random pointer is correctly copied while maintaining linear time complexity.
 
 #### Java
 
@@ -529,13 +483,34 @@ class Solution {
 <p>&nbsp;</p>
 <strong>Follow up:</strong> Could you do it in one pass?
 
-## Solutions
+# Solutions
 
-### Solution 1: Simulation
+# Reverse Linked List Between
 
-Define a dummy head node `dummy`, pointing to the head node `head` of the linked list. Then define a pointer `pre` pointing to `dummy`. Start traversing the linked list from the dummy head node. When you traverse to the `left` node, point `pre` to this node. Then start traversing `right - left + 1` times from this node, and insert the nodes you traverse into the back of `pre`. Finally, return `dummy.next`.
+**Algorithm Used:** Iterative Reversal
 
-The time complexity is `O(n)`, and the space complexity is `O(1)`. Here, `n` is the length of the linked list.
+## Intuition
+To reverse a portion of a singly linked list between positions `left` and `right`, we can perform the reversal in-place by carefully adjusting the pointers. By using a dummy node, we simplify the operations at the boundaries.
+
+## Approach
+1. **Initialize Dummy Node**:
+   - Create a dummy node to handle edge cases and simplify pointer adjustments. Set its `next` to the head of the original list.
+
+2. **Find the Pre-Reversal Node**:
+   - Traverse the list to find the node just before the `left` position (`pre`). This node will help in reconnecting the reversed portion with the rest of the list.
+
+3. **Reverse the Sublist**:
+   - Initialize pointers to perform the reversal. `cur` points to the first node to be reversed, and `pre` will be used to reverse the links.
+   - Reverse the links for the nodes between `left` and `right`. After reversal, `pre` will point to the new head of the reversed sublist.
+
+4. **Reconnect the Reversed Sublist**:
+   - After reversing, reconnect the reversed portion with the previous and next parts of the list. Adjust the `next` pointers accordingly.
+
+5. **Return the Result**:
+   - Return `dummy.next`, which points to the head of the modified list.
+
+This approach ensures that only the specified portion of the list is reversed, with linear time complexity and constant space usage.
+
 
 #### Java
 
@@ -621,11 +596,38 @@ class Solution {
 <p><strong>Follow-up:</strong> Can you solve the problem in <code>O(1)</code> extra memory space?</p>
 
 
-## Solutions
+# Solutions
 
-### Solution 1: Iteration
+# Reverse Nodes in k-Group
 
-The time complexity is `O(n)`, and the space complexity is `O(1)`. Here, `n` is the length of the linked list.
+**Algorithm Used:** Group Reversal
+
+## Intuition
+To reverse nodes in k-sized groups in a linked list, we need to process the list in segments, reversing each segment of size `k` while maintaining the overall structure. This approach ensures that only complete groups are reversed.
+
+## Approach
+1. **Initialize Dummy Node**:
+   - Create a dummy node to handle edge cases and simplify operations. Set its `next` to the head of the original list.
+
+2. **Iterate Over the List in k-sized Groups**:
+   - Use two pointers: `pre` to mark the start of the current segment and `cur` to find the end of the segment.
+   - For each k-sized segment, move `cur` to the end of the segment. If `cur` is `null`, there are fewer than `k` nodes left, so no reversal is performed.
+
+3. **Reverse the Current Segment**:
+   - Temporarily break the list at `cur` and reverse the segment starting from `pre.next`.
+   - Reconnect the reversed segment back to the rest of the list. Update `pre.next` to point to the new head of the reversed segment.
+
+4. **Move to the Next Segment**:
+   - Adjust the pointers to move `pre` and `cur` to the next segment.
+
+5. **Return the Result**:
+   - Return `dummy.next`, which points to the head of the modified list.
+
+This approach processes each segment in linear time, ensuring that the entire list is handled efficiently.
+
+### Helper Function
+- **reverseList**: Reverses a given linked list. Used to reverse segments of size `k`.
+
 
 #### Java
 
@@ -722,17 +724,33 @@ class Solution {
 <p>&nbsp;</p>
 <p><strong>Follow up:</strong> Could you do this in one pass?</p>
 
-## Solutions
+# Solutions
 
-### Solution 1: Fast and Slow Pointers
+# Remove Nth Node From End of List
 
-We define two pointers `fast` and `slow`, both initially pointing to the dummy head node of the linked list.
+**Algorithm Used:** Two-Pointer Technique
 
-Next, the `fast` pointer moves forward `n` steps first, then `fast` and `slow` pointers move forward together until the `fast` pointer reaches the end of the linked list. At this point, the node pointed to by `slow.next` is the predecessor of the `n`-th node from the end, and we can delete it.
+## Intuition
+To remove the N-th node from the end of a linked list efficiently, we use two pointers. By advancing one pointer `N` steps ahead of the other, we can determine the node to be removed when the first pointer reaches the end.
 
-The time complexity is `O(n)`, where `n` is the length of the linked list. The space complexity is `O(1)`.
+## Approach
+1. **Initialize Dummy Node**:
+   - Create a dummy node to simplify edge cases, such as removing the head node. Set its `next` to the head of the original list.
 
-<!-- tabs:start -->
+2. **Advance the Fast Pointer**:
+   - Move the `fast` pointer `N` steps ahead from the dummy node. This ensures that the gap between the `fast` and `slow` pointers is `N` nodes.
+
+3. **Move Both Pointers**:
+   - Move both `fast` and `slow` pointers forward until `fast` reaches the end of the list. By this time, the `slow` pointer will be just before the node to be removed.
+
+4. **Remove the Target Node**:
+   - Adjust the `next` pointer of the `slow` node to skip the node to be removed, effectively removing it from the list.
+
+5. **Return the Result**:
+   - Return `dummy.next`, which points to the head of the modified list.
+
+This approach ensures a single pass through the list with constant space usage, making it efficient for large lists.
+
 
 #### Java
 
@@ -798,17 +816,35 @@ class Solution {
 	<li>The list is guaranteed to be <strong>sorted</strong> in ascending order.</li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: Single Pass
+# Remove Duplicates from Sorted List II
 
-First, we create a dummy head node `dummy`, and set `dummy.next = head`. Then we create a pointer `pre` pointing to `dummy`, and a pointer `cur` pointing to `head`, and start traversing the linked list.
+**Algorithm Used:** Iterative Duplicate Removal
 
-When the node value pointed by `cur` is the same as the node value pointed by `cur.next`, we let `cur` keep moving forward until the node value pointed by `cur` is different from the node value pointed by `cur.next`. At this point, we check whether `pre.next` is equal to `cur`. If they are equal, it means there are no duplicate nodes between `pre` and `cur`, so we move `pre` to the position of `cur`; otherwise, it means there are duplicate nodes between `pre` and `cur`, so we set `pre.next` to `cur.next`. Then we continue to move `cur` forward. Continue the above operation until `cur` is null, and the traversal ends.
+## Intuition
+To remove all nodes with duplicate values from a sorted linked list, we can use a dummy node to handle edge cases and iterate through the list, skipping over nodes that have duplicates.
 
-Finally, return `dummy.next`.
+## Approach
+1. **Initialize Dummy Node**:
+   - Create a dummy node to handle cases where the head of the list needs to be removed. Set its `next` to the head of the original list.
 
-The time complexity is `O(n)`, and the space complexity is `O(1)`. Here, `n` is the length of the linked list.
+2. **Iterate Through the List**:
+   - Use two pointers: `pre` (previous node) and `cur` (current node). Initialize `pre` to the dummy node and `cur` to the head of the list.
+
+3. **Skip Duplicates**:
+   - While `cur` is not `null`, check if there are consecutive nodes with the same value:
+     - If duplicates are found, move `cur` forward until the end of the duplicates.
+     - Adjust the `next` pointer of `pre` to skip over the duplicates and point to the next unique node.
+
+4. **Update Pointers**:
+   - If no duplicates were found, move `pre` to `cur`. Always move `cur` to the next node.
+
+5. **Return the Result**:
+   - Return `dummy.next`, which points to the head of the modified list without duplicates.
+
+This approach ensures that nodes with duplicate values are completely removed from the list, maintaining a linear time complexity.
+
 
 #### Java
 
@@ -878,21 +914,39 @@ class Solution {
 	<li><code>0 &lt;= k &lt;= 2 * 10<sup>9</sup></code></li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: Fast and Slow Pointers + Link List Concatenation
+# Rotate List
 
-First, we check whether the number of nodes in the linked list is less than `2`. If so, we directly return `head`.
+**Algorithm Used:** Two-Pointer Technique
 
-Otherwise, we first count the number of nodes `n` in the linked list, and then take the modulus of `k` by `n` to get the effective value of `k`.
+## Intuition
+To rotate a linked list to the right by `k` places, we can utilize two pointers to find the new head of the list after rotation. By leveraging the list's circular properties, we can achieve the rotation efficiently.
 
-If the effective value of `k` is `0`, it means that the linked list does not need to be rotated, and we can directly return `head`.
+## Approach
+1. **Handle Edge Cases**:
+   - If the list is empty or contains only one node, no rotation is needed. Return the head as is.
 
-Otherwise, we use fast and slow pointers, let the fast pointer move `k` steps first, and then let the fast and slow pointers move together until the fast pointer moves to the end of the linked list. At this time, the next node of the slow pointer is the new head node of the linked list.
+2. **Calculate the Length**:
+   - Traverse the list to determine its length `n`.
 
-Finally, we concatenate the linked list.
+3. **Adjust k**:
+   - Since rotating the list `n` times results in the same list, reduce `k` to `k % n`. If `k` is 0 after this adjustment, no rotation is needed, and we return the head.
 
-The time complexity is `O(n)`, where `n` is the number of nodes in the linked list. The space complexity is `O(1)`.
+4. **Find the New Tail and Head**:
+   - Use two pointers: `fast` and `slow`. Move `fast` pointer `k` steps ahead from the head.
+   - Move both `fast` and `slow` pointers together until `fast` reaches the end of the list. At this point, `slow` will be at the new tail of the rotated list.
+
+5. **Rearrange Pointers**:
+   - Set the new head to `slow.next`.
+   - Update `slow.next` to `null` to mark the end of the rotated list.
+   - Link the end of the list (`fast.next`) to the original head.
+
+6. **Return the Result**:
+   - Return `ans`, which is the new head of the rotated list.
+
+This approach ensures that the list is rotated efficiently in linear time and constant space.
+
 
 #### Java
 
@@ -974,13 +1028,34 @@ class Solution {
 	<li><code>-200 &lt;= x &lt;= 200</code></li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: Simulation
+# Partition List
 
-We create two linked lists, one to store nodes less than `x`, and the other to store nodes greater than or equal to `x`. Then we concatenate them.
+**Algorithm Used:** Two List Partitioning
 
-The time complexity is `O(n)`, where `n` is the length of the original linked list. The space complexity is `O(1)`.
+## Intuition
+To partition a linked list around a value `x`, we need to rearrange the nodes so that all nodes with values less than `x` come before nodes with values greater than or equal to `x`. We achieve this by maintaining two separate lists and merging them at the end.
+
+## Approach
+1. **Initialize Two Lists**:
+   - Create two dummy nodes: `d1` for nodes with values less than `x`, and `d2` for nodes with values greater than or equal to `x`. Use `t1` and `t2` as pointers to build these two lists.
+
+2. **Partition the List**:
+   - Traverse the original list:
+     - If the current node's value is less than `x`, append it to the list represented by `d1` (`t1.next`).
+     - Otherwise, append it to the list represented by `d2` (`t2.next`).
+   - Move to the next node in the original list after each operation.
+
+3. **Combine the Lists**:
+   - After the traversal, connect the end of the list represented by `d1` to the start of the list represented by `d2`.
+   - Set `t2.next` to `null` to mark the end of the list.
+
+4. **Return the Result**:
+   - Return `d1.next`, which points to the head of the partitioned list.
+
+This approach ensures that the list is partitioned efficiently with linear time complexity and constant space usage.
+
 
 #### Java
 
@@ -1070,18 +1145,39 @@ lRUCache.get(4);    // return 4
 	<li>At most <code>2 * 10<sup>5</sup></code> calls will be made to <code>get</code> and <code>put</code>.</li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: Hash Table + Doubly Linked List
+# LRU Cache
 
-We can implement an LRU (Least Recently Used) cache using a "hash table" and a "doubly linked list".
+**Algorithm Used:** Doubly Linked List with HashMap
 
--   Hash Table: Used to store the key and its corresponding node location.
--   Doubly Linked List: Used to store node data, sorted by access time.
+## Intuition
+An LRU (Least Recently Used) Cache allows for efficient retrieval and insertion of key-value pairs, while ensuring that the least recently used items are evicted when the cache exceeds its capacity. This can be efficiently managed using a combination of a doubly linked list and a hash map.
 
-When accessing a node, if the node exists, we delete it from its original position and reinsert it at the head of the list. This ensures that the node stored at the tail of the list is the least recently used node. When the number of nodes exceeds the maximum cache space, we eliminate the node at the tail of the list.
+## Approach
+1. **Initialize Data Structures**:
+   - **HashMap**: To store key-node mappings for O(1) access time.
+   - **Doubly Linked List**: To maintain the order of nodes based on usage. The list is structured with a dummy head and tail node to simplify operations.
 
-When inserting a node, if the node exists, we delete it from its original position and reinsert it at the head of the list. If it does not exist, we first check if the cache is full. If it is full, we delete the node at the tail of the list and insert the new node at the head of the list.
+2. **Get Operation**:
+   - Check if the key exists in the hash map.
+   - If it exists, retrieve the corresponding node, move it to the head of the list (indicating recent use), and return its value.
+   - If it does not exist, return -1.
+
+3. **Put Operation**:
+   - If the key already exists, update its value, move the node to the head of the list to mark it as recently used.
+   - If the key does not exist:
+     - Create a new node and add it to the head of the list.
+     - Add the node to the hash map.
+     - If the cache exceeds its capacity, remove the tail node (the least recently used item) and update the hash map accordingly.
+
+4. **Helper Methods**:
+   - **moveToHead**: Moves a given node to the head of the list.
+   - **removeNode**: Removes a node from its current position in the list.
+   - **addToHead**: Adds a node right after the head of the list.
+   - **removeTail**: Removes the node right before the tail (the least recently used node).
+
+This approach ensures that both `get` and `put` operations are performed in O(1) time complexity due to the hash map and doubly linked list.
 
 #### Java
 

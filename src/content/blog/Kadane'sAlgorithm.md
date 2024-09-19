@@ -47,26 +47,32 @@ heroImage: "https://creatorspace.imgix.net/users/clzmwqjs107miod018j7gwvu9/EVkdb
 <p>&nbsp;</p>
 <p><strong>Follow up:</strong> If you have figured out the <code>O(n)</code> solution, try coding another solution using the <strong>divide and conquer</strong> approach, which is more subtle.</p>
 
-## Solutions
+# Solutions
 
-### Solution 1: Dynamic Programming
+# Maximum Subarray
 
-#### Java
+**Algorithm Used:** Divide and Conquer
 
-```java
-class Solution {
-    public int maxSubArray(int[] nums) {
-        int ans = nums[0];
-        for (int i = 1, f = nums[0]; i < nums.length; i++) {
-            f = Math.max(f, 0) + nums[i];
-            ans = Math.max(ans, f);
-        }
-        return ans;
-    }
-}
-```
+## Intuition
+To find the maximum sum of a contiguous subarray efficiently, we use the divide and conquer approach. This approach divides the problem into smaller subproblems, solves each subproblem recursively, and combines the results.
 
-### Solution 2
+## Approach
+
+1. **Divide**:
+   - Split the array into two halves: left and right.
+
+2. **Conquer**:
+   - Recursively find the maximum subarray sum in the left half.
+   - Recursively find the maximum subarray sum in the right half.
+
+3. **Combine**:
+   - Find the maximum sum of a subarray that crosses the midpoint, which involves:
+     - Finding the maximum sum of a subarray that extends from the left half to the midpoint.
+     - Finding the maximum sum of a subarray that extends from the midpoint to the right half.
+   - Combine these results to get the maximum sum of a subarray that crosses the midpoint.
+
+4. **Result**:
+   - Return the maximum value among the maximum sums from the left half, right half, and crossing subarray.
 
 #### Java
 
@@ -150,15 +156,27 @@ class Solution {
 	<li><code>-3 * 10<sup>4</sup> &lt;= nums[i] &lt;= 3 * 10<sup>4</sup></code></li>
 </ul>
 
-## Solutions
+# Solutions
 
-### Solution 1: Maintain Prefix Maximum
+# Maximum Subarray Sum with Circular Array
 
-The maximum sum of a circular subarray can be divided into two cases:
+**Algorithm Used:** Kadane's Algorithm with Circular Array Adjustment
 
--   Case 1: The subarray with the maximum sum does not include the circular part, which is the ordinary maximum subarray sum;
--   Case 2: The subarray with the maximum sum includes the circular part, which can be transformed into: the total sum of the array minus the minimum subarray sum.
+## Intuition
+The problem is to find the maximum sum of a subarray in a circular array. This means the subarray can wrap around from the end of the array back to the beginning. To solve this, we need to consider both linear and circular subarrays.
 
+## Approach
+
+1. **Kadane's Algorithm for Maximum Subarray Sum (Linear Case)**:
+   - Use Kadane's Algorithm to find the maximum sum of a subarray in a linear array. This will help in identifying the maximum subarray sum when the subarray does not wrap around.
+
+2. **Circular Array Adjustment**:
+   - To handle the circular nature of the array, calculate the total sum of the array.
+   - Find the minimum subarray sum using a modified version of Kadane's Algorithm.
+   - The maximum circular subarray sum is then computed as the total sum of the array minus the minimum subarray sum. This is because the circular subarray is effectively the complement of the minimum subarray in the linear case.
+
+3. **Combine Results**:
+   - The final result is the maximum of the linear case result and the circular case result. This accounts for both scenarios where the subarray might or might not wrap around.
 #### Java
 
 ```java
